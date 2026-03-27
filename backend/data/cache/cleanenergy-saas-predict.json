@@ -1,0 +1,76 @@
+{
+  "_meta": {
+    "generatedAt": "2026-03-26T09:07:45.024Z",
+    "companyId": "cleanenergy-saas",
+    "endpoint": "predict",
+    "model": "claude-sonnet-4-6"
+  },
+  "baseCase": {
+    "entryMultiple": 10.5,
+    "exitMultiple": 12,
+    "projectedIrr": 18.5,
+    "projectedMoic": 2.4,
+    "exitEv": 66000000
+  },
+  "withEsgInterventions": {
+    "entryMultiple": 10.5,
+    "exitMultiple": 12.84,
+    "projectedIrr": 24.8,
+    "projectedMoic": 3.21,
+    "exitEv": 83820000,
+    "irrUplift": 6.3,
+    "additionalValueCreated": 17820000
+  },
+  "esgBreakdown": [
+    {
+      "intervention": "Scope 3 Customer Emissions Measurement & Reporting Module",
+      "totalCost": 420000,
+      "annualSavings": 680000,
+      "cumulativeSavings": 2720000,
+      "exitMultipleImpact": "+0.4x — Scope 3 visibility is a hard requirement under UK SDR and SFDR for LP reporting; completing the emissions data picture removes a key due diligence red flag and qualifies the platform for enterprise contracts with Tier-1 utilities requiring supplier Scope 3 data. Directly expands TAM into ESG-mandated procurement pipelines.",
+      "irrContribution": "+1.8pp — accelerated enterprise deal velocity (2 additional Tier-1 wins modeled in Year 3) and avoidance of SFDR Article 9 LP capital withdrawal risk, valued at ~£1.2M in AUM-at-risk",
+      "paybackMonths": 7
+    },
+    {
+      "intervention": "100% Renewable Energy Transition + ISO 14001 Certification",
+      "totalCost": 195000,
+      "annualSavings": 312000,
+      "cumulativeSavings": 1248000,
+      "exitMultipleImpact": "+0.22x — Moving from 78% to 100% renewable (closing the final 22% gap via UK REGO certificates and Nordic Guarantees of Origin) enables credible net-zero operational claims. ISO 14001 certification provides third-party assurance that commands a measurable premium with strategic acquirers in the energy transition space, particularly Scandinavian corporates and infrastructure funds.",
+      "irrContribution": "+0.9pp — energy cost hedging locks in ~£48K/yr savings vs. grid price escalation; ISO 14001 accelerates Nordic public-sector procurement qualification (Sweden/Denmark green procurement mandates apply to software vendors above €500K contract value)",
+      "paybackMonths": 8
+    },
+    {
+      "intervention": "AI Governance & EU AI Act Compliance Program",
+      "totalCost": 385000,
+      "annualSavings": 520000,
+      "cumulativeSavings": 2080000,
+      "exitMultipleImpact": "+0.14x — The EU AI Act classifies energy grid management software as high-risk AI (Annex III). Proactive compliance (conformity assessment, bias audits, transparency documentation) eliminates a regulatory liability that would otherwise surface as a purchase price adjustment in exit due diligence. First-mover compliance status becomes a competitive differentiator for utility customers facing their own AI governance obligations post-2026.",
+      "irrContribution": "+1.2pp — avoidance of €35M penalty exposure (4% global revenue cap under EU AI Act) de-risks exit valuation; compliance certification enables entry into German and French utility markets (combined €8M incremental ARR opportunity modeled by Year 4)",
+      "paybackMonths": 9
+    },
+    {
+      "intervention": "Governance Uplift: Independent Director Expansion + ESG-Linked Executive Compensation",
+      "totalCost": 210000,
+      "annualSavings": 290000,
+      "cumulativeSavings": 1160000,
+      "exitMultipleImpact": "+0.08x — Expanding independent directors from 2/5 (40%) to 3/5 (60%) meets UNPRI and ILPA governance thresholds that are now binary qualifiers for LP capital from Nordic pension funds (AP1–AP4, PensionDanmark). ESG-linked exec compensation (20% of LTIP tied to EBITDA-adjusted carbon intensity and eNPS targets) signals governance maturity to strategic acquirers and reduces key-man risk discount at exit.",
+      "irrContribution": "+0.6pp — LP retention modeled at 100% vs. 15% estimated capital withdrawal risk from 2 Nordic LPs under current governance structure; exec retention improvement (eNPS uplift from 42 to 58 targeted) reduces voluntary turnover cost by ~£180K/yr at current headcount",
+      "paybackMonths": 11
+    }
+  ],
+  "esgImplementationCost": {
+    "year1Setup": 620000,
+    "annualOngoing": 395000,
+    "totalFiveYear": 2200000
+  },
+  "riskMitigation": {
+    "greenwashingRiskBefore": 7.2,
+    "greenwashingRiskAfter": 1.8,
+    "regulatoryRiskReduction": "Elimination of £0-35M EU AI Act penalty exposure; full SFDR Article 8/9 LP reporting compliance achieved by Month 14; UK SDR sustainability label eligibility unlocked for fund marketing materials — estimated to protect £4.2M in LP commitments currently at renewal risk",
+    "lpRetentionImpact": "2 Nordic pension LP relationships (estimated £6.8M combined commitment) stabilized through SFDR Article 9 compliance and ILPA governance alignment. Without intervention, 15-20% capital withdrawal probability modeled at Year 2 re-up based on current Scope 3 data gap and governance shortfall.",
+    "strandedAssetRisk": "LOW post-intervention. Pre-intervention risk: moderate — UK SDR and EU Taxonomy misalignment could impair fund's ability to classify this holding as a sustainable investment, forcing reclassification and potential forced sale below intrinsic value. Post-intervention: CleanEnergy SaaS qualifies as EU Taxonomy-aligned under Climate Change Mitigation (CCM 8.1 — ICT solutions for energy efficiency) with full revenue eligibility."
+  },
+  "exitNarrative": "At exit (Year 5), the buyer sees a fundamentally different asset than what was acquired. CleanEnergy SaaS has transformed from a growth-stage software company with ESG compliance gaps into a category-defining ESG-native platform with institutional-grade sustainability credentials. The exit story has four chapters:\n\n1. PRODUCT-ESG INTEGRATION: The Scope 3 module has become a core product feature generating £1.4M in incremental ARR from 6 Tier-1 utility clients who require supplier emissions data for their own CSRD reporting obligations. ESG is no longer an operational footnote — it IS the product roadmap.\n\n2. REGULATORY MOAT: Full EU AI Act conformity certification (achieved Year 2) and ISO 14001 accreditation create a 18-24 month compliance lead over non-certified competitors. For strategic acquirers (energy majors, grid operators, ESG data platforms), this eliminates a £2-4M integration compliance cost that would otherwise be deducted from purchase price.\n\n3. GOVERNANCE PREMIUM: Upgraded board composition (3/5 independent directors), ESG-linked LTIP, and 4 years of audited GHG data with third-party assurance meets the acquisition due diligence standards of infrastructure funds, ESG-focused strategic acquirers (e.g., Schneider Electric, Eaton, Bloomberg NEF parent), and listed corporates subject to their own Scope 3 supplier disclosure requirements.\n\n4. FINANCIAL PROOF POINTS: 5-year voluntary turnover held at 8.2% (sector benchmark: 14%), eNPS improved to 58 (from 42), EBITDA margin expansion of 310bps attributable to energy cost savings and premium contract pricing, and zero regulatory enforcement actions. The asset passes ESG due diligence in Week 1 of any sale process — removing the 90-day delay and 0.3-0.5x multiple haircut that ESG gaps typically impose at exit.",
+  "netRoiOnEsgInvestment": "8.1x"
+}

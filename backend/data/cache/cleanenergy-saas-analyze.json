@@ -1,0 +1,191 @@
+{
+  "_meta": {
+    "generatedAt": "2026-03-26T09:06:56.157Z",
+    "companyId": "cleanenergy-saas",
+    "endpoint": "analyze",
+    "model": "claude-sonnet-4-6"
+  },
+  "overallScore": 67,
+  "sasbClassification": "Software & IT Services (TC-SI) — SASB Technology Sector. CleanEnergy SaaS Platform maps directly to SASB TC-SI, covering B2B software businesses with material topics concentrated in data governance/privacy, environmental footprint of IT infrastructure, human capital, and product-level ESG enablement. The company's clean-energy utility focus adds a secondary SFDR \"Article 9-adjacent\" positioning lens.",
+  "materialKpis": [
+    {
+      "kpi": "Scope 3 — Category 11 (Use of Sold Products / Customer Usage Emissions)",
+      "why": "For a B2B SaaS platform sold to utilities managing renewable portfolios, the GHG intensity of the software's compute workload consumed by customers is the dominant lifecycle emission. SASB TC-SI-130a.1 requires total energy consumption AND % from renewables for own data centres; EU AI Act and CSRD ESRS E1 will increasingly demand Scope 3 Cat 11 disclosure. Missing Scope 3 data creates a reporting gap that blocks Article 8/9 classification for Nordic LPs.",
+      "ebitdaLink": "Scope 3 disclosure is a gate-keeper for premium SaaS pricing to ESG-mandated utility clients. Estimated 10-15% revenue premium on enterprise contracts (~$2.2M–$3.3M ARR) is contingent on validated Scope 3 data by 2026 CSRD enforcement.",
+      "dataStatus": "missing"
+    },
+    {
+      "kpi": "Energy Consumption & Renewable Energy Percentage (Own Infrastructure)",
+      "why": "SASB TC-SI-130a.1 is a primary disclosure requirement. At 480 MWh and 78% renewable, the company is above the software-sector median (~55–60% renewable). However, 22% non-renewable exposes $96k in residual carbon cost at EU ETS shadow pricing. Closing this gap to 100% renewable has direct cost and reputational value.",
+      "ebitdaLink": "Switching remaining 22% non-renewable (≈106 MWh) to PPAs or RECs costs ~$8–12k/year; saves ~$15–20k in future carbon levy exposure and qualifies platform for 'net-zero aligned' product marketing — unlocking enterprise tier pricing.",
+      "dataStatus": "available"
+    },
+    {
+      "kpi": "Employee Retention & Human Capital (Voluntary Turnover Rate)",
+      "why": "SASB TC-SI-330a.1/2 makes human capital the #1 value driver in software M&A. At 95 employees, losing a senior engineer costs $50–80k in recruitment + 3–6 months productivity. An 8.2% voluntary turnover rate is below the software sector average (12–15%), which is a genuine value protector. eNPS of 42 is solid but not exceptional.",
+      "ebitdaLink": "Each 1pp reduction in turnover below current rate saves ~$47k/year (0.01 × 95 FTEs × $50k avg replacement cost). Conversely, a post-acquisition cultural disruption spike to 15% would cost ~$323k/year — a material EBITDA drag on a $5.5M base.",
+      "dataStatus": "available"
+    },
+    {
+      "kpi": "Data Privacy, Security & Product Integrity",
+      "why": "SASB TC-SI-230a.1–4 identifies data privacy and cybersecurity as the top financial risk in software. CleanEnergy SaaS holds utility operational data (critical national infrastructure in UK/EU). A breach triggers: UK GDPR/ICO fines (up to 4% global turnover = ~$880k), potential NIS2 Directive penalties (EU), reputational client churn, and D&O liability. No data security metrics were provided.",
+      "ebitdaLink": "A single material breach in utility SaaS averages $4.5M total cost (IBM 2023 Cost of Data Breach Report, regulated industries). At $22M revenue, this represents ~0.8× revenue — an existential risk. Cyber insurance premiums of $80–120k/year are a direct cost offset.",
+      "dataStatus": "missing"
+    },
+    {
+      "kpi": "Workforce Diversity & Inclusion (Gender & Board Composition)",
+      "why": "SASB TC-SI-330a.3 and CSRD ESRS S1 require workforce diversity disclosures. At 42% female employees and 50% board gender diversity, this company significantly outperforms the software sector average (28% female workforce). This is a differentiated talent attraction signal and reduces risk of UK/EU gender pay gap enforcement actions.",
+      "ebitdaLink": "McKinsey Diversity Wins (2023): Top-quartile gender diversity companies show 15% higher EBIT likelihood. For a $5.5M EBITDA base this implies a potential $825k EBITDA premium vs. sector median over hold period. Additionally, 50% board diversity pre-qualifies for EU Taxonomy and several Nordic LP ESG mandates.",
+      "dataStatus": "available"
+    },
+    {
+      "kpi": "Board Independence & Governance Quality",
+      "why": "SASB TC-SI does not directly score governance, but EDCI (ESG Data Convergence Initiative) and SFDR Article 8 require board composition and independence data. At 2/5 independent directors (40%), the board falls below the UK Corporate Governance Code recommendation (majority independent for premium-listed companies) and below EDCI baseline expectations for PE-backed companies.",
+      "ebitdaLink": "Insufficient board independence increases exit multiple risk: buyers applying CSRD/SFDR screens (likely acquirers in utility software space) apply a 0.5–1.0× EV/EBITDA discount for weak governance. On a 12× target exit multiple and $5.5M EBITDA, this represents $3.3–6.6M of exit value at risk.",
+      "dataStatus": "available"
+    },
+    {
+      "kpi": "Supply Chain ESG Risk (Software Vendors & Cloud Infrastructure)",
+      "why": "CSRD ESRS G1-2 and SFDR PAI Indicator #10 require supply chain due diligence. The company has no supply chain audit data. Cloud infrastructure providers (AWS/Azure/GCP hyperscalers) are Scope 3 Category 1 upstream emissions and represent ESG pass-through risk. EU AI Act compliance for SaaS AI/ML features (if any) requires supply chain traceability.",
+      "ebitdaLink": "Supply chain non-compliance under CSRD (applicable from FY2025 for in-scope entities) could trigger client contract ESG clause breaches — estimated 5–10% of enterprise ARR ($1.1–2.2M) at risk if tier-1 utility clients enforce supply chain ESG covenants.",
+      "dataStatus": "missing"
+    }
+  ],
+  "pillarScores": {
+    "environmental": 62,
+    "social": 74,
+    "governance": 52
+  },
+  "riskFlags": [
+    {
+      "severity": "high",
+      "area": "Scope 3 Data Absence — CSRD & SFDR Compliance Gate",
+      "detail": "Scope 3 emissions are entirely unreported. CSRD ESRS E1-6 requires absolute Scope 1+2+3 GHG disclosure for in-scope EU entities from FY2025. With a Nordic LP base subject to SFDR, the fund is required to report on PAI Indicator #1 (GHG emissions) and #2 (Carbon Footprint) at portfolio company level. Missing Scope 3 forces a PAI 'data unavailable' flag, which weakens the fund's SFDR Article 8 narrative and risks LP redemption pressure. Additionally, CSRD will likely capture CleanEnergy SaaS via its UK operations through the UK SDR regime and EU subsidiary rules.",
+      "financialExposure": "$2.2M–$4.4M revenue at risk from enterprise clients with supply-chain ESG covenants; $500k–$1M compliance remediation cost to backfill Scope 3 inventory; potential SFDR fund-level reputational impact affecting next fundraise."
+    },
+    {
+      "severity": "high",
+      "area": "Cybersecurity & Data Privacy — No Metrics Disclosed",
+      "detail": "Zero cybersecurity KPIs are available: no SOC 2 Type II, ISO 27001, penetration test results, incident history, or cyber insurance coverage disclosed. CleanEnergy SaaS holds operational data for utility clients managing critical energy infrastructure. This falls under UK NIS Regulations 2018 and EU NIS2 Directive (transposed by Oct 2024), which impose mandatory incident reporting and security standards on operators of essential services AND their direct software suppliers. A breach would trigger ICO investigation, NIS2 supervisory fines (up to €10M or 2% global turnover), and enterprise client churn.",
+      "financialExposure": "$4.5M average breach cost (IBM benchmark, regulated industry); up to $880k ICO fine (4% of $22M turnover); potential loss of 2–3 anchor utility clients representing an estimated $4–6M ARR."
+    },
+    {
+      "severity": "medium",
+      "area": "Board Independence Below Governance Threshold",
+      "detail": "2 of 5 directors (40%) are independent, below the UK Corporate Governance Code majority-independent standard and EDCI governance expectations. For PE-backed companies targeting a strategic exit to a listed utility or infrastructure fund, acquirers running CSRD/SFDR screens will flag this. Nordic sovereign wealth and pension fund acquirers (the natural buyer set for clean-energy SaaS) systematically apply governance quality discounts.",
+      "financialExposure": "0.5–1.0× EV/EBITDA exit multiple compression = $3.3M–$6.6M exit value erosion at $5.5M EBITDA on 12× target multiple."
+    },
+    {
+      "severity": "medium",
+      "area": "EU AI Act Compliance — SaaS Product Risk",
+      "detail": "The company lists EU AI Act as a regulatory exposure but no AI risk classification, conformity assessment, or technical documentation is available. If the platform's portfolio optimization algorithms qualify as 'high-risk AI' under Annex III (critical infrastructure management), mandatory conformity assessments, CE marking, and human oversight requirements apply from August 2026. Non-compliance blocks EU market access.",
+      "financialExposure": "EU revenue (estimated 40–50% of total = $8.8–11M) at risk if AI Act compliance is not achieved pre-enforcement; $200–400k legal/compliance cost to conduct AI risk classification and remediation."
+    },
+    {
+      "severity": "medium",
+      "area": "Supply Chain Audit — Absent (CSRD ESRS G1-2 Gap)",
+      "detail": "No supply chain ESG audit data exists. CSRD ESRS G1-2 requires due diligence on supply chain conduct, and SFDR PAI Indicator #10 (violations of UN Global Compact principles) requires supply chain screening. Cloud hyperscaler Scope 3 pass-through emissions are unquantified. Enterprise utility clients are beginning to embed supply chain ESG covenants in SaaS contracts.",
+      "financialExposure": "$1.1–2.2M ARR exposure if enterprise clients enforce supply chain ESG clauses; $80–150k one-time cost to conduct supplier ESG screening and audit."
+    },
+    {
+      "severity": "low",
+      "area": "Renewable Energy Gap (22% Non-Renewable)",
+      "detail": "At 78% renewable, the company is above sector median but below the 100% target required for RE100 membership and several Nordic LP net-zero portfolio commitments. The residual 106 MWh non-renewable draw is a minor but visible gap in investor reporting.",
+      "financialExposure": "$15–20k annual carbon levy exposure; no revenue risk, but limits 'carbon-neutral product' marketing claim worth estimated $200–400k in enterprise premium pricing."
+    }
+  ],
+  "valueOpportunities": [
+    {
+      "initiative": "Scope 3 Category 11 Measurement & Disclosure Programme",
+      "estimatedAnnualSavings": "$2.2M–$3.3M ARR protection + premium pricing enablement",
+      "irrImpact": "+2.1pp IRR",
+      "paybackMonths": 14,
+      "implementation": "Engage a specialist SaaS carbon accounting provider (e.g., Watershed, Greenly, or Normative — all active in UK/Nordics) to build a Scope 3 Cat 11 model using cloud compute API data. Run a 90-day measurement sprint in Year 1. Publish verified Scope 3 inventory in next annual sustainability report. Use disclosure to qualify for SFDR Article 9 fund reporting and 'ESG-enabled' product tier upsell to utility clients."
+    },
+    {
+      "initiative": "100% Renewable Energy Transition + RE100 Membership",
+      "estimatedAnnualSavings": "$215k–$420k (carbon cost avoidance + enterprise pricing premium)",
+      "irrImpact": "+0.6pp IRR",
+      "paybackMonths": 8,
+      "implementation": "Procure Renewable Energy Certificates (RECs/GOOs under EU Guarantee of Origin scheme) for residual 106 MWh non-renewable consumption at ~$8–12k/year cost. Apply for RE100 membership (free, globally recognised). Update product marketing to 'carbon-neutral infrastructure'. Renegotiate enterprise contracts with 'net-zero SaaS' positioning to capture 10–15% pricing uplift on renewal cohort."
+    },
+    {
+      "initiative": "Cybersecurity Certification Programme (ISO 27001 + SOC 2 Type II)",
+      "estimatedAnnualSavings": "$1.8M–$2.5M ARR protection (enterprise contract retention)",
+      "irrImpact": "+1.8pp IRR",
+      "paybackMonths": 18,
+      "implementation": "Commission ISO 27001 gap assessment in Month 1 (cost: $20–40k). Run parallel SOC 2 Type II readiness programme targeting certification within 12 months ($80–120k total cost). These certifications are increasingly mandatory for utility-sector enterprise SaaS procurement — achieving them upgrades the company from 'conditional vendor' to 'preferred vendor' status with Tier 1 utilities, directly protecting $4–6M of existing ARR and enabling upsell to critical infrastructure clients currently blocked by procurement policy."
+    },
+    {
+      "initiative": "Board Governance Enhancement — Independent Director Appointments",
+      "estimatedAnnualSavings": "$3.3M–$6.6M exit value protection (multiple compression prevention)",
+      "irrImpact": "+1.4pp IRR",
+      "paybackMonths": 6,
+      "implementation": "Appoint 1–2 additional independent non-executive directors (INEDs) with utility sector or ESG/regulatory expertise to reach 3–4 out of 5 independent (60–80%). Target profiles: former Ofgem/energy regulator, or Big 4 ESG partner with Nordic utility network. Cost: $80–150k/year in NED fees. Outcome: achieves UK Corporate Governance Code majority-independent threshold, satisfies EDCI governance KPIs, and signals credibility to strategic acquirers and Nordic LPs — directly defending exit multiple."
+    }
+  ],
+  "frameworkGaps": {
+    "csrd": {
+      "compliant": 6,
+      "total": 12,
+      "percentage": 50,
+      "keyGaps": [
+        "ESRS E1-6: Scope 3 GHG emissions (Cat 11 Use of Sold Products) — entirely absent",
+        "ESRS E1-4: Climate transition plan not disclosed",
+        "ESRS G1-2: Supply chain due diligence — no audit data",
+        "ESRS S1-9: Diversity targets and pay equity data incomplete",
+        "ESRS 2 IRO-1: Double materiality assessment not conducted",
+        "ESRS E1-9: Financial effects of physical climate risk — not quantified"
+      ]
+    },
+    "sfdr": {
+      "compliant": 5,
+      "total": 9,
+      "percentage": 56,
+      "keyGaps": [
+        "PAI Indicator #1: GHG emissions — Scope 3 missing, partial compliance only",
+        "PAI Indicator #10: Supply chain — no violation screening data",
+        "PAI Indicator #4: Biodiversity — not assessed (low materiality but required)",
+        "PAI Indicator #16: Gender pay gap — not disclosed"
+      ]
+    },
+    "tcfd": {
+      "compliant": 3,
+      "total": 11,
+      "percentage": 27,
+      "keyGaps": [
+        "Strategy pillar: Climate scenario analysis (1.5°C / 4°C) not conducted",
+        "Risk Management pillar: Physical and transition risk register absent",
+        "Metrics & Targets pillar: No science-based targets (SBTi) or net-zero pathway",
+        "Governance pillar: Board climate oversight mandate not formally documented",
+        "Strategy pillar: Financial impact quantification of climate risks absent"
+      ]
+    },
+    "edci": {
+      "compliant": 6,
+      "total": 8,
+      "percentage": 75,
+      "keyGaps": [
+        "Scope 3 GHG emissions — not reported (EDCI core metric)",
+        "Supply chain ESG screening — absent"
+      ]
+    },
+    "sasb": {
+      "compliant": 4,
+      "total": 7,
+      "percentage": 57,
+      "keyGaps": [
+        "TC-SI-230a.1–4: No cybersecurity / data privacy metrics disclosed (breach count, security certifications, privacy policy)",
+        "TC-SI-130a.1: Energy data partially complete — Scope 3 / data centre PUE missing",
+        "TC-SI-330a.1: Total workforce by gender/race full breakdown incomplete"
+      ]
+    }
+  },
+  "dataConfidenceScore": 0.47,
+  "recommendation": "CleanEnergy SaaS Platform is a **Conditional Invest** with strong underlying ESG fundamentals — below-sector turnover, superior gender diversity, and a clean environmental footprint — but three critical data gaps (Scope 3 emissions, cybersecurity posture, supply chain audit) materially impair ESG due diligence confidence and create measurable SFDR/CSRD compliance risk for the fund. We recommend proceeding subject to: (1) satisfactory management representations on cybersecurity controls and ISO 27001 roadmap within the exclusivity period, and (2) a binding 100-day post-close commitment to commission Scope 3 measurement and a double materiality assessment. The ESG value creation roadmap above supports a credible $8–14M incremental exit value contribution over the 5-year hold, primarily through Scope 3 disclosure-enabled pricing premium, cyber certification-driven enterprise contract protection, and governance upgrades that defend the 12× exit multiple against SFDR-screened acquirers.",
+  "quickWins": [
+    "Days 1–30: Commission Scope 3 Category 11 measurement sprint with a specialist SaaS carbon accounting provider (Watershed/Normative/Greenly). Assign internal ESG owner (ideally existing Head of Engineering or COO). Cost: $30–50k. Outcome: Scope 3 baseline ready for SFDR LP reporting within first quarterly portfolio update.",
+    "Days 30–60: Procure Guarantee of Origin (GOO) certificates for residual 22% non-renewable energy (≈106 MWh, cost $8–12k). Immediately update product and investor materials to '100% renewable-powered infrastructure'. Trigger RE100 application. Outcome: Closes the single most visible environmental gap at minimal cost before any LP ESG review.",
+    "Days 60–100: Engage ISO 27001 gap assessment firm and appoint 1 additional independent NED with utility/regulatory background. Run combined board governance and cybersecurity disclosure workstream. Outcome: Signals to enterprise utility clients and exit acquirers that governance and security posture meets critical infrastructure procurement standards, directly protecting the $4–6M ARR at risk from procurement policy blockers."
+  ]
+}

@@ -1,0 +1,196 @@
+{
+  "_meta": {
+    "generatedAt": "2026-03-26T09:02:42.379Z",
+    "companyId": "greentech-mfg",
+    "endpoint": "analyze",
+    "model": "claude-sonnet-4-6"
+  },
+  "overallScore": 54,
+  "sasbClassification": "Industrial Machinery & Goods (SASB: IF-MS) — covers manufacturers of industrial components, machinery, and equipment. Material topics per SASB standard: GHG emissions & energy management, employee health & safety, supply chain management, product lifecycle & design, workforce practices, and water & wastewater management.",
+  "materialKpis": [
+    {
+      "kpi": "GHG Emissions Intensity (Scope 1 + 2 + 3) — tCO2e per unit revenue",
+      "why": "EU Taxonomy alignment and CSRD ESRS E1 compliance are gating factors for green financing and premium buyer multiples at exit. German operations face mandatory CSRD disclosure from FY2025. Scope 3 absence is a critical gap — in industrial manufacturing, upstream supply chain typically represents 60-80% of total footprint.",
+      "ebitdaLink": "EU Taxonomy-aligned capex unlocks ~15-25bps lower cost of debt on green loans; Scope 3 non-disclosure risks €85M revenue from EU-domiciled OEM customers who are themselves CSRD-obligated and require supplier data.",
+      "dataStatus": "partial"
+    },
+    {
+      "kpi": "Energy Consumption & Renewable Energy Mix (% renewable, kWh/€revenue)",
+      "why": "Energy is the single largest controllable cost line in industrial manufacturing, typically 8-14% of COGS. At 12% renewable penetration, GreenTech is significantly below the EU industrial benchmark of ~35%. Germany's industrial electricity prices (~€0.18-0.22/kWh commercial rate) make this directly EBITDA-accretive.",
+      "ebitdaLink": "Moving from 12% to 70% renewable via PPAs and on-site solar on 15.6M kWh base = ~€1.1-1.4M annual energy cost reduction at current German rates, directly expanding EBITDA margin by ~110-140bps.",
+      "dataStatus": "available"
+    },
+    {
+      "kpi": "Lost Time Injury Rate (LTIR) & Total Recordable Incident Rate (TRIR)",
+      "why": "Industrial machinery manufacturing has above-average injury risk. LTIR of 2.1 is approximately 1.7x the German manufacturing benchmark of ~1.2. Direct costs include workers' comp, absenteeism, production downtime, and regulatory fines. In Germany, Berufsgenossenschaft (BG) insurance premiums are directly tied to incident rates.",
+      "ebitdaLink": "Reducing LTIR from 2.1 to 1.2 (benchmark) could reduce BG insurance premiums by €80-120K/year and prevent ~€200-400K in annual incident-related downtime costs based on industry averages for a 420-person facility.",
+      "dataStatus": "available"
+    },
+    {
+      "kpi": "Supply Chain ESG Audit Coverage (% tier-1 suppliers audited)",
+      "why": "Zero supply chain audit data is the highest-severity ESG gap. Vietnam sourcing creates direct exposure to the EU Supply Chain Act (LkSG — already in force for GreenTech at €85M revenue threshold), the incoming EU CSDDD, and CSRD ESRS S2. A single supplier misconduct event can trigger OEM contract cancellation or regulatory fines up to 2% of global revenue.",
+      "ebitdaLink": "LkSG non-compliance fine exposure: up to €1.7M (2% of €85M revenue). More critically, loss of a single EU OEM contract from supply chain non-disclosure could represent €5-15M revenue risk based on typical customer concentration in mid-market industrial manufacturing.",
+      "dataStatus": "missing"
+    },
+    {
+      "kpi": "Water Withdrawal & Recycling Rate",
+      "why": "Industrial component manufacturing (machining, surface treatment, cooling) is moderately water-intensive. Vietnam operations face acute water stress risk per WRI Aqueduct (Mekong Delta corridor). CSRD ESRS E3 requires water disclosure. Absent data prevents EU Taxonomy Article 8 reporting.",
+      "ebitdaLink": "Water risk in Vietnam could disrupt production causing €2-6M revenue interruption per quarter if municipal supply constraints materialise (precedent: Vietnam industrial parks, 2023 dry season). Proactive water recycling CapEx of ~€150-200K typically yields 30-40% water cost reduction.",
+      "dataStatus": "missing"
+    },
+    {
+      "kpi": "Product Energy Efficiency & Lifecycle Design (% products with eco-design documentation)",
+      "why": "EU Ecodesign for Sustainable Products Regulation (ESPR) enters force 2025-2026 for industrial equipment. OEM customers increasingly require Environmental Product Declarations (EPDs). Products without lifecycle documentation face de-listing from EU procurement frameworks. This is a revenue-protection issue, not a cost issue.",
+      "ebitdaLink": "Industrial OEM RFPs increasingly carry 10-15% ESG weighting in vendor scoring. Companies with EPDs/eco-design documentation win ~12-18% more EU public procurement contracts per Fraunhofer ISI data — translating to €2-5M incremental revenue opportunity on an €85M base.",
+      "dataStatus": "missing"
+    },
+    {
+      "kpi": "Employee Training Hours & Workforce Retention Rate",
+      "why": "18 hours/employee annually is below the German industrial benchmark of ~28 hours. Skilled labor scarcity in German precision manufacturing means retention directly affects production throughput and quality. High turnover in industrial manufacturing costs 50-100% of annual salary per replacement (recruitment, training, yield loss).",
+      "ebitdaLink": "If turnover is at sector average of ~12% (50 employees/year) and replacement cost is €25K/person, current training underinvestment costs ~€1.25M/year in avoidable turnover. Closing the training gap to benchmark typically reduces turnover by 15-25%.",
+      "dataStatus": "available"
+    }
+  ],
+  "pillarScores": {
+    "environmental": 42,
+    "social": 55,
+    "governance": 68
+  },
+  "riskFlags": [
+    {
+      "severity": "high",
+      "area": "Supply Chain Compliance — LkSG / CSDDD / CSRD ESRS S2",
+      "detail": "Zero supply chain audit coverage despite Germany's Lieferkettensorgfaltspflichtengesetz (LkSG) already applying to companies with >3,000 employees or >€400M revenue — GreenTech falls below thresholds today but CSDDD will lower these thresholds to ~500 employees by 2026-2027. More immediately, CSRD ESRS S2 requires supply chain due diligence disclosure from FY2025 for German entities. Vietnam sourcing (likely lower-cost labour, chemicals, metals) creates ILO labour standard and environmental contamination exposure. No data means no ability to assess actual liability at close.",
+      "financialExposure": "LkSG fines up to €1.7M (2% revenue); OEM contract loss risk €5-15M revenue; remediation programme cost €300-600K if violations found post-acquisition"
+    },
+    {
+      "severity": "high",
+      "area": "CSRD Compliance Readiness — FY2025 Mandatory Reporting",
+      "detail": "GreenTech's German entity almost certainly qualifies as a large undertaking under CSRD (>250 employees, >€40M revenue, >€20M balance sheet — likely 2 of 3 met). This means audited ESRS reporting is mandatory from financial year 2025, reported in 2026. Currently: no formal ESG reporting, no double materiality assessment, missing Scope 3, missing water data, missing supply chain data, no ESRS-aligned policies. This is an 18-24 month remediation programme that must begin at close.",
+      "financialExposure": "CSRD non-compliance: regulatory sanction risk; more critically, €400-800K in consultant/auditor fees to achieve compliance under time pressure; risk of qualified audit opinion on sustainability statement impacting exit valuation"
+    },
+    {
+      "severity": "high",
+      "area": "Scope 3 Emissions Absence — EU Taxonomy & Green Finance Access",
+      "detail": "Scope 3 is null. For an industrial manufacturer, upstream purchased goods/services and downstream use-of-product typically represent 65-80% of total GHG footprint. Without Scope 3, EU Taxonomy substantial contribution to climate change mitigation cannot be fully assessed, blocking green loan / sustainability-linked loan (SLL) structuring. PE funds with Article 8/9 SFDR classification cannot count this investment toward their sustainable portfolio without credible Scope 3 data.",
+      "financialExposure": "Green financing premium foregone: ~€150-250K/year on €72M facility at 20-25bps SLL step-down; exit valuation discount of 0.3-0.5x EBITDA multiple if ESG data package is incomplete vs. peers at exit"
+    },
+    {
+      "severity": "medium",
+      "area": "Employee Safety — LTIR 2.1 vs. Benchmark 1.2",
+      "detail": "LTIR of 2.1 is 75% above German manufacturing benchmark. Training hours of 18/year are below the ~28-hour sector norm. Vietnam operations have no safety data provided — Vietnam's occupational safety framework (Law on Occupational Safety and Hygiene 2015) requires disclosure but enforcement is variable. Elevated injury rates signal process safety gaps and create reputational risk with German Works Council (Betriebsrat), which has co-determination rights and can impede operational changes post-acquisition.",
+      "financialExposure": "€280-520K/year in incident costs (workers comp, downtime, remediation); potential BG premium surcharge of €80-150K; Works Council friction risk on post-acquisition restructuring"
+    },
+    {
+      "severity": "medium",
+      "area": "Water Risk — Vietnam Operations",
+      "detail": "No water usage data available for either geography. Vietnam's manufacturing corridor faces increasing water stress — WRI Aqueduct rates parts of southern Vietnam as 'High' water risk. Industrial operations requiring cooling water, surface treatment, or cleaning are vulnerable to municipal rationing. No water recycling systems documented.",
+      "financialExposure": "Production disruption risk: €2-6M revenue at risk per quarter of forced curtailment; water-related fine or permit revocation in Vietnam: €50-200K equivalent"
+    },
+    {
+      "severity": "low",
+      "area": "Board Independence & Governance Structure",
+      "detail": "3 of 7 directors are independent (43%) — below the 50% threshold recommended by the German Corporate Governance Code (DCGK) and required under CSRD governance disclosures. Board diversity at 33% female is adequate. No data on executive compensation ESG linkage, anti-corruption policies, or whistleblower mechanisms — all required under CSRD ESRS G1.",
+      "financialExposure": "No immediate financial exposure; governance deficiency discount of 0.1-0.2x EBITDA at exit if not remediated; CSRD ESRS G1 compliance cost €50-100K"
+    }
+  ],
+  "valueOpportunities": [
+    {
+      "initiative": "Renewable Energy Transition — PPA + Rooftop Solar Programme",
+      "implementation": "Execute a 10-year Power Purchase Agreement (PPA) for German facility covering ~60% of 15.6M kWh consumption, supplemented by rooftop solar installation (est. 800-1,200 kWp capacity depending on facility footprint). Target renewable mix: 12% → 70%+ within 18 months. Solar CapEx ~€600-800K (rooftop); PPA requires no CapEx. Vietnam facility: explore local industrial solar park offtake agreement.",
+      "estimatedAnnualSavings": "$1.3M/year (€1.1-1.4M) — based on 8.7M additional kWh shifted to renewable at blended €0.15/kWh savings vs. grid rate",
+      "irrImpact": "+1.8pp IRR",
+      "paybackMonths": 9
+    },
+    {
+      "initiative": "CSRD / ESG Data Infrastructure Build-Out",
+      "implementation": "Deploy ESG data management platform (e.g., Watershed, Sweep, or Workiva) within 90 days of close. Conduct CSRD double materiality assessment (DMA) with external advisor. Appoint ESG Controller (internal or fractional). Prioritise: Scope 3 calculation (spend-based method as interim), water metering installation, supply chain tier-1 questionnaire rollout to top 20 suppliers by spend. This is a compliance necessity that also enables green financing and exit premium.",
+      "estimatedAnnualSavings": "$220K/year in avoided compliance penalties + $180K/year SLL interest saving = $400K total; plus exit multiple protection worth ~$1.9M on EBITDA exit valuation",
+      "irrImpact": "+1.2pp IRR",
+      "paybackMonths": 18
+    },
+    {
+      "initiative": "Safety Culture Transformation — LTIR Reduction Programme",
+      "implementation": "Implement ISO 45001 certification programme at both facilities (18-24 month timeline). Deploy behaviour-based safety (BBS) observation system. Increase training hours from 18 to 28/employee. Invest in machine guarding audit and ergonomics improvements (est. CapEx €150-200K). Negotiate BG premium review upon achieving LTIR <1.4. Establish Vietnam-specific safety management system aligned to ILO OSH guidelines.",
+      "estimatedAnnualSavings": "$480K/year — €200K incident cost reduction + €120K BG premium reduction + €160K absenteeism/productivity improvement",
+      "irrImpact": "+0.7pp IRR",
+      "paybackMonths": 14
+    },
+    {
+      "initiative": "Supply Chain ESG Audit Programme & EPD Development",
+      "implementation": "Tier-1 supplier audit: Deploy EcoVadis or similar platform to top 30 suppliers (covering ~75% of procurement spend). Conduct on-site audits for top 5 Vietnam-based suppliers in Year 1. Develop Environmental Product Declarations (EPDs) for top 10 product lines by revenue (est. cost €80-120K, 12-month timeline). EPDs directly support EU public procurement bids and OEM vendor qualification — revenue opportunity.",
+      "estimatedAnnualSavings": "$850K/year — €500K avoidance of LkSG/CSDDD remediation costs + €350K incremental contract wins via EPD qualification",
+      "irrImpact": "+1.1pp IRR",
+      "paybackMonths": 22
+    }
+  ],
+  "frameworkGaps": {
+    "csrd": {
+      "compliant": 4,
+      "total": 12,
+      "percentage": 33,
+      "keyGaps": [
+        "ESRS E1-6: Scope 3 GHG emissions absent — mandatory for large undertakings",
+        "ESRS E3: No water withdrawal or consumption data for either geography",
+        "ESRS S2: No supply chain workers due diligence or audit data",
+        "ESRS G1: No documented anti-corruption policy, no whistleblower mechanism disclosed",
+        "Double Materiality Assessment (DMA): Not conducted — prerequisite for all ESRS disclosures",
+        "ESRS E1 Climate Transition Plan: Not in place — required for FY2025 reporting",
+        "ESRS 2 GOV-1: No disclosure of sustainability governance at board level",
+        "ESRS E2: No pollution-related disclosures (relevant for surface treatment / machining chemicals)"
+      ]
+    },
+    "sfdr": {
+      "compliant": 3,
+      "total": 8,
+      "percentage": 38,
+      "keyGaps": [
+        "PAI Indicator 1: Scope 3 GHG missing — required for portfolio carbon footprint calculation",
+        "PAI Indicator 10: Board gender diversity partially met but not formally reported",
+        "PAI Indicator 9: No UN Global Compact / OECD Guidelines violations assessment conducted",
+        "PAI Indicator 14: No supplier social standards assessment available",
+        "Biodiversity: No impact assessment on biodiversity-sensitive areas (relevant for Vietnam operations)"
+      ]
+    },
+    "tcfd": {
+      "compliant": 2,
+      "total": 11,
+      "percentage": 18,
+      "keyGaps": [
+        "Strategy pillar: No climate scenario analysis (1.5°C, 2°C, 4°C) conducted",
+        "Risk Management: No physical or transition climate risk assessment documented",
+        "Metrics & Targets: No Science-Based Target (SBT) or net-zero commitment in place",
+        "Governance pillar: No board-level climate oversight structure documented",
+        "Strategy pillar: No assessment of climate risk impact on financial planning / CapEx"
+      ]
+    },
+    "edci": {
+      "compliant": 5,
+      "total": 9,
+      "percentage": 56,
+      "keyGaps": [
+        "GHG Intensity: Scope 3 required for full EDCI carbon metric — currently partial",
+        "Renewable Energy %: Data available but formal EDCI reporting template not completed",
+        "Supply Chain: EDCI ESG DDQ supplier section entirely unpopulated",
+        "Employee Safety: LTIR available but TRIR and near-miss rate absent"
+      ]
+    },
+    "sasb": {
+      "compliant": 4,
+      "total": 7,
+      "percentage": 57,
+      "keyGaps": [
+        "IF-MS-430a.1: No quantitative product efficiency improvement data vs. baseline",
+        "IF-MS-310a.1: Water withdrawn by source and percentage in water-stressed regions — missing",
+        "IF-MS-430a.2: No revenue from products designed to improve resource efficiency for customers"
+      ]
+    }
+  },
+  "dataConfidenceScore": 0.41,
+  "recommendation": "Conditional Proceed — GreenTech Manufacturing presents a genuine ESG value creation opportunity but carries material pre-close data gaps that prevent a clean investment decision today. The energy transition opportunity alone (~€1.1-1.4M EBITDA uplift) and CSRD compliance readiness programme justify investment, and the governance foundation is solid. However, the complete absence of supply chain audit data, Scope 3 emissions, and water usage data — combined with mandatory CSRD FY2025 reporting obligations — means ESG due diligence must be substantially deepened before close, not treated as a post-acquisition workstream. We recommend conditioning close on: (1) completion of a Scope 3 spend-based calculation by target management, (2) LkSG gap assessment by German counsel covering Vietnam supply chain, and (3) CSRD readiness assessment by an ESRS-qualified advisor. With a structured 100-day ESG plan and the four identified value initiatives fully executed, the ESG programme could contribute +4.8pp to IRR and lift exit EBITDA multiple by 0.4-0.6x — turning ESG from a compliance cost into a value creation engine worth approximately €6-8M in additional exit proceeds on a 5-year hold at 10x target multiple.",
+  "quickWins": [
+    "Day 1-30: Appoint ESG Controller and deploy ESG data platform (Watershed/Sweep) — begin Scope 3 spend-based calculation using existing procurement data and install water meters at both facilities. This single action unlocks green financing, CSRD readiness, and SFDR PAI compliance simultaneously.",
+    "Day 30-60: Execute PPA term sheet for German facility with a renewable energy provider (e.g., Statkraft, BayWa r.e.) — no CapEx required, locks in €0.14-0.16/kWh vs. current €0.19-0.22/kWh grid rate, delivering €500-700K annual savings within 6 months of go-live and immediately improving EU Taxonomy alignment narrative for green loan structuring.",
+    "Day 60-100: Launch LkSG-compliant supply chain due diligence programme — send EcoVadis self-assessment questionnaires to top 20 suppliers by spend (covering ~70% of procurement value) and commission on-site audit of top 3 Vietnam suppliers. This closes the highest-severity regulatory risk flag and is a prerequisite for CSRD ESRS S2 disclosure and CSDDD readiness."
+  ]
+}

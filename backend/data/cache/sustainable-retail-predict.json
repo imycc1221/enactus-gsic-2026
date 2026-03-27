@@ -1,0 +1,76 @@
+{
+  "_meta": {
+    "generatedAt": "2026-03-26T09:12:18.210Z",
+    "companyId": "sustainable-retail",
+    "endpoint": "predict",
+    "model": "claude-sonnet-4-6"
+  },
+  "baseCase": {
+    "entryMultiple": 8,
+    "exitMultiple": 8.5,
+    "projectedIrr": 17.2,
+    "projectedMoic": 2.4,
+    "exitEv": 153000000
+  },
+  "withEsgInterventions": {
+    "entryMultiple": 8,
+    "exitMultiple": 9.1,
+    "projectedIrr": 24.1,
+    "projectedMoic": 3.3,
+    "exitEv": 211000000,
+    "irrUplift": 6.9,
+    "additionalValueCreated": 58000000
+  },
+  "esgBreakdown": [
+    {
+      "intervention": "Renewable Energy Transition (Scope 1 & 2): Upgrade French retail estate to PPAs + rooftop solar; transition Vietnam/Thailand warehouses to RE tariffs. Current renewable mix is only 31% — target 80%+ by Year 3.",
+      "totalCost": 920000,
+      "annualSavings": 1340000,
+      "cumulativeSavings": 6700000,
+      "exitMultipleImpact": "+0.25x — energy cost resilience and verified Scope 1/2 reduction improves EBITDA quality; directly responsive to CSRD energy disclosure requirements",
+      "irrContribution": "+1.8pp IRR — EBITDA margin improvement of ~0.9% capitalised at exit; decarbonisation proof-point unlocks Article 8/9 fund buyer universe",
+      "paybackMonths": 8
+    },
+    {
+      "intervention": "Supply Chain Audit & Responsible Sourcing Programme: Expand audit coverage from 16% (45/280 suppliers) to 75%+ across Vietnam, Thailand, Indonesia. Implement digital supplier risk platform (e.g. Sourcemap/Ulula) covering Scope 3 traceability and EU Deforestation Regulation compliance.",
+      "totalCost": 1050000,
+      "annualSavings": 870000,
+      "cumulativeSavings": 4350000,
+      "exitMultipleImpact": "+0.30x — eliminates primary buyer due diligence risk discount; France Duty of Vigilance & EU Deforestation Regulation compliance transforms a liability into a verified moat for strategic acquirers",
+      "irrContribution": "+2.1pp IRR — removes the 'hair-on-deal' discount a buyer applies to opaque SEA supply chains; supplier cost renegotiation leverage from audit data captures ~0.6% COGS savings",
+      "paybackMonths": 14
+    },
+    {
+      "intervention": "Sustainable Product Line Acceleration & Circular Packaging: Scale sustainable product SKUs from 34% → 60% of assortment. Transition packaging from 61% → 90%+ recyclable. Pursue B Corp certification for France entity and EU Ecolabel for top-20 private label lines.",
+      "totalCost": 680000,
+      "annualSavings": 1120000,
+      "cumulativeSavings": 5600000,
+      "exitMultipleImpact": "+0.35x — sustainable assortment commands 8-14% price premium (NielsenIQ 2024); B Corp status drives customer acquisition in French market and de-risks regulatory challenge to product claims",
+      "irrContribution": "+1.9pp IRR — revenue mix shift to higher-margin sustainable lines expands EBITDA margin by ~1.2%; packaging material savings offset certification cost within 7 months",
+      "paybackMonths": 7
+    },
+    {
+      "intervention": "CSRD-Grade ESG Reporting Infrastructure & Governance Uplift: Deploy integrated ESG data platform (e.g. Workiva/Sweep) for audit-ready CSRD double materiality reporting. Increase independent board directors from 2/8 → 4/8, appoint ESG Committee, align executive comp to ESG KPIs.",
+      "totalCost": 540000,
+      "annualSavings": 410000,
+      "cumulativeSavings": 2050000,
+      "exitMultipleImpact": "+0.20x — CSRD-compliant reporting with assured data is now a hard prerequisite for any PE/strategic acquirer operating in the EU; governance uplift (independent directors, ESG-linked comp) directly raises ESG ratings agency scores",
+      "irrContribution": "+1.1pp IRR — reduces cost of debt by ~40bps via improved ESG credit ratings; eliminates estimated €500K+ regulatory penalty exposure from CSRD non-compliance; expands buyer pool to Article 9 SFDR funds",
+      "paybackMonths": 16
+    }
+  ],
+  "esgImplementationCost": {
+    "year1Setup": 640000,
+    "annualOngoing": 390000,
+    "totalFiveYear": 2190000
+  },
+  "riskMitigation": {
+    "greenwashingRiskBefore": 7.8,
+    "greenwashingRiskAfter": 1.9,
+    "regulatoryRiskReduction": "CSRD double materiality reporting + assured Scope 3 data eliminates estimated €750K in potential fines and audit remediation costs under France Duty of Vigilance and EU Deforestation Regulation. SFDR alignment protects LP capital commitments from Article 6 downgrade risk.",
+    "strandedAssetRisk": "Current 69% fossil-sourced energy across French stores and SEA warehouses creates stranded asset exposure as EU Carbon Border Adjustment Mechanism expands and French energy taxes tighten. RE transition by Year 3 fully extinguishes this risk before exit.",
+    "lpRetentionImpact": "Strong ESG profile protects and expands LP base: Article 8/9 fund LPs (now 43% of European PE capital per Preqin 2024) require portfolio ESG compliance as a condition of re-up. Demonstrated ESG value creation supports fund-level marketing with 2-3 additional ESG-focused LP commitments estimated at next fundraise."
+  },
+  "exitNarrative": "By Year 6, Sustainable Retail Group presents to buyers as a category-defining ESG-credentialed retailer in the EU/SEA corridor — not a company that has 'done some ESG.' The story is: (1) 80%+ renewable energy with verified Scope 1/2 reductions under CSRD-assured reporting — no energy cost volatility risk for acquirer; (2) 75%+ supply chain audit coverage with live digital traceability across Vietnam, Thailand, Indonesia — full EU Deforestation Regulation compliance, zero Duty of Vigilance liability, and a defensible sourcing moat competitors cannot replicate quickly; (3) 60% sustainable assortment with B Corp France certification and EU Ecolabel on private label — premium pricing power validated by 4 years of revenue data, not a projection; (4) CSRD double materiality report in Year 3, now with two annual cycles of assured data — no buyer ESG due diligence surprises, no restatement risk, no regulatory overhang. This profile expands the buyer universe from ~40 PE funds to 120+ (including Article 8/9 mandates, strategic ESG-premium acquirers, and sovereign wealth vehicles) and structurally justifies a 9.1x exit multiple vs. the 8.5x base case — a difference of €58M in enterprise value on a €2.19M ESG investment.",
+  "netRoiOnEsgInvestment": "26.5x"
+}

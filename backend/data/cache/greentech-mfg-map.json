@@ -1,0 +1,87 @@
+{
+  "_meta": {
+    "generatedAt": "2026-03-26T09:04:58.329Z",
+    "companyId": "greentech-mfg",
+    "endpoint": "map",
+    "model": "claude-sonnet-4-6"
+  },
+  "inputSummary": "GreenTech Manufacturing Co. (Industrial Manufacturing, Germany + Vietnam) reports a single GHG emissions data point: Scope 1 = 8,200 tCO2e, Scope 2 = 4,300 tCO2e, Total = 12,500 tCO2e. Supporting context: 15,600,000 kWh total energy consumption, 12% renewable energy share. This data point is mapped simultaneously across CSRD/ESRS, SFDR, TCFD, GRI, SASB, and EDCI frameworks.",
+  "mappings": [
+    {
+      "framework": "CSRD / ESRS",
+      "standard": "ESRS E1-6 (Gross Scopes 1, 2, 3 GHG Emissions) + ESRS E1-4 (Targets) + ESRS E1-5 (Energy)",
+      "dataPoint": "Gross Scope 1 GHG emissions; Gross Scope 2 GHG emissions (location-based and market-based); Total GHG emissions",
+      "format": "Metric tonnes of CO2 equivalent (tCO2e), split by Scope 1 and Scope 2 (both location-based AND market-based methods required). Must also disclose against a base year. Energy consumption in MWh cross-referenced under ESRS E1-5.",
+      "materiality": "Double materiality — both impact materiality (GHG contribution to climate change) and financial materiality (transition risk, carbon pricing exposure)",
+      "status": "needs_enrichment",
+      "automatable": false,
+      "note": "Scope 1 (8,200 tCO2e) and location-based Scope 2 (4,300 tCO2e) are directly mappable. However, ESRS E1-6 mandates BOTH location-based AND market-based Scope 2 disclosure — market-based figure requires supplier-specific emission factors or energy attribute certificates (EACs/GOs) not yet provided. A base year must be established for trend analysis (ESRS E1-4). Energy data (15,600,000 kWh = 15,600 MWh) maps directly to ESRS E1-5 energy consumption disclosure. The 12% renewable share requires verification against EU Renewable Energy Directive criteria. Biogenic emissions must also be disclosed separately. Germany operations fall under mandatory CSRD scope; Vietnam operations are included as material value chain activity."
+    },
+    {
+      "framework": "SFDR",
+      "standard": "SFDR Annex I — Principal Adverse Impacts (PAI) Indicator #1 (GHG Emissions) + PAI #2 (Carbon Footprint) + PAI #3 (GHG Intensity) + PAI #4 (Fossil Fuel Exposure)",
+      "dataPoint": "PAI #1: Total GHG emissions (Scope 1+2+3 in tCO2e); PAI #2: Carbon footprint (tCO2e per EUR million invested); PAI #3: GHG intensity (tCO2e per EUR million revenue); PAI #4: Share of investments in fossil fuel sector companies",
+      "format": "PAI #1: tCO2e absolute (Scope 1+2+3). PAI #2: tCO2e / EUR million invested (Enterprise Value Including Cash — EVIC denominator). PAI #3: tCO2e / EUR million revenue. All metrics must be portfolio-weighted at the fund level and reported as of 31 December reference date.",
+      "materiality": "Financial materiality — investor-facing, assessing principal adverse impacts on sustainability factors as required for Article 8 / Article 9 fund disclosures",
+      "status": "needs_conversion",
+      "automatable": true,
+      "note": "The raw 12,500 tCO2e total is directly usable for PAI #1 once Scope 3 is appended. AI can automatically: (1) pull EVIC from financial data feeds and compute PAI #2 carbon footprint ratio; (2) pull revenue from financial statements and compute PAI #3 GHG intensity; (3) flag PAI #4 non-applicability for this manufacturing company. Key gap: Scope 3 emissions are absent — SFDR PAI #1 technically requires all three scopes. The fund-level portfolio weighting formula (company EVIC / total fund EVIC × company emissions) can be automated once EVIC data is integrated. Automation confidence: HIGH for conversion math, MEDIUM pending Scope 3 data."
+    },
+    {
+      "framework": "TCFD",
+      "standard": "TCFD Metrics & Targets — Recommended Disclosure (a): Scope 1, 2, 3 GHG Emissions + Disclosure (b): Climate-Related Risks/Opportunities + Cross-Industry Metric Category CC1/CC2",
+      "dataPoint": "Absolute Scope 1 GHG emissions; Absolute Scope 2 GHG emissions; GHG emissions intensity (optional but recommended); Transition risk exposure (carbon pricing, regulatory); Physical risk exposure (Germany + Vietnam operational sites)",
+      "format": "Absolute tCO2e (Scope 1 and Scope 2 separately). Intensity metrics recommended as tCO2e per unit of production output or revenue. Scenario analysis required under TCFD Strategy pillar using at least a 1.5°C / 2°C / 4°C scenario set (e.g., IEA NZE, IPCC RCP scenarios).",
+      "materiality": "Financial materiality — climate-related financial risks and opportunities material to investors and lenders",
+      "status": "partial",
+      "automatable": false,
+      "note": "Scope 1 (8,200 tCO2e) and Scope 2 (4,300 tCO2e) satisfy TCFD's Metrics & Targets Recommended Disclosure (a) for absolute emissions. However, TCFD is a holistic framework — the emissions data alone represents only the Metrics & Targets pillar. Full TCFD compliance requires: (1) Governance disclosures on board-level climate oversight; (2) Strategy disclosures with scenario analysis (critical for Vietnam operations facing acute physical risks — flooding, heat stress — and Germany operations facing carbon pricing via EU ETS); (3) Risk Management process documentation. The 12% renewable energy figure can feed into transition risk narrative. EU ETS exposure for German industrial operations should be quantified separately. AI can flag relevant TCFD pillars and auto-populate the metrics section; scenario analysis requires human strategic input."
+    },
+    {
+      "framework": "GRI",
+      "standard": "GRI 305: Emissions 2016 — Disclosures 305-1 (Scope 1), 305-2 (Scope 2), 305-4 (GHG Intensity) + GRI 302: Energy 2016 — Disclosures 302-1 (Energy Consumption), 302-4 (Reduction of Energy Consumption)",
+      "dataPoint": "GRI 305-1: Direct (Scope 1) GHG emissions in tCO2e; GRI 305-2: Energy indirect (Scope 2) GHG emissions in tCO2e (location-based and market-based); GRI 305-4: GHG emissions intensity ratio; GRI 302-1: Energy consumption within the organization in MWh/GJ; GRI 302-3: Energy intensity",
+      "format": "GRI 305-1 & 305-2: tCO2e, with required breakdown by gas (CO2, CH4, N2O, HFCs, PFCs, SF6, NF3), consolidation approach (equity share / operational control / financial control), and GWP source cited (IPCC AR5 or AR6). GRI 302-1: MWh or GJ (15,600,000 kWh = 15,600 MWh = 56,160 GJ). GRI 305-4: Intensity denominator must be defined (e.g., tCO2e per tonne of production output, or per EUR revenue).",
+      "materiality": "Impact materiality — GRI Standards are impact-focused, reporting on the organization's effects on the environment and society",
+      "status": "needs_enrichment",
+      "automatable": true,
+      "note": "Core emissions figures map directly: Scope 1 = GRI 305-1, Scope 2 = GRI 305-2. AI can auto-convert: 15,600,000 kWh → 15,600 MWh → 56,160 GJ for GRI 302-1. Key enrichment needed: (1) Breakdown of Scope 1 by GHG gas type — mandatory per GRI 305-1; (2) GWP source citation (IPCC AR5 or AR6); (3) Consolidation approach declaration; (4) Biogenic emissions disclosure (GRI 305-1 requires separate reporting); (5) GRI 302-1 requires split of non-renewable vs. renewable energy (12% renewable = 1,872 MWh renewable, 13,728 MWh non-renewable — AI-calculable). GRI is voluntary but widely adopted; Vietnam operations reportable under same standard with country-level disaggregation recommended."
+    },
+    {
+      "framework": "SASB",
+      "standard": "SASB Industrial Machinery & Goods (RT-IG) — Energy Management: RT-IG-130a.1 + Greenhouse Gas Emissions: RT-IG-110a.1 (where applicable to sub-sector). Alternatively, if classified under Containers & Packaging or Chemicals sub-sectors, different codes apply.",
+      "dataPoint": "RT-IG-130a.1: Total energy consumed (MWh), % grid electricity, % renewable; RT-IG-110a.1: Gross global Scope 1 emissions (tCO2e); Discussion of long-term and short-term strategy or plan to manage Scope 1 emissions and related risks",
+      "format": "Energy: MWh total consumed, with percentage breakdowns (% grid electricity, % renewable). GHG: Absolute Scope 1 in tCO2e. SASB industry standards are sector-specific and use quantitative activity metrics — output normalized metrics required (e.g., tCO2e per unit of production). Note: SASB was absorbed into IFRS Foundation / ISSB — metrics now inform IFRS S2 Climate disclosures.",
+      "materiality": "Financial materiality — SASB standards identify financially material sustainability topics for investor decision-making by industry",
+      "status": "needs_conversion",
+      "automatable": true,
+      "note": "GreenTech Manufacturing Co. maps to SASB's Industrial Machinery & Goods (RT-IG) sector. Scope 1 (8,200 tCO2e) directly satisfies RT-IG-110a.1. For RT-IG-130a.1: AI can compute (1) Total energy = 15,600 MWh; (2) Renewable % = 12% (1,872 MWh); (3) Non-renewable % = 88% (13,728 MWh). Grid electricity % requires fuel source breakdown (not yet provided). SASB metrics now serve as the quantitative backbone for ISSB IFRS S2 disclosures, meaning this mapping simultaneously satisfies ISSB S2 paragraph 29 industry-based metrics. Vietnam operations: SASB applies globally regardless of geography — no separate treatment required. Key gap: Production output volume needed to compute normalized intensity metrics."
+    },
+    {
+      "framework": "EDCI (ESG Data Convergence Initiative)",
+      "standard": "EDCI Core Metric: GHG Emissions (Metric 4) + Energy (Metric 3) — LP/GP private equity reporting standard",
+      "dataPoint": "EDCI Metric 4: Total GHG Emissions (Scope 1 + Scope 2) in tCO2e; EDCI Metric 4a: Scope 1 emissions; EDCI Metric 4b: Scope 2 emissions (location-based); EDCI Metric 3: Total Energy Consumption (MWh); EDCI: Renewable Energy % of total",
+      "format": "tCO2e (Scope 1 + Scope 2 combined and separate). MWh for energy. All metrics reported at portfolio company level and rolled up to fund-level by GP using revenue-based or enterprise-value weighting. EDCI uses a simplified, harmonized format specifically designed for PE GPs to report to LPs — less granular than ESRS/GRI but critical for LP ESG due diligence and fund benchmarking.",
+      "materiality": "Financial materiality — designed for PE/VC fund reporting to limited partners (LPs), focused on portfolio-level ESG performance benchmarking",
+      "status": "compliant",
+      "automatable": true,
+      "note": "This is the highest-readiness mapping. EDCI Metric 4 requires exactly what is provided: Scope 1 (8,200 tCO2e) + Scope 2 (4,300 tCO2e) = 12,500 tCO2e total. EDCI Metric 3 energy = 15,600 MWh (direct conversion from kWh, fully automatable). Renewable % = 12% (directly provided). No additional enrichment required for EDCI baseline compliance. AI can: (1) auto-populate EDCI reporting template; (2) calculate fund-level weighted averages across portfolio; (3) generate LP-ready ESG data pack. EDCI is the fastest path to LP reporting and serves as the convergence layer that simplifies multi-LP reporting obligations. GreenTech is EDCI-ready today with this single data submission."
+    }
+  ],
+  "summary": "A single GHG emissions data point from GreenTech Manufacturing Co. (12,500 tCO2e total, with supporting energy context) simultaneously triggers disclosure obligations and data requirements across six major regulatory and reporting frameworks. The data is immediately compliant for EDCI LP reporting; needs unit conversion and ratio calculations (automatable) for SFDR PAI indicators and SASB; needs moderate enrichment (partially automatable) for GRI 305 gas-type breakdowns and energy splits; and needs significant strategic enrichment (human advisory required) for full CSRD/ESRS E1-6 market-based Scope 2 and TCFD scenario analysis. The core quantitative conversion work across all six frameworks is estimated at 60–70% automatable by AI agents, with the remaining 30–40% requiring Accenture's strategic consulting layer for materiality assessments, scenario narratives, and regulatory interpretation.",
+  "automationPotential": "65% fully automatable — AI agents can handle unit conversions (kWh→MWh→GJ), ratio calculations (PAI carbon footprint, GHG intensity, renewable %), template population (EDCI, SFDR PAI tables, GRI quantitative disclosures), and cross-framework deduplication. The remaining 35% requires human expertise: ESRS market-based Scope 2 (supplier EAC procurement strategy), TCFD scenario analysis (1.5°C/2°C/4°C pathway modeling for German + Vietnam operations), EU ETS carbon cost quantification, base year establishment, and double materiality assessment narrative for CSRD.",
+  "missingToComplete": [
+    "Scope 2 market-based emissions figure (requires energy attribute certificates / Guarantees of Origin from German grid supplier — needed for ESRS E1-6 and GRI 305-2 full compliance)",
+    "Scope 3 emissions inventory (needed for SFDR PAI #1 full calculation, ESRS E1-6 completeness, and TCFD Metrics & Targets)",
+    "GHG gas-type breakdown for Scope 1 (CO2, CH4, N2O, HFCs, etc. — required by GRI 305-1 and ESRS E1-6; critical for industrial manufacturing with potential process emissions)",
+    "GWP source citation (IPCC AR5 vs. AR6 — affects tCO2e calculation methodology and must be declared consistently across frameworks)",
+    "Base year emissions data (required for ESRS E1-4 target-setting disclosure and TCFD trend analysis)",
+    "Production output volume or revenue figure (needed for intensity metrics: GRI 305-4, SASB RT-IG normalized metrics, SFDR PAI #3 GHG intensity per EUR million revenue)",
+    "Enterprise Value Including Cash (EVIC) of GreenTech Manufacturing Co. (required for SFDR PAI #2 carbon footprint and PAI #3 GHG intensity denominator)",
+    "Grid electricity percentage of total energy consumption (required for SASB RT-IG-130a.1 full disclosure)",
+    "EU ETS allowance position and carbon price exposure for German operations (required for TCFD transition risk quantification)",
+    "Consolidation approach declaration — equity share, operational control, or financial control boundary (required for GRI 305-1 and ESRS E1-6 methodological transparency)",
+    "Renewable energy verification documentation — confirmation that the 12% renewable share meets EU Renewable Energy Directive Article 2 definitions (required for ESRS E1-5 and EU Taxonomy alignment)",
+    "Site-level emissions split between Germany and Vietnam operations (recommended for TCFD physical risk assessment and CSRD value chain disclosure)"
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "_meta": {
+    "generatedAt": "2026-03-26T09:03:30.985Z",
+    "companyId": "greentech-mfg",
+    "endpoint": "predict",
+    "model": "claude-sonnet-4-6"
+  },
+  "baseCase": {
+    "entryMultiple": 8.5,
+    "exitMultiple": 9.2,
+    "projectedIrr": 17.5,
+    "projectedMoic": 2.21,
+    "exitEv": 117300000
+  },
+  "withEsgInterventions": {
+    "entryMultiple": 8.5,
+    "exitMultiple": 9.9,
+    "projectedIrr": 24.3,
+    "projectedMoic": 2.97,
+    "exitEv": 148500000,
+    "irrUplift": 6.8,
+    "additionalValueCreated": 31200000
+  },
+  "esgBreakdown": [
+    {
+      "intervention": "Energy Transition & Renewable Procurement (Germany + Vietnam): Increase renewable energy mix from 12% → 80% via a combination of long-term PPAs for German facilities and rooftop solar installation at Vietnam plant. Directly reduces Scope 2 emissions by ~3,700 tCO2e/yr, supports EU Taxonomy alignment, and cuts energy cost exposure to volatile grid pricing.",
+      "totalCost": 620000,
+      "annualSavings": 390000,
+      "cumulativeSavings": 1560000,
+      "exitMultipleImpact": "+0.3x — EU Taxonomy eligibility unlocks green financing at exit; energy cost predictability is a margin quality argument for buyers, directly expanding EBITDA multiple",
+      "irrContribution": "+2.1pp — EBITDA margin improvement of ~45bps (savings net of ongoing cost) compounds across 5-year hold; renewable credentials reduce buyer due diligence risk haircut",
+      "paybackMonths": 19
+    },
+    {
+      "intervention": "CSRD-Ready ESG Reporting Infrastructure & Data Platform: Implement an enterprise ESG data management platform (e.g., Sweep or Persefoni) covering Scope 1/2/3 emissions, water, waste, and workforce metrics. Includes CSRD gap assessment, double materiality assessment, and first ESRS-compliant report by Year 2. Closes the critical Scope 3 data gap, enables EU Taxonomy revenue mapping, and produces audit-ready disclosures for exit due diligence.",
+      "totalCost": 480000,
+      "annualSavings": 155000,
+      "cumulativeSavings": 620000,
+      "exitMultipleImpact": "+0.2x — Buyers applying ESG DD (now standard for strategic and PE-to-PE exits in EU) apply a 10-15% discount to companies with incomplete data; clean reporting package eliminates this haircut and compresses due diligence timeline by 4-6 weeks",
+      "irrContribution": "+1.4pp — Avoided regulatory penalty risk (CSRD non-compliance fines up to 2% of revenue = ~€1.7M exposure), plus faster exit process reduces time-in-market friction",
+      "paybackMonths": 37
+    },
+    {
+      "intervention": "Operational Safety & Workforce Excellence Program: Reduce LTIR from 2.1 → <1.0 through structured safety management system (ISO 45001 certification), enhanced training hours (18hr → 40hr/employee/yr), and near-miss reporting culture rollout across both geographies. Vietnam operations audited against ILO core labor standards to close supply chain audit gap. Directly addresses the highest-materiality S-factor for Industrial Machinery per SASB IF-MS.",
+      "totalCost": 310000,
+      "annualSavings": 220000,
+      "cumulativeSavings": 880000,
+      "exitMultipleImpact": "+0.1x — Lower LTIR demonstrably reduces workers' comp premiums, absenteeism costs, and operational disruption. ISO 45001 certification is a procurement requirement for Tier-1 OEM customers, protecting and expanding the revenue base",
+      "irrContribution": "+1.8pp — Insurance premium reduction (~$85K/yr), absenteeism savings (~$70K/yr), and avoidance of production downtime incidents ($65K/yr average for this sector size) combine with reduced Vietnam labor law compliance risk",
+      "paybackMonths": 17
+    },
+    {
+      "intervention": "Supply Chain Transparency & Scope 3 Mapping: Conduct Tier-1 and Tier-2 supplier ESG audit covering top 80% of procurement spend (~35 suppliers). Deploy supplier sustainability scorecards with improvement plans. Establishes Scope 3 emissions baseline (currently null), identifies cost reduction opportunities in logistics and materials, and creates a credible 'value chain story' for exit positioning.",
+      "totalCost": 270000,
+      "annualSavings": 185000,
+      "cumulativeSavings": 740000,
+      "exitMultipleImpact": "+0.1x — Strategic buyers (OEMs, industrials consolidators) increasingly require supply chain ESG diligence as condition of acquisition; absence of this is an active value discount. Scope 3 baseline also required for Science-Based Target (SBTi) commitment, which commands buyer premium",
+      "irrContribution": "+1.5pp — Logistics optimization and supplier consolidation identified through audit process yield procurement savings; SBTi commitment signals long-term competitiveness to growth-oriented buyers",
+      "paybackMonths": 22
+    }
+  ],
+  "esgImplementationCost": {
+    "year1Setup": 620000,
+    "annualOngoing": 310000,
+    "totalFiveYear": 1860000
+  },
+  "riskMitigation": {
+    "greenwashingRiskBefore": 7.5,
+    "greenwashingRiskAfter": 1.8,
+    "regulatoryRiskReduction": "CSRD non-compliance exposure eliminated (est. €1.7M penalty avoidance on ~€77M German revenue base). EU Taxonomy non-alignment risk resolved, protecting access to green finance instruments at exit. Vietnam labor law exposure reduced from HIGH to LOW through ILO-aligned audit and remediation program.",
+    "strandedAssetRisk": "Energy-intensive manufacturing assets in Germany face carbon pricing escalation risk under EU ETS Phase 4 (2026-2030). Renewable transition reduces carbon cost exposure from est. €320K/yr at €85/tonne CO2 to <€80K/yr, protecting asset economics across the hold period and reducing stranded asset risk from MEDIUM-HIGH to LOW for exit buyers.",
+    "lpRetentionImpact": "Critical. 73% of institutional LPs (Preqin 2024) now screen GPs on portfolio ESG improvement trajectory, not just entry screening. A documented, data-backed ESG Value Creation Program across this asset directly supports Fund re-up narratives and satisfies SFDR Article 8/9 fund reporting requirements for European LPs — estimated to protect $50M+ in LP re-commitment decisions."
+  },
+  "exitNarrative": "At exit in Year 5, GreenTech Manufacturing Co. presents to buyers as a fundamentally de-risked, ESG-credentialed industrial asset with a compelling forward earnings story. The narrative has four pillars: (1) OPERATIONAL QUALITY — EBITDA margins have expanded ~180bps through verified energy cost savings, insurance reductions, and procurement efficiency, with a clean 5-year ESG data track record presented in CSRD-compliant format; (2) REGULATORY CERTAINTY — Full CSRD compliance (Germany), EU Taxonomy revenue mapping completed, and Vietnam operations audited to ILO standards, eliminating the regulatory discount that non-compliant industrial peers face in today's M&A market; (3) CUSTOMER RETENTION & GROWTH — ISO 45001 certification and supply chain transparency satisfy Tier-1 OEM procurement requirements; SBTi commitment signals 10+ year competitiveness as industrial decarbonization accelerates; (4) BUYER UNIVERSE EXPANSION — The ESG profile opens the asset to ESG-mandated strategic acquirers, Article 8/9 PE funds, and infrastructure investors who could not previously bid, creating competitive tension at exit that directly supports multiple achievement. A buyer paying 9.9x is not paying for ESG compliance — they are paying for a lower-risk, higher-quality earnings stream with a defensible moat.",
+  "netRoiOnEsgInvestment": "16.8x"
+}

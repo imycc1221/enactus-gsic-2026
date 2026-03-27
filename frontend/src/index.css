@@ -1,0 +1,382 @@
+/* ── Accenture Graphik font ─────────────────────────────────────────────────── */
+@font-face {
+  font-family: 'Graphik';
+  src: url('/fonts/graphik-regular-web.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Graphik';
+  src: url('/fonts/graphik-medium-web.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Graphik';
+  src: url('/fonts/graphik-semibold-web.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'GT Sectra Fine';
+  src: url('/fonts/GT-Sectra-Fine-Book.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Base ───────────────────────────────────────────────────────────────────── */
+@layer base {
+  :root {
+    --acc-purple:        #AC00EF;
+    --acc-purple-dark:   #7B00AC;
+    --acc-purple-deeper: #4A0066;
+    --acc-pink:          #F04FDB;
+    --acc-black:         #060606;
+    --acc-900:           #111111;
+    --acc-800:           #1E1E1E;
+    --acc-700:           #2E2E2E;
+    --acc-gray:          #787878;
+    --acc-gray-dark:     #555555;
+    --acc-transition:    cubic-bezier(0.85, 0, 0, 1);
+  }
+
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    letter-spacing: -0.005em;
+  }
+
+  body {
+    background: #060606;
+    color: #fff;
+    font-family: 'Graphik', Arial, Helvetica, sans-serif;
+    font-weight: 400;
+  }
+
+  /* Selection */
+  ::selection {
+    background: #4A0066;
+    color: #fff;
+  }
+
+  /* Focus visible */
+  :focus-visible {
+    outline: 2px solid #AC00EF;
+    outline-offset: 4px;
+  }
+}
+
+/* ── Accenture button overrides ─────────────────────────────────────────────── */
+@layer components {
+
+  /* Gradient primary button — matches Accenture CTA exactly */
+  .btn-acc {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 3rem;
+    padding: 0 1.25rem;
+    background: linear-gradient(to right, #7B00AC, #AC00EF);
+    color: #fff;
+    font-family: 'Graphik', Arial, sans-serif;
+    font-weight: 600;
+    font-size: 0.875rem;
+    border: none;
+    border-radius: 0;
+    cursor: pointer;
+    transition: background 550ms cubic-bezier(0.85, 0, 0, 1),
+                opacity 550ms cubic-bezier(0.85, 0, 0, 1);
+    white-space: nowrap;
+  }
+
+  .btn-acc:hover:not(:disabled) {
+    background: linear-gradient(to right, #5C0080, #7B00AC);
+  }
+
+  .btn-acc:active:not(:disabled) {
+    background: #5C0080;
+  }
+
+  .btn-acc:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  /* Outlined secondary button */
+  .btn-acc-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 3rem;
+    padding: 0 1.25rem;
+    background: transparent;
+    color: #fff;
+    font-family: 'Graphik', Arial, sans-serif;
+    font-weight: 500;
+    font-size: 0.875rem;
+    border: 1px solid #2b2b2b;
+    border-radius: 0;
+    cursor: pointer;
+    transition: border-color 550ms cubic-bezier(0.85, 0, 0, 1),
+                color 550ms cubic-bezier(0.85, 0, 0, 1);
+    white-space: nowrap;
+  }
+
+  .btn-acc-outline:hover:not(:disabled) {
+    border-color: #AC00EF;
+    color: #F04FDB;
+  }
+
+  .btn-acc-outline.active {
+    background: #AC00EF;
+    border-color: #AC00EF;
+    color: #fff;
+  }
+
+  /* Accenture card */
+  .acc-card {
+    background: #101010;
+    border: 1px solid #2b2b2b;
+    border-radius: 0.25rem;
+    transition: border-color 550ms cubic-bezier(0.85, 0, 0, 1);
+  }
+
+  .acc-card:hover {
+    border-color: #3d3d3d;
+  }
+
+  /* Section label */
+  .acc-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #fff;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar        { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track  { background: #111111; }
+  ::-webkit-scrollbar-thumb  { background: #AC00EF; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #7B00AC; }
+}
+
+/* ── Design tokens ───────────────────────────────────────────────────────────── */
+:root {
+  --text-hero:    #ffffff;
+  --text-body:    #c8c8c4;
+  --text-muted:   #787878;
+  --text-ghost:   #444444;
+  --text-accent:  #AC00EF;
+  --text-pink:    #F04FDB;
+  --text-danger:  #FF1F5A;
+  --surface-card: #111111;
+  --surface-deep: #0D0D0D;
+  --border-subtle:#1E1E1E;
+  --border-std:   #2E2E2E;
+  --ease-out: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* ── Utility: divider ────────────────────────────────────────────────────────── */
+.acc-divider {
+  height: 1px;
+  background: var(--border-subtle);
+  border: none;
+  margin: 0;
+}
+
+/* ── Utility: stat block (label + hero number) ───────────────────────────────── */
+.stat-label {
+  font-size: 0.5625rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-ghost);
+  margin-bottom: 0.2rem;
+}
+.stat-hero {
+  font-family: 'GT Sectra Fine', Palatino, serif;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+/* ── Spinner for AgentStatus ────────────────────────────────────────────────── */
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+.animate-spin-slow {
+  animation: spin-slow 1s linear infinite;
+}
+
+/* ── Pulse dot (AgentStatus running indicator) ───────────────────────────────── */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1;   transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(0.8); }
+}
+.animate-pulse-dot {
+  animation: pulse-dot 1.4s ease-in-out infinite;
+}
+
+/* ── Button micro-interactions ───────────────────────────────────────────────── */
+.btn-acc {
+  transition: background 550ms cubic-bezier(0.85, 0, 0, 1),
+              opacity    550ms cubic-bezier(0.85, 0, 0, 1),
+              transform  120ms cubic-bezier(0.25, 1, 0.5, 1) !important;
+}
+.btn-acc:active:not(:disabled) {
+  transform: scale(0.97);
+}
+.btn-acc-outline {
+  transition: border-color 550ms cubic-bezier(0.85, 0, 0, 1),
+              color        550ms cubic-bezier(0.85, 0, 0, 1),
+              transform    120ms cubic-bezier(0.25, 1, 0.5, 1) !important;
+}
+.btn-acc-outline:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+/* ── Section expand/collapse entrance ───────────────────────────────────────── */
+@keyframes sectionIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.section-body-enter {
+  animation: sectionIn 240ms cubic-bezier(0.25, 1, 0.5, 1) both;
+}
+
+/* ── Screen-level entrance (tab switching) ───────────────────────────────────── */
+@keyframes screenIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.screen-enter {
+  animation: screenIn 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ── AgentStatus step entrance ───────────────────────────────────────────────── */
+@keyframes stepReveal {
+  from { opacity: 0; transform: translateX(-8px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ── Reduced motion overrides ────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── Dot-grid background (Palantir-style) ────────────────────────────────────── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 1;
+  background-image: radial-gradient(circle, #2E2E2E 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* Ensure content sits above the dot grid */
+header, nav, main, footer { position: relative; z-index: 1; }
+
+/* ── Section fade-in animation ───────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up {
+  animation: fadeUp 400ms cubic-bezier(0.85, 0, 0, 1) both;
+}
+.fade-up-1 { animation-delay: 60ms; }
+.fade-up-2 { animation-delay: 120ms; }
+.fade-up-3 { animation-delay: 180ms; }
+.fade-up-4 { animation-delay: 240ms; }
+.fade-up-5 { animation-delay: 300ms; }
+.fade-up-6 { animation-delay: 360ms; }
+
+/* ── Card glow on hover ──────────────────────────────────────────────────────── */
+.card-hover {
+  transition: border-color 400ms cubic-bezier(0.85,0,0,1),
+              box-shadow   400ms cubic-bezier(0.85,0,0,1);
+}
+.card-hover:hover {
+  border-color: #AC00EF66 !important;
+  box-shadow: 0 0 0 1px #AC00EF33, 0 8px 32px #AC00EF14;
+}
+
+/* ── Monospace data values (Gotham-style precision) ─────────────────────────── */
+.data-mono {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+/* ── Intelligence-grade card inner scan line ─────────────────────────────────── */
+.card-hover::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #AC00EF88, transparent);
+  opacity: 0;
+  transition: opacity 400ms cubic-bezier(0.85,0,0,1);
+  pointer-events: none;
+}
+.card-hover {
+  position: relative;
+  overflow: hidden;
+}
+.card-hover:hover::before {
+  opacity: 1;
+}
+
+/* ── Table row hover ─────────────────────────────────────────────────────────── */
+.row-hover {
+  transition: background 180ms cubic-bezier(0.25, 1, 0.5, 1);
+}
+.row-hover:hover { background: #181818 !important; }
+
+/* ── Progress bar fill animation ────────────────────────────────────────────── */
+@keyframes barFill {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+.bar-fill {
+  transform-origin: left center;
+  animation: barFill 900ms cubic-bezier(0.25, 1, 0.5, 1) both;
+}
+
+/* ── Number count-in flicker (display numbers) ───────────────────────────────── */
+@keyframes numIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.num-in {
+  animation: numIn 500ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ── Purple ambient glow behind header ───────────────────────────────────────── */
+header::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40%;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #AC00EF66, transparent);
+  pointer-events: none;
+}
