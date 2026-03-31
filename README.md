@@ -5,6 +5,9 @@
 A working prototype that transforms raw ESG data into decision-ready financial intelligence — built in 5 days with Claude AI.
 
 ---
+**Key Resources:**
+
+*   📄 **Documentation: ** [Presentation Slides](https://canva.link/i0i4zdnidp4kcir)
 
 ## The Problem
 
