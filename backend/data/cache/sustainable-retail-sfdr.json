@@ -1,0 +1,91 @@
+{
+  "recommendedArticle": "Article 8",
+  "confidence": "medium",
+  "rationale": "Sustainable Retail Group qualifies for Article 8 on the strength of full Scope 1+2+3 emissions tracking, a 34% sustainable product range, and an active supplier audit programme. However, low board independence (2/8 directors), 16% supplier audit coverage (vs France Duty of Vigilance requirements), and an unresolved EU Deforestation Regulation exposure place this at the lower band of Article 8. The complex 8-country supply chain is the binding constraint for any Article 9 upgrade.",
+  "qualifyingFactors": [
+    { "factor": "Promotes E/S characteristics", "assessment": "Sustainable product range (34% of SKUs), full Scope 1+2+3 tracking, 61% recyclable packaging — clear promotional evidence", "status": "met" },
+    { "factor": "Good governance practices", "assessment": "2/8 independent directors — below ESRS 40% threshold; board gender diversity 25% vs 40% target", "status": "not_met" },
+    { "factor": "PAI monitoring capability", "assessment": "Full Scope 1+2+3 data available — strong PAI foundation; biodiversity and pay equity missing", "status": "partial" },
+    { "factor": "Supply chain due diligence", "assessment": "16% supplier audit coverage — France Duty of Vigilance (5,000 employees in France / 10,000 worldwide threshold) does NOT apply at 1,200 employees. However, EUDR due diligence is mandatory as first-placer of SE Asia commodities on EU market.", "status": "partial" },
+    { "factor": "Sustainable investment objective", "assessment": "No formal sustainable investment definition or minimum percentage established at fund level", "status": "not_met" },
+    { "factor": "EU Deforestation Regulation compliance", "assessment": "SE Asia supply chain creates high commodity deforestation risk — compliance gap identified. EUDR enforcement for large operators: 30 December 2026 (second delay enacted Dec 2025). ~9 months to achieve compliance.", "status": "not_met" }
+  ],
+  "principalAdverseImpacts": [
+    { "indicator": "GHG Emissions (Scope 1+2+3)", "available": true, "value": "59,600 tCO2e/yr (Scope 3: 45,000)", "gap": "Scope 3 dominates — Category 1 supplier emissions require full audit trail beyond current 16% coverage" },
+    { "indicator": "Carbon Footprint (tCO2e / $M invested)", "available": true, "value": "Est. 414 tCO2e / $M invested", "gap": "Above retail sector median (290) — Science-Based Target required for Article 9 credibility" },
+    { "indicator": "Renewable Energy Usage", "available": true, "value": "31% of energy consumption", "gap": "Below retail sector median of 38% — renewable energy transition plan required" },
+    { "indicator": "Biodiversity / Deforestation Risk", "available": false, "value": null, "gap": "SE Asia sourcing (palm oil, timber, rubber) creates high deforestation risk — EU Deforestation Regulation effective December 2025" },
+    { "indicator": "Board Gender Diversity", "available": true, "value": "25% female board", "gap": "Below ESRS 40% gender parity target — board recruitment required before Article 8 is defensible" },
+    { "indicator": "Supply Chain Labour Standards", "available": true, "value": "45 of 280 suppliers audited (16%)", "gap": "France Duty of Vigilance requires documented process for all Tier 1 suppliers — current coverage is insufficient" },
+    { "indicator": "Anti-corruption Policy", "available": false, "value": null, "gap": "Multi-geography operations elevate FCPA/UK Bribery Act exposure — policy required, PAI indicator 15" }
+  ],
+  "upgradePath": {
+    "currentArticle": "Article 8",
+    "nextArticle": "Article 9",
+    "requiredActions": [
+      "Expand board independence to minimum 4/8 directors — appoint sustainability-qualified NED immediately",
+      "Scale supplier audit programme from 16% to ≥60% (France Duty of Vigilance compliance)",
+      "Complete EU Deforestation Regulation commodity mapping for SE Asia supply chains before December 2025 deadline",
+      "Establish Science-Based Targets (SBTi) for Scope 3 reduction — required for Article 9 credibility",
+      "Define sustainable investment minimum (recommend ≥34% — aligned to current sustainable product mix)",
+      "Implement DNSH screening for EU Taxonomy retail activities (NACE G47)"
+    ],
+    "estimatedTimeToUpgrade": "24–36 months — supply chain complexity and Deforestation Regulation compliance are binding constraints"
+  },
+  "disclosureRequirements": [
+    { "requirement": "SFDR Article 8 pre-contractual disclosure", "status": "missing", "action": "Publish fund-level disclosure before first LP close — SFDR Level 2 RTS Article 16" },
+    { "requirement": "France Duty of Vigilance (Loi de Vigilance)", "status": "compliant", "action": "Threshold is 5,000 employees in France OR 10,000 worldwide — Sustainable Retail (1,200 employees) is below threshold and NOT legally required to publish a vigilance plan. Voluntary supply chain due diligence is still best practice for LP confidence." },
+    { "requirement": "EU Deforestation Regulation compliance", "status": "missing", "action": "Map commodity exposure (palm oil, cocoa, timber, rubber) in SE Asia supply chain — large-operator deadline 30 December 2026 (second delay enacted Dec 2025). Only first-placer on EU market responsible under simplified rules." },
+    { "requirement": "PAI Statement (14 mandatory indicators)", "status": "partial", "action": "GHG and labour data available; biodiversity, water, and anti-corruption gaps require immediate data collection" }
+  ],
+  "lpNarrative": "Sustainable Retail Group supports an SFDR Article 8 classification on the strength of its full Scope 1+2+3 emissions data, 34% sustainable product range, and active supplier audit programme. However, the low board independence (25%) and EU Deforestation Regulation exposure in the SE Asia supply chain require immediate remediation before this classification is fully defensible to scrutinising LPs. For LPs with strict Article 8 criteria — including those following PRI's responsible investment framework — we recommend a 100-day governance and supply chain remediation sprint before LP close. The Article 9 upgrade pathway exists but requires 24–36 months given supply chain complexity.",
+  "regulatoryRisk": "Medium — EUDR (large-operator deadline 30 December 2026) is the primary active risk — SE Asia commodity sourcing requires geographic coordinates and due diligence statements within ~9 months. CSRD: post-Omnibus I (March 2026), Sustainable Retail (1,200 employees, €150M revenue) does NOT meet the €450M+ revenue threshold — OUT of mandatory CSRD scope. France Duty of Vigilance: threshold is 5,000 employees in France OR 10,000 worldwide — Sustainable Retail NOT in scope. CSDDD: 5,000+ employees + €1.5B threshold — NOT in scope. SFDR 2.0: 'Sustainable Retail Group' brand name at risk post-2028 if Non-categorised — EUDR compliance is critical to maintaining UNGC/OECD compliance status. Despite being out of most mandatory EU reporting scopes, LP pressure for voluntary ESG disclosure remains — Nordic LPs will require SFDR 2.0 category compliance for fund access.",
+  "sfdr2": {
+    "category": "ESG Basics",
+    "confidence": "low",
+    "rationale": "Sustainable Retail Group faces the most challenging SFDR 2.0 transition in the portfolio. Despite its Article 8 label under 1.0, the reality is stark: 76% of its GHG emissions sit in unmanaged Scope 3, board independence falls below the mandatory 40% threshold, and the EU Deforestation Regulation creates an active compliance breach. Under SFDR 2.0, the 'promotes characteristics' framing is gone — this fund would land at ESG Basics at best. The ≥70% Transition threshold cannot be met when the majority of supply chain emissions are untracked and unmanaged. The UNGC/OECD compliance status is at risk given the EUDR exposure and labour standards gaps in SE Asia operations. Without urgent remediation, Non-categorised is a realistic worst-case outcome that would disqualify the fund from virtually all European LP mandates.",
+    "exclusionCompliance": {
+      "weapons": true,
+      "tobacco": true,
+      "coal": true,
+      "ungcOecd": "at_risk"
+    },
+    "threshold70pct": {
+      "met": false,
+      "currentEstimate": "~20–25% — sustainable product SKUs (34%) provide some basis, but 76% unmanaged Scope 3 and absent supply chain audit coverage prevent any credible Transition alignment claim",
+      "gap": "Scope 3 Category 1 full audit coverage (currently 16%), SBTi commitment with credible supply chain decarbonisation roadmap, EUDR commodity compliance — all required before threshold is claimable"
+    },
+    "taxonomyShortcut": {
+      "applicable": false,
+      "taxonomyAlignment": "Estimated <5% — retail CapEx not documented against EU Taxonomy climate mitigation criteria (NACE G47). Sustainable packaging investments may contribute marginally, but DNSH screening is absent."
+    },
+    "keyChanges": [
+      "Article 8 label is eliminated — Sustainable Retail migrates to ESG Basics, a weaker classification signal",
+      "UNGC/OECD compliance is now mandatory for ALL categories — SE Asia labour practices create baseline risk",
+      "The 70% threshold is unachievable without full Scope 3 audit and supply chain decarbonisation — Transition category is 36+ months away",
+      "Non-categorised is a realistic risk if EUDR breach triggers OECD Guidelines violation finding"
+    ],
+    "gaps": [
+      "EUDR compliance (SE Asia palm oil, timber, rubber) — mandatory exclusion risk if UNGC/OECD status fails",
+      "Full Scope 3 supplier audit coverage — current 16% is incompatible with any threshold claim",
+      "Board independence to ≥40% — mandatory governance baseline under SFDR 2.0",
+      "SBTi commitment with 1.5°C-aligned supply chain plan — required for Transition category aspiration",
+      "Anti-corruption policy covering all 8 operating geographies",
+      "Biodiversity / EUDR commodity mapping — deforestation exposure is both a mandatory exclusion risk and a PAI gap"
+    ],
+    "migrationTimeline": "URGENT: Begin EUDR commodity mapping immediately to avoid Non-categorised risk (UNGC/OECD compliance at risk). Target ESG Basics by 2028 as the floor. Transition category requires 3-4 years of supply chain transformation — start Scope 3 audit programme and SBTi process in 2026 to have any realistic path.",
+    "marketingRisk": {
+      "level": "at_risk",
+      "canUseEsgInName": false,
+      "canMakeMarketingClaims": false,
+      "nameRisk": "CRITICAL: The company is named 'Sustainable Retail Group' — the word 'Sustainable' is directly in the brand name. Under SFDR 2.0, if this fund is classified as Non-categorised (a realistic outcome given EUDR breach risk and UNGC/OECD at-risk status), it would be LEGALLY PROHIBITED from using 'Sustainable' in the fund name or any marketing materials. This means a forced rebranding of the entire entity — a severe commercial and reputational consequence.",
+      "implication": "The brand name 'Sustainable Retail Group' becomes a liability under SFDR 2.0 if Non-categorised. Estimated rebranding costs: €500K-€2M (legal, marketing, signage, digital assets across 8 countries). More critically, any LP that subscribed based on the 'Sustainable' brand name would have grounds for complaint. Immediate action: achieve ESG Basics compliance by 2028 to preserve naming rights at minimum level."
+    },
+    "paiObligations": {
+      "entityLevelRequired": false,
+      "productLevelRequired": false,
+      "flexibility": "As an ESG Basics fund, no product-level PAI reporting required under SFDR 2.0. However, Sustainable Retail's existing Scope 1+2+3 data and supplier audit programme are assets that should be voluntarily disclosed — the framework permits voluntary sustainability factor disclosures even for non-categorised products. Use this data proactively to support the ESG Basics classification and build toward Transition.",
+      "complianceCostImpact": "Estimated 30-40% reduction in SFDR compliance costs at ESG Basics level — no entity-level PAI, no product-level PAI, simplified 2-page disclosure only. However, EUDR and France Duty of Vigilance compliance costs remain and are increasing. Net compliance burden is NOT decreasing — regulatory pressure is merely shifting from SFDR to supply chain regulation."
+    }
+  }
+}

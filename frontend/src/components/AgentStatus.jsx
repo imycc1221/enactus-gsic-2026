@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
  * AgentStatus — Accenture-styled AI agent trace.
  * Shows sequential steps as the agent processes. Key demo differentiator.
  */
-export default function AgentStatus({ steps, status }) {
+export default function AgentStatus({ steps, status, stepFindings }) {
   const [activeStep, setActiveStep] = useState(-1);
   const intervalRef = useRef(null);
 
@@ -107,19 +107,29 @@ export default function AgentStatus({ steps, status }) {
               </div>
 
               {/* Step label */}
-              <span
-                style={{
-                  fontFamily: 'Graphik, Arial, sans-serif',
-                  fontSize: '0.8125rem',
-                  fontWeight: isCurrent ? 500 : 400,
-                  color: isDone ? '#3d3d3d' : isCurrent ? '#dcafff' : '#2b2b2b',
-                  textDecoration: isDone ? 'line-through' : 'none',
-                  textDecorationColor: '#2b2b2b',
-                  transition: 'color 300ms cubic-bezier(0.25,1,0.5,1)'
-                }}
-              >
-                {step}
-              </span>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <span
+                  style={{
+                    fontFamily: 'Graphik, Arial, sans-serif',
+                    fontSize: '0.8125rem',
+                    fontWeight: isCurrent ? 500 : 400,
+                    color: isDone ? '#3d3d3d' : isCurrent ? '#dcafff' : '#2b2b2b',
+                    textDecoration: isDone ? 'line-through' : 'none',
+                    textDecorationColor: '#2b2b2b',
+                    transition: 'color 300ms cubic-bezier(0.25,1,0.5,1)'
+                  }}
+                >
+                  {step}
+                </span>
+                {isDone && stepFindings?.[i] && (
+                  <div style={{
+                    fontSize: '0.6875rem', color: '#444', marginTop: '0.15rem',
+                    fontFamily: 'Graphik, Arial, sans-serif', lineHeight: 1.4
+                  }}>
+                    → {stepFindings[i]}
+                  </div>
+                )}
+              </div>
             </div>
           );
         })}

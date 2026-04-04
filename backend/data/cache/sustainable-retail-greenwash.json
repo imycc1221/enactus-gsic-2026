@@ -1,0 +1,49 @@
+{
+  "riskLevel": "high",
+  "riskScore": 79,
+  "overallAssessment": "Sustainable Retail presents high greenwashing risk — the most acute case in the portfolio. The company operates under a 'sustainable' brand while controlling less than 16% of its supply chain's environmental and social standards. With 45,000 tCO₂e in Scope 3 vs 3,400 (Scope 1) + 11,200 (Scope 2), approximately 76% of total emissions sit in a supply chain where only 45 of 280 suppliers have been audited. This is textbook scope-shifting greenwashing: internalising sustainability claims while externalising the majority of actual environmental impact. Compounding this, the company faces an imminent regulatory deadline: the EU Deforestation Regulation (EUDR) large-operator enforcement begins 30 December 2026 (delayed from the original December 2025 date by Regulation EU 2024/3234). While the delay provides a brief window, failure to produce supply chain geographic coordinates and due diligence documentation for forest-risk commodities before December 2026 constitutes regulatory non-compliance and renders the 'sustainable retail' claim indefensible under the EU Green Claims Directive.",
+  "flaggedClaims": [
+    {
+      "claim": "'Sustainable Retail' brand positioning and LP marketing materials",
+      "claimType": "supply_chain",
+      "evidenceGap": "76% of total GHG emissions (45,000 tCO₂e Scope 3) originate from a supply chain where only 16% of suppliers (45/280) have been audited for ESG standards. Claiming sustainability while lacking oversight of the primary source of environmental impact is material greenwashing under ESRS E1 and CSRD Article 19a. This mirrors the H&M and Boohoo cases that triggered FCA and EU Green Claims Directive scrutiny in 2023-24.",
+      "severity": "critical",
+      "mitigation": "Immediately revise brand communications to specify 'Sustainability journey in progress — current scope: Scope 1+2 operations.' Commit to 60% supplier audit coverage by FY2026. Publish a Scope 3 Category 1 reduction target aligned with SBTi FLAG (Forest, Land and Agriculture)."
+    },
+    {
+      "claim": "ESG credentials sufficient for SFDR Article 8 LP mandate inclusion",
+      "claimType": "governance",
+      "evidenceGap": "While SFDR Article 8 classification is technically achievable on current data, the PAI statement required under Article 8 Level 2 RTS would expose the Scope 3 gap and 84% unaudited supply chain. LPs conducting PAI due diligence would likely require a remediation plan prior to commitment — effectively making current Article 8 positioning contingent on undisclosed remediation commitments.",
+      "severity": "material",
+      "mitigation": "Disclose supply chain audit coverage gap proactively in LP pre-contractual documentation. Include a time-bound remediation plan as a side letter obligation rather than allowing it to surface during LP due diligence."
+    },
+    {
+      "claim": "Southeast Asia sourcing with sustainability credentials",
+      "claimType": "supply_chain",
+      "evidenceGap": "EU Deforestation Regulation (EUDR) large-operator enforcement deadline is 30 December 2026 (second delay enacted Dec 2025). Companies sourcing from Southeast Asia (palm oil, timber, rubber, soy) must provide geographic coordinates and due diligence documentation. Only the first-placer on EU market bears due diligence responsibility under the simplified rules — but Sustainable Retail as importer is almost certainly the first-placer. No EUDR compliance documentation referenced. Country benchmarking list pending EC publication.",
+      "severity": "critical",
+      "mitigation": "EUDR compliance mapping must begin immediately — the December 2026 deadline allows ~9 months. Engage a specialist provider (e.g., Sourcemap, Proforest) to map forest-risk commodity exposure across Southeast Asia supply chain. Note: simplified rules for small operators do NOT apply to Sustainable Retail as a large operator. File EUDR due diligence statements before next LP close."
+    }
+  ],
+  "redFlags": [
+    "76% of total emissions (45,000 tCO₂e Scope 3) sit in a supply chain with only 16% audit coverage — structural gap between brand and reality",
+    "EU Deforestation Regulation enforcement (30 Dec 2026 for large operators) — 9-month window remaining, Southeast Asia sourcing without EUDR documentation will be an active regulatory breach at deadline",
+    "235 of 280 suppliers have no documented ESG standards — extreme supply chain opacity for a company branded as 'sustainable'",
+    "Post-Omnibus I (March 2026): CSRD scope reduced to 1,000+ employees + €450M turnover — check if Sustainable Retail now qualifies. If in scope, first mandatory report FY2027 (due 2028). Scope 3 disclosure will be damaging without prior remediation",
+    "Scope 3 is 3.0× total Scope 1+2 — supply chain is the ESG story, not operations"
+  ],
+  "positiveIndicators": [
+    "Scope 1, 2, AND 3 emissions tracked — demonstrates awareness of full footprint even if supply chain control is weak",
+    "16% supplier audit coverage (45/280) is a documented baseline — remediation plan can build from this",
+    "Post-Omnibus I (March 2026): with 1,200 employees and €150M revenue, Sustainable Retail is OUT of mandatory CSRD scope — voluntary disclosure is a differentiator, not a compliance cost",
+    "GRI 18 Biodiversity (effective Jan 2026) provides a voluntary framework for reporting on deforestation risk — early adoption strengthens EUDR compliance narrative"
+  ],
+  "recommendedDisclosures": [
+    "EUDR due diligence statements — enforcement 30 December 2026 for large operators (~9 months). Geographic coordinates + due diligence documentation required for all SE Asia forest-risk commodities",
+    "Scope 3 Category 1 supplier audit expansion roadmap — commit to 60% coverage by FY2026 with quarterly milestones",
+    "SBTi FLAG target — submit Forest, Land and Agriculture pathway for Scope 3 reduction",
+    "Brand communication revision — remove 'sustainable' positioning until supply chain audit coverage reaches ≥60%",
+    "LP pre-contractual disclosure — proactively disclose supply chain audit gap and remediation timeline before LP close"
+  ],
+  "regulatoryExposure": "MEDIUM-HIGH — Primary: EUDR enforcement 30 December 2026 (large operators). Penalty up to 4% EU-wide annual turnover + product confiscation + market access ban. CSRD: post-Omnibus I (March 2026), Sustainable Retail (1,200 employees, €150M revenue) is CONFIRMED OUT of mandatory scope — revenue far below €450M threshold. France Duty of Vigilance: CONFIRMED OUT of scope — threshold is 5,000 employees in France OR 10,000 worldwide; Sustainable Retail has 1,200 total. CSDDD: CONFIRMED OUT of scope (5,000+ employees + €1.5B). SFDR 2.0 (2028): 'Sustainable Retail Group' brand name at risk — forced rebranding if Non-categorised. EU Green Claims Directive: sustainability marketing claims must be substantiated regardless of reporting exemptions — 76% unmanaged Scope 3 creates active greenwashing exposure now."
+}

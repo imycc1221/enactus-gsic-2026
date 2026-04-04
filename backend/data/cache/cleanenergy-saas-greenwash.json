@@ -1,0 +1,31 @@
+{
+  "riskLevel": "low",
+  "riskScore": 17,
+  "overallAssessment": "CleanEnergy SaaS presents low greenwashing risk — the strongest disclosure posture of the three portfolio companies. The company's sustainability claims are well-supported by granular, independently verifiable data: 42% female workforce, 50% board gender diversity, 8.2% voluntary turnover, and eNPS of 42 are all specific, measurable figures. Operating in the clean energy software sector, the company's business model is inherently aligned with its sustainability positioning. The primary gap is the absence of a formal Scope 1+2 carbon footprint — unusual for a company calling itself 'CleanEnergy.' As a UK-headquartered SaaS firm, its absolute emissions are low (office + cloud compute), making this an easily closeable gap. No material greenwashing flags identified; one moderate gap in emissions transparency.",
+  "flaggedClaims": [
+    {
+      "claim": "'CleanEnergy' brand positioning implies environmental leadership",
+      "claimType": "emissions",
+      "evidenceGap": "No Scope 1, 2, or 3 GHG emissions data disclosed. For a software company, Scope 1+2 are primarily office energy and cloud computing — material, measurable, and cheap to verify. Branding as 'CleanEnergy' without carbon transparency creates a minor but growing inconsistency as SaaS sector carbon accounting matures (cloud compute = Scope 3 Category 11 for clients).",
+      "severity": "moderate",
+      "mitigation": "Commission Scope 1+2 carbon footprint measurement (estimate: £8,000–£15,000 for a 95-person firm). Report cloud provider emissions under Scope 3 Category 11. Target carbon neutrality certification (e.g., PAS 2060) within 18 months — likely achievable through high-quality offsets given minimal operational footprint."
+    }
+  ],
+  "redFlags": [
+    "No GHG emissions disclosure despite 'CleanEnergy' brand — gap between name and environmental transparency"
+  ],
+  "positiveIndicators": [
+    "42% female workforce and 50% board gender diversity — among the highest in software sector (median: 28% female workforce)",
+    "eNPS of 42 is strong (industry median: ~20) — aligns with 'people-first' culture claims",
+    "8.2% voluntary turnover — well below software sector average of 13-18% — credible evidence of employee satisfaction",
+    "UK + Nordics geography means CSRD scope 3 obligations limited; already ahead of reporting requirements",
+    "Clean energy software business model creates genuine ESG alignment — no fossil fuel revenue exposure"
+  ],
+  "recommendedDisclosures": [
+    "Scope 1+2 GHG footprint — commission measurement this quarter, publish in next sustainability update",
+    "Cloud provider emissions (Scope 3 Category 11) — request data from AWS/GCP/Azure sustainability portal",
+    "SBTi SME pathway — register and commit to science-based target (simplified pathway for <500 employee firms)",
+    "CSRD Article 50 voluntary early adoption — signal regulatory readiness to Nordic LP base"
+  ],
+  "regulatoryExposure": "LOW — UK HQ is outside EU CSRD scope currently. Nordic subsidiaries may trigger voluntary reporting expectations from LP base (Nordic pension funds operate at SFDR Article 8/9 standard). Primary exposure is reputational: 'CleanEnergy' brand without carbon disclosure will face increasing scrutiny as ESG due diligence standards tighten post-2025."
+}

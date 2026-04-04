@@ -17,18 +17,26 @@ export default async function handler(req, res) {
   const company = req.body;
   if (!company?.id) return res.status(400).json({ error: 'Request body must include company id' });
 
+  const { systemPrompt, userPrompt } = buildAnalyzePrompt(company);
+  const baseMeta = {
+    model: 'claude-sonnet-4-6',
+    tool: analyzeToolSchema.name,
+    timestamp: new Date().toISOString(),
+    systemPrompt,
+    userPrompt,
+  };
+
   // ── Cache hit ──────────────────────────────────────────────────────────────
   const cached = getCachedResponse(company.id, 'analyze');
   if (cached) {
     await simulateThinking();
-    return res.json({ ...cached, _source: 'cached' });
+    return res.json({ ...cached, _source: 'cached', _meta: { ...baseMeta, cached: true } });
   }
 
   // ── Live fallback (for Q&A with unexpected inputs) ─────────────────────────
   try {
-    const { systemPrompt, userPrompt } = buildAnalyzePrompt(company);
     const result = await callWithTool(systemPrompt, userPrompt, analyzeToolSchema);
-    return res.json({ ...result, _source: 'live' });
+    return res.json({ ...result, _source: 'live', _meta: { ...baseMeta, cached: false } });
   } catch (err) {
     console.error('[/api/analyze] Live call failed:', err.message);
     return res.status(500).json({ error: 'ESG analysis failed. Check API key and try again.' });
