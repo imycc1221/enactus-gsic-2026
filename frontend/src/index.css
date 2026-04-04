@@ -277,6 +277,43 @@
   }
 }
 
+/* ── Print / Export to PDF ───────────────────────────────────────────────────── */
+@media print {
+  @page { size: A4; margin: 18mm 15mm; }
+
+  body { background: #060606 !important; color: #fff !important; }
+  body::before { display: none !important; }
+
+  /* Hide chrome */
+  header, nav, footer,
+  .no-print,
+  .btn-acc, .btn-acc-outline,
+  button { display: none !important; }
+
+  /* Expand collapsed sections for print */
+  main { padding: 0 !important; max-width: 100% !important; }
+
+  /* Cards keep dark style */
+  .card-hover { break-inside: avoid; }
+  .card-hover::before { display: none !important; }
+
+  /* Page break between major result rows */
+  .fade-up-3, .fade-up-4, .fade-up-5 { break-before: auto; }
+
+  /* Print header replacement */
+  main::before {
+    content: 'ESG Value Engine  ·  Accenture  ·  Enactus GSIC 2026';
+    display: block;
+    font-size: 8pt;
+    color: #787878;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 12mm;
+    border-bottom: 1px solid #2E2E2E;
+    padding-bottom: 4mm;
+  }
+}
+
 /* ── Dot-grid background (Palantir-style) ────────────────────────────────────── */
 body::before {
   content: '';

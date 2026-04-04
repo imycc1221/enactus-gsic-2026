@@ -19,6 +19,37 @@ const MODEL = 'claude-sonnet-4-6';
  * @param {object} toolSchema  - { name, description, input_schema }
  * @returns {Promise<object>}  - The tool's input — already a parsed JS object
  */
+/**
+ * Streaming variant — calls Claude with tool_choice forced, emitting input_json_delta
+ * chunks to onDelta(text) as they arrive. Returns the final parsed tool input.
+ * @param {string}   systemPrompt
+ * @param {string}   userPrompt
+ * @param {object}   toolSchema
+ * @param {function} onDelta  - called with each partial_json string
+ * @returns {Promise<object>}
+ */
+export async function callWithToolStream(systemPrompt, userPrompt, toolSchema, onDelta) {
+  const stream = client.messages.stream({
+    model: MODEL,
+    max_tokens: 4096,
+    system: systemPrompt,
+    tools: [toolSchema],
+    tool_choice: { type: 'tool', name: toolSchema.name },
+    messages: [{ role: 'user', content: userPrompt }]
+  });
+
+  for await (const event of stream) {
+    if (event.type === 'content_block_delta' && event.delta?.type === 'input_json_delta') {
+      onDelta(event.delta.partial_json ?? '');
+    }
+  }
+
+  const finalMessage = await stream.finalMessage();
+  const toolUse = finalMessage.content.find(b => b.type === 'tool_use');
+  if (!toolUse) throw new Error(`No tool_use block for ${toolSchema.name}`);
+  return toolUse.input;
+}
+
 export async function callWithTool(systemPrompt, userPrompt, toolSchema) {
   const response = await client.messages.create({
     model: MODEL,

@@ -1,0 +1,90 @@
+{
+  "recommendedArticle": "Article 8",
+  "confidence": "medium",
+  "rationale": "GreenTech Manufacturing demonstrates environmental and social characteristics promotion through documented GHG monitoring (12,500 tCO2e), employee safety programmes (LTIR 2.1), and basic governance structure. However, the absence of Scope 3 data, formal sustainable investment methodology, and DNSH assessment prevents Article 9 classification. The fund promotes E&S characteristics but does not have sustainable investment as its primary objective.",
+  "qualifyingFactors": [
+    { "factor": "Promotes E/S characteristics", "assessment": "GHG Scope 1+2 monitoring, safety programmes (LTIR 2.1), and 33% board gender diversity demonstrate active E&S characteristic promotion", "status": "met" },
+    { "factor": "Good governance practices", "assessment": "3/7 independent directors — meets minimum threshold; ESG not linked to remuneration", "status": "partial" },
+    { "factor": "PAI monitoring capability", "assessment": "Scope 1+2 emissions available; Scope 3, water, and pay equity data missing — 4 of 14 mandatory PAI indicators covered", "status": "partial" },
+    { "factor": "Sustainable investment objective", "assessment": "No formal sustainable investment definition or minimum percentage established at fund level", "status": "not_met" },
+    { "factor": "DNSH assessment", "assessment": "No Do No Significant Harm assessment documented for EU Taxonomy manufacturing activities (NACE C28)", "status": "not_met" },
+    { "factor": "SFDR pre-contractual disclosure", "assessment": "Not yet prepared — required before LP close under SFDR Level 2 RTS Article 16", "status": "not_met" }
+  ],
+  "principalAdverseImpacts": [
+    { "indicator": "GHG Emissions (Scope 1+2)", "available": true, "value": "12,500 tCO2e/yr", "gap": "Scope 3 supply chain emissions missing — required for full PAI Statement" },
+    { "indicator": "Carbon Footprint (tCO2e / $M invested)", "available": true, "value": "Est. 173 tCO2e / $M invested", "gap": "Normalised figure requires audited revenue confirmation" },
+    { "indicator": "Fossil Fuel Exposure", "available": false, "value": null, "gap": "Energy mix breakdown required — 12% renewable reported, thermal sources unquantified" },
+    { "indicator": "Board Gender Diversity", "available": true, "value": "33% female board", "gap": "Meets ESRS minimum threshold — compliant" },
+    { "indicator": "Workforce Gender Pay Gap", "available": false, "value": null, "gap": "Not reported — mandatory PAI indicator 12, high-risk for SFDR compliance" },
+    { "indicator": "LTIR (Accident Rate)", "available": true, "value": "2.1 per 200,000 hours", "gap": "Above industry median of 1.2 — adverse impact identified, remediation plan required" },
+    { "indicator": "Anti-corruption Policy", "available": false, "value": null, "gap": "No documented anti-corruption or whistleblower policy — mandatory PAI indicator 15" }
+  ],
+  "upgradePath": {
+    "currentArticle": "Article 8",
+    "nextArticle": "Article 9",
+    "requiredActions": [
+      "Define minimum sustainable investment percentage (typically ≥51%) with EU Taxonomy alignment methodology",
+      "Complete EU Taxonomy DNSH assessment for manufacturing activities (NACE C28) across all 6 environmental objectives",
+      "Implement Scope 3 Category 1 (purchased goods) emissions tracking across Vietnam supply chain",
+      "Conduct gender pay equity analysis across German and Vietnamese operations",
+      "Establish anti-corruption and whistleblower policy meeting ESRS G1-1 requirements",
+      "Link executive remuneration to ESG KPI achievement — required for Article 9 good governance"
+    ],
+    "estimatedTimeToUpgrade": "18–24 months with dedicated ESG programme"
+  },
+  "disclosureRequirements": [
+    { "requirement": "Pre-contractual disclosure (Article 8 website statement)", "status": "missing", "action": "Draft and publish SFDR Article 8 fund disclosure before LP close — SFDR Level 2 RTS Article 16" },
+    { "requirement": "Periodic PAI Statement (14 mandatory indicators)", "status": "partial", "action": "Establish PAI data collection — GHG and LTIR available, 10 mandatory indicators outstanding" },
+    { "requirement": "Remuneration policy ESG alignment", "status": "partial", "action": "Link carried interest to ESG KPI achievement — required for Article 8 good governance criterion" },
+    { "requirement": "EU Taxonomy alignment disclosure", "status": "missing", "action": "Assess proportion of CapEx/OpEx aligned to EU Taxonomy — must be disclosed even if 0%" }
+  ],
+  "lpNarrative": "GreenTech Manufacturing supports an SFDR Article 8 classification — a defensible 'light green' position for European LP mandates. The documented GHG monitoring, safety programmes, and governance structure meet the promotional threshold required by Article 8. For LPs with Article 8 minimum mandates — including most Dutch and Nordic pension funds — this fund is investable today. Upgrading to Article 9 is achievable within 24 months, contingent on Scope 3 data collection and DNSH documentation. We recommend a side-letter committing to the Article 9 upgrade pathway for LPs with dark-green mandates.",
+  "regulatoryRisk": "Low-Medium — Post-Omnibus I (March 2026): CSRD scope raised to 1,000+ employees AND €450M+ turnover. Verify whether GreenTech Mfg meets both thresholds — if so, first mandatory CSRD report covers FY2027 (due 2028), not FY2024/2025 as originally planned. EU Taxonomy simplification (Jan 2026): 10% materiality threshold applies — manufacturing CapEx activities below 10% of total may be excluded, reducing DNSH documentation burden. EUDR: not directly applicable (manufacturing sector, no forest-risk commodities). SFDR 2.0 marketing: ESG Basics classification preserves limited naming rights. No France Vigilance exposure.",
+  "sfdr2": {
+    "category": "ESG Basics",
+    "confidence": "medium",
+    "rationale": "Under SFDR 2.0, GreenTech Manufacturing would migrate from Article 8 to ESG Basics — the baseline tier. While it actively monitors Scope 1+2 emissions and has safety programmes, it cannot demonstrate the ≥70% threshold of investments aligned to a transition pathway (required for Transition category) and lacks the EU Taxonomy alignment needed for Sustainable. The Article 8 'promotes characteristics' framing is eliminated under 2.0 — only the mandatory exclusions (weapons, tobacco, coal, UNGC/OECD) place it above Non-categorised. This is a classification downgrade in optics, but the underlying ESG data quality investment made today directly supports the eventual Transition category pathway.",
+    "exclusionCompliance": {
+      "weapons": true,
+      "tobacco": true,
+      "coal": true,
+      "ungcOecd": "pass"
+    },
+    "threshold70pct": {
+      "met": false,
+      "currentEstimate": "~20–30% — GHG monitoring and safety programmes qualify, but 88% fossil energy mix and absent Scope 3 prevent Transition alignment claim",
+      "gap": "Must implement Scope 3 tracking, credible 1.5°C-aligned GHG reduction plan, and expand renewable energy from 12% toward ≥50% to argue Transition category"
+    },
+    "taxonomyShortcut": {
+      "applicable": false,
+      "taxonomyAlignment": "Estimated <5% — manufacturing CapEx not documented against EU Taxonomy climate mitigation criteria (NACE C28). DNSH assessment absent. Taxonomy shortcut to Sustainable category not available."
+    },
+    "keyChanges": [
+      "Article 8 'promotes E/S characteristics' label is eliminated — no equivalent in SFDR 2.0",
+      "ESG Basics is a weaker signal than Article 8; Nordic LP mandates may require Transition category as minimum",
+      "The 70% binding threshold is entirely new — GreenTech currently fails this gate",
+      "Mandatory exclusions (weapons, tobacco, coal ≥1%) now apply to all categories including baseline"
+    ],
+    "gaps": [
+      "Scope 3 emissions (Category 1 purchased goods) — required to demonstrate transition alignment",
+      "Credible 1.5°C-aligned Science-Based Target — threshold for Transition category",
+      "EU Taxonomy DNSH assessment for NACE C28 — prerequisite for any Taxonomy alignment claim",
+      "Renewable energy scale-up plan — current 12% is incompatible with a Transition narrative",
+      "Gender pay gap disclosure — mandatory PAI indicator under 2.0 across all categories"
+    ],
+    "migrationTimeline": "Begin Scope 3 measurement and SBTi commitment now (2026). Target Transition category readiness by 2028 to align with implementation window. 24-month runway is achievable if Scope 3 and DNSH work begins immediately.",
+    "marketingRisk": {
+      "level": "restricted",
+      "canUseEsgInName": false,
+      "canMakeMarketingClaims": true,
+      "nameRisk": "The name 'GreenTech Manufacturing' contains 'Green' — a sustainability-adjacent term. Under SFDR 2.0, ESG Basics funds have limited marketing rights (baseline exclusions only). 'Green' in the name is permissible at ESG Basics level, but if the fund slips to Non-categorised it would require rebranding. Low immediate name risk; monitor closely.",
+      "implication": "ESG Basics permits basic sustainability claims in marketing but not promotional 'green' positioning. Nordic LP mandates requiring Transition or Sustainable category will no longer accept this fund's marketing materials at face value — a direct capital access risk."
+    },
+    "paiObligations": {
+      "entityLevelRequired": false,
+      "productLevelRequired": false,
+      "flexibility": "As an ESG Basics fund, no product-level PAI reporting is required under SFDR 2.0. This is a compliance burden reduction vs today's Article 8 PAI expectations. However, the GHG and safety data already collected is still valuable for investor transparency and greenwashing defence.",
+      "complianceCostImpact": "Estimated 20-30% reduction in annual SFDR compliance costs. Entity-level PAI statement abolished (currently the most time-intensive obligation). 2-page simplified disclosure replaces current complex RTS templates. EC targets 25% overall reduction — GreenTech is likely to achieve this given its simple entity structure."
+    }
+  }
+}

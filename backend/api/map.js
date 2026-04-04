@@ -32,26 +32,36 @@ const DATA_POINTS = {
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const company = req.body;
+  const { _screen1Result, ...company } = req.body;
   if (!company?.id) return res.status(400).json({ error: 'Request body must include company id' });
+
+  const dataPoint = DATA_POINTS[company.id] ?? {
+    metric: 'Primary ESG Data Point',
+    value: `Sector: ${company.sector}. Revenue: $${((company.revenue ?? 0) / 1_000_000).toFixed(0)}M. Employees: ${company.employees ?? 'unknown'}.`,
+    additionalContext: `${company.geography} operations. Regulatory exposure: ${(company.regulatoryExposure ?? []).join(', ') || 'CSRD, SFDR, TCFD'}.`
+  };
+
+  const { systemPrompt, userPrompt } = buildMapPrompt(company, dataPoint, _screen1Result);
+  const baseMeta = {
+    model: 'claude-sonnet-4-6',
+    tool: mapToolSchema.name,
+    timestamp: new Date().toISOString(),
+    systemPrompt,
+    userPrompt,
+    dataPoint,
+  };
 
   // ── Cache hit ──────────────────────────────────────────────────────────────
   const cached = getCachedResponse(company.id, 'map');
   if (cached) {
     await simulateThinking();
-    return res.json({ ...cached, _source: 'cached' });
+    return res.json({ ...cached, _source: 'cached', _meta: { ...baseMeta, cached: true } });
   }
 
   // ── Live fallback ──────────────────────────────────────────────────────────
-  const dataPoint = DATA_POINTS[company.id];
-  if (!dataPoint) {
-    return res.status(400).json({ error: `No data point defined for company: ${company.id}` });
-  }
-
   try {
-    const { systemPrompt, userPrompt } = buildMapPrompt(company, dataPoint);
     const result = await callWithTool(systemPrompt, userPrompt, mapToolSchema);
-    return res.json({ ...result, _source: 'live' });
+    return res.json({ ...result, _source: 'live', _meta: { ...baseMeta, cached: false } });
   } catch (err) {
     console.error('[/api/map] Live call failed:', err.message);
     return res.status(500).json({ error: 'Framework mapping failed. Check API key and try again.' });

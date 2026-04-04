@@ -6,9 +6,12 @@
 
 import express from 'express';
 import cors from 'cors';
-import analyzeHandler from './api/analyze.js';
-import predictHandler from './api/predict.js';
-import mapHandler from './api/map.js';
+import analyzeHandler       from './api/analyze.js';
+import analyzeStreamHandler from './api/analyzeStream.js';
+import predictHandler       from './api/predict.js';
+import mapHandler           from './api/map.js';
+import sfdrHandler          from './api/sfdr.js';
+import greenwashHandler     from './api/greenwash.js';
 
 const app = express();
 
@@ -33,9 +36,12 @@ app.use(cors({
 app.use(express.json());
 
 // ── ROUTES ───────────────────────────────────────────────────────────────────
-app.post('/api/analyze', analyzeHandler);
-app.post('/api/predict', predictHandler);
-app.post('/api/map',     mapHandler);
+app.post('/api/analyze',        analyzeHandler);
+app.post('/api/analyze/stream', analyzeStreamHandler);
+app.post('/api/predict',        predictHandler);
+app.post('/api/map',            mapHandler);
+app.post('/api/sfdr',           sfdrHandler);
+app.post('/api/greenwash',      greenwashHandler);
 
 app.get('/health', (_, res) =>
   res.json({ status: 'ok', timestamp: new Date().toISOString() })

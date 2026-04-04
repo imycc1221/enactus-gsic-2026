@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import AgentStatus from '../components/AgentStatus.jsx';
-import { COMPANY_MAP } from '../data/companies.js';
+import ReasoningDrawer from '../components/ReasoningDrawer.jsx';
+import RaiPanel from '../components/RaiPanel.jsx';
+import { COMPANY_MAP, getRegScoping } from '../data/companies.js';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
@@ -39,6 +41,7 @@ const FRAMEWORK_META = {
   SASB: { logo: '/images/logos/sasb-logo.png', bg: '#ffffff', abbr: 'US'  },
   EDCI: { logo: '/images/edci-logo.svg',       bg: '#42baba', abbr: 'PE'  },
   IFRS: { flag: 'un',        abbr: 'INT' },
+  HKEX: { flag: 'hk',        abbr: 'HK'  },
 };
 
 function getFrameworkMeta(fw) {
@@ -84,23 +87,35 @@ function Label({ children }) {
   return <div style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#fff', marginBottom: '0.75rem' }}>{children}</div>;
 }
 
-export default function Screen3Map({ companyId }) {
+export default function Screen3Map({ companyId, companyOverride, screen1Result, onResult, runTrigger = 0 }) {
   const [agentStatus, setAgentStatus] = useState('idle');
   const [data,        setData]        = useState(null);
   const [error,       setError]       = useState(null);
+  const [meta,        setMeta]        = useState(null);
   const [expanded,    setExpanded]    = useState(false);
 
-  const company = COMPANY_MAP[companyId];
+  const prevTrigger = useRef(0);
+  useEffect(() => {
+    if (runTrigger > prevTrigger.current) {
+      prevTrigger.current = runTrigger;
+      run();
+    }
+  }, [runTrigger]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const company = companyOverride ?? COMPANY_MAP[companyId];
 
   async function run() {
     setAgentStatus('running'); setData(null); setError(null);
     try {
       const res = await fetch(`${API_BASE}/api/map`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(company)
+        body: JSON.stringify({ ...company, _screen1Result: screen1Result ?? null })
       });
       if (!res.ok) throw new Error(`API returned ${res.status}`);
-      setData(await res.json());
+      const result = await res.json();
+      setData(result);
+      setMeta(result._meta ?? null);
+      onResult?.(result);
       setAgentStatus('complete');
     } catch (err) { setError(err.message); setAgentStatus('idle'); }
   }
@@ -145,6 +160,25 @@ export default function Screen3Map({ companyId }) {
       </div>
 
       <AgentStatus steps={STEPS} status={agentStatus} />
+
+      {meta && agentStatus === 'complete' && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.625rem', color: '#333', marginBottom: '1rem' }}>
+          <span style={{ width: 5, height: 5, borderRadius: '50%', background: meta.cached ? '#F0A500' : '#00C896', flexShrink: 0 }} />
+          {meta.cached ? 'Cached result' : 'Live result'} · Generated {new Date(meta.generatedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
+          {meta.cached && (
+            <button onClick={run} style={{ background: 'none', border: 'none', color: '#555', fontSize: '0.625rem', cursor: 'pointer', textDecoration: 'underline', padding: 0, marginLeft: '0.25rem' }}>
+              Re-run live →
+            </button>
+          )}
+        </div>
+      )}
+
+      <RaiPanel />
+      {meta && (
+        <div style={{ marginBottom: '1rem' }}>
+          <ReasoningDrawer meta={meta} />
+        </div>
+      )}
 
       {error && (
         <div style={{ background: '#FF1F5A10', border: '1px solid #FF1F5A40', borderRadius: '0.25rem', padding: '1rem', color: '#FF1F5A', fontSize: '0.875rem', marginBottom: '1.5rem' }}>
@@ -226,6 +260,49 @@ export default function Screen3Map({ companyId }) {
             </div>
           </div>
 
+          {/* Regulatory Obligations Split — Mandatory vs De Facto */}
+          {(() => {
+            const scoping = getRegScoping(company);
+            const urgencyColor = { critical: '#FF1F5A', high: '#FF8C00', medium: '#F0A500' };
+            return (
+              <div className="fade-up fade-up-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                <div style={{ background: '#0D0005', border: '1px solid #FF1F5A25', borderRadius: '0.25rem', padding: '0.875rem' }}>
+                  <div style={{ fontSize: '0.5625rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#FF1F5A', marginBottom: '0.5rem' }}>
+                    Legally Mandatory
+                  </div>
+                  {scoping.mandatory.length === 0 ? (
+                    <div style={{ fontSize: '0.6875rem', color: '#444', fontStyle: 'italic' }}>No mandatory obligations at current company size (post-Omnibus I)</div>
+                  ) : scoping.mandatory.map((item, i) => (
+                    <div key={i} style={{ display: 'flex', gap: '0.5rem', alignItems: 'flex-start', padding: '0.375rem 0', borderTop: i > 0 ? '1px solid #1A1A1A' : 'none' }}>
+                      <span style={{ fontSize: '0.5rem', fontWeight: 700, color: urgencyColor[item.urgency] ?? '#F0A500', background: `${urgencyColor[item.urgency] ?? '#F0A500'}20`, border: `1px solid ${urgencyColor[item.urgency] ?? '#F0A500'}40`, borderRadius: '2px', padding: '0.1rem 0.3rem', textTransform: 'uppercase', letterSpacing: '0.06em', flexShrink: 0, marginTop: '0.15rem' }}>{item.urgency}</span>
+                      <div>
+                        <div style={{ fontSize: '0.6875rem', fontWeight: 600, color: '#fff', marginBottom: '0.15rem' }}>{item.label}</div>
+                        <div style={{ fontSize: '0.5625rem', color: '#555', lineHeight: 1.5 }}>{item.detail}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div style={{ background: '#040D14', border: '1px solid #3B82F625', borderRadius: '0.25rem', padding: '0.875rem' }}>
+                  <div style={{ fontSize: '0.5625rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#3B82F6', marginBottom: '0.5rem' }}>
+                    De Facto (LP Pressure + SFDR 2.0)
+                  </div>
+                  {scoping.deFacto.map((item, i) => (
+                    <div key={i} style={{ display: 'flex', gap: '0.5rem', alignItems: 'flex-start', padding: '0.375rem 0', borderTop: i > 0 ? '1px solid #1A1A1A' : 'none' }}>
+                      <span style={{ fontSize: '0.875rem', flexShrink: 0 }}>→</span>
+                      <div>
+                        <div style={{ fontSize: '0.6875rem', fontWeight: 600, color: '#c8c8c4', marginBottom: '0.15rem' }}>{item.label}</div>
+                        <div style={{ fontSize: '0.5625rem', color: '#444', lineHeight: 1.5 }}>{item.detail}</div>
+                      </div>
+                    </div>
+                  ))}
+                  <div style={{ marginTop: '0.5rem', paddingTop: '0.5rem', borderTop: '1px solid #1A1A1A', fontSize: '0.5rem', color: '#2E3E50', fontStyle: 'italic' }}>
+                    De facto obligations persist even when no mandatory reporting threshold is met — LP mandates and SFDR 2.0 do not have employee/revenue exemptions.
+                  </div>
+                </div>
+              </div>
+            );
+          })()}
+
           {/* Input data point */}
           <Card className="fade-up fade-up-2">
             <Label>Input Data Point</Label>
@@ -234,6 +311,37 @@ export default function Screen3Map({ companyId }) {
               {data.inputSummary && <p style={{ fontSize: '0.75rem', color: '#787878', lineHeight: 1.5 }}>{data.inputSummary}</p>}
             </div>
           </Card>
+
+          {/* One Input → N Outputs: Cross-Framework Field Name Crosswalk */}
+          {data.mappings?.length > 0 && (
+            <div className="fade-up fade-up-3" style={{ background: '#080808', border: '1px solid #2E2E2E', borderRadius: '0.25rem', overflow: 'hidden' }}>
+              <div style={{ padding: '0.625rem 1rem', borderBottom: '1px solid #1A1A1A', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ fontSize: '0.6875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#fff' }}>Cross-Framework Field Crosswalk</div>
+                <div style={{ fontSize: '0.5625rem', color: '#333' }}>One data submission → exact field name per framework — drop directly into regulatory filing</div>
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '6rem 1fr 1fr', fontSize: '0.5625rem' }}>
+                {/* header */}
+                {['Framework', 'Exact Disclosure Field', 'Reporting Format'].map((h, i) => (
+                  <div key={h} style={{ padding: '0.4rem 0.75rem', background: '#0D0D0D', borderRight: i < 2 ? '1px solid #1A1A1A' : 'none', fontWeight: 700, color: '#444', textTransform: 'uppercase', letterSpacing: '0.07em' }}>{h}</div>
+                ))}
+                {data.mappings.map((m, i) => {
+                  const s = STATUS_STYLE[m.status] ?? STATUS_STYLE.partial;
+                  return [
+                    <div key={`fw-${i}`} style={{ padding: '0.5rem 0.75rem', borderRight: '1px solid #1A1A1A', borderTop: '1px solid #141414', display: 'flex', alignItems: 'flex-start', gap: '0.375rem' }}>
+                      <span style={{ width: 5, height: 5, borderRadius: '50%', background: s.text, flexShrink: 0, marginTop: '0.2rem' }} />
+                      <span style={{ fontWeight: 700, color: '#c8c8c4', lineHeight: 1.5 }}>{m.framework}</span>
+                    </div>,
+                    <div key={`dp-${i}`} style={{ padding: '0.5rem 0.75rem', borderRight: '1px solid #1A1A1A', borderTop: '1px solid #141414', color: '#787878', lineHeight: 1.55 }}>
+                      {m.standard?.split('+')[0]?.replace(/\(.*?\)/g, '').trim() ?? m.dataPoint?.split(';')[0]?.trim()}
+                    </div>,
+                    <div key={`fmt-${i}`} style={{ padding: '0.5rem 0.75rem', borderTop: '1px solid #141414', color: '#444', lineHeight: 1.55 }}>
+                      {m.format?.split(';')[0]?.split('—')[0]?.trim() ?? '—'}
+                    </div>,
+                  ];
+                })}
+              </div>
+            </div>
+          )}
 
           {/* Framework mapping grid */}
           <div className="fade-up fade-up-3">
@@ -355,7 +463,7 @@ export default function Screen3Map({ companyId }) {
             Click <strong style={{ color: '#fff', fontWeight: 500 }}>Run Framework Mapper</strong> to generate automated cross-framework compliance
           </p>
           <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', flexWrap: 'wrap' }}>
-            {['CSRD / ESRS', 'SFDR', 'TCFD', 'GRI', 'SASB', 'EDCI'].map(fw => (
+            {['CSRD / ESRS', 'SFDR', 'TCFD', 'GRI', 'SASB', 'EDCI', 'HKEX / MAS'].map(fw => (
               <div key={fw} style={{ fontSize: '0.6875rem', fontWeight: 700, color: '#AC00EF', textTransform: 'uppercase', letterSpacing: '0.1em' }}>{fw}</div>
             ))}
           </div>

@@ -1,0 +1,47 @@
+{
+  "riskLevel": "medium",
+  "riskScore": 44,
+  "overallAssessment": "GreenTech Manufacturing presents moderate greenwashing risk. The company tracks Scope 1+2 emissions (12,500 tCO₂e) and reports a 12% renewable energy figure — but positions itself as a 'sustainable manufacturer' without measuring Scope 3, which for a manufacturer with Vietnamese supply chain operations likely represents 70-80% of total emissions. This is not fabricated disclosure; it is systematically incomplete disclosure. In the post-CSRD era, incomplete boundary definition carries regulatory exposure equivalent to misrepresentation. The 12% renewable energy claim is also uncertified — no Guarantees of Origin (GO) or REC documentation is referenced. Three claims require immediate remediation before CSRD first reporting cycle (FY2026, Germany).",
+  "flaggedClaims": [
+    {
+      "claim": "Positioned as 'sustainable manufacturer' in company description and LP materials",
+      "claimType": "emissions",
+      "evidenceGap": "Scope 3 emissions (upstream purchased goods, Vietnam supply chain) not measured or disclosed. Scope 3 typically accounts for 70-80% of manufacturing sector total. Claiming sustainable manufacturing without Scope 3 is materially misleading under CSRD ESRS E1-6 and constitutes selective disclosure.",
+      "severity": "material",
+      "mitigation": "Commission Scope 3 Category 1 (purchased goods) measurement within 6 months. Revise LP materials to specify 'Scope 1+2 verified, Scope 3 measurement in progress — results expected Q4 2025.'"
+    },
+    {
+      "claim": "12% renewable energy reported as sustainability credential",
+      "claimType": "emissions",
+      "evidenceGap": "No Guarantee of Origin (GO) or Renewable Energy Certificate (REC) documentation referenced. No improvement target or timeline for increasing renewable share. Static figure without a pathway is commonly flagged by ESG rating agencies (MSCI, Sustainalytics) as low-quality disclosure.",
+      "severity": "moderate",
+      "mitigation": "Procure Guarantees of Origin for German operations. Set a 50% renewable energy target by 2028 aligned with RE100 or a corporate PPA. Document and publish."
+    },
+    {
+      "claim": "Safety programme with LTIR of 2.1 per 200,000 hours",
+      "claimType": "social",
+      "evidenceGap": "LTIR of 2.1 is above the manufacturing sector median of 1.2. Reporting a 'safety programme' while performing below sector average without contextualisation or an improvement target may be viewed as selective disclosure under ESRS S1-14.",
+      "severity": "minor",
+      "mitigation": "Add sector benchmark context to LTIR disclosure. Publish a safety improvement roadmap targeting LTIR <1.0 by FY2027."
+    }
+  ],
+  "redFlags": [
+    "Scope 3 emissions (est. 35,000–50,000 tCO₂e) likely exceed Scope 1+2 (12,500 tCO₂e) by 3–4× — entirely absent from disclosure",
+    "Vietnam supply chain has zero audit coverage — acute social risk gap for a company promoting labour standards",
+    "No science-based emissions reduction target — GHG monitoring without a reduction pathway is disclosure without ambition",
+    "Gender pay equity not reported — mandatory PAI indicator 12 under SFDR Level 2 RTS"
+  ],
+  "positiveIndicators": [
+    "Scope 1+2 GHG data independently verifiable — solid baseline for future improvement",
+    "Board gender diversity (33%) exceeds many industrial peers",
+    "LTIR tracking demonstrates safety monitoring infrastructure exists — data quality is strong even if performance lags"
+  ],
+  "recommendedDisclosures": [
+    "Scope 3 Category 1 (purchased goods & services) — commission measurement within 6 months",
+    "Guarantee of Origin documentation for 12% renewable energy claim — procure within 3 months",
+    "Science-Based Target — commit to SBTi Corporate Standard pathway within 12 months",
+    "Vietnam tier-1 supplier social audit — scope and commence within 18 months",
+    "Gender pay equity analysis across German and Vietnamese operations — disclose by CSRD first filing (FY2026)"
+  ],
+  "regulatoryExposure": "HIGH — CSRD mandatory reporter from FY2026 (German HQ, >250 employees threshold). ESRS E1-6 requires Scope 3 disclosure. Non-compliance creates regulatory penalty risk (up to 4% of EU-revenue) and LP mandate exclusion risk from Article 8/9 funds that require PAI statement."
+}

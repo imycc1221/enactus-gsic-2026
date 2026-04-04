@@ -1,0 +1,90 @@
+{
+  "recommendedArticle": "Article 8",
+  "confidence": "high",
+  "rationale": "CleanEnergy SaaS demonstrates compelling Article 8 credentials — 78% renewable energy, 42% female workforce, 50% board gender diversity, and a product that directly enables renewable energy adoption by utilities. The business model is strongly Article 9-aligned in substance, but the absence of a formal sustainable investment objective, minimum investment percentage, and DNSH documentation prevents Article 9 classification at this stage. This is the strongest Article 8 candidate in the portfolio with the shortest Article 9 upgrade pathway.",
+  "qualifyingFactors": [
+    { "factor": "Promotes E/S characteristics", "assessment": "78% renewable energy, climate-enabling SaaS product, best-in-class D&I (42% female, 50% board) — strongest promotional evidence in portfolio", "status": "met" },
+    { "factor": "Good governance practices", "assessment": "2/5 independent directors — borderline; eNPS 42 and 8.2% turnover indicate strong governance culture", "status": "partial" },
+    { "factor": "PAI monitoring capability", "assessment": "Scope 1+2 available (1,010 tCO2e — top quartile SaaS); Scope 3 value chain and pay gap missing", "status": "partial" },
+    { "factor": "Sustainable investment objective", "assessment": "Business model is sustainability-enabling but no formal fund-level sustainable investment objective or minimum % defined", "status": "not_met" },
+    { "factor": "DNSH assessment", "assessment": "No Do No Significant Harm assessment completed — required for Article 9; digital infrastructure energy use is primary consideration", "status": "not_met" },
+    { "factor": "SFDR pre-contractual disclosure", "assessment": "Not prepared — required before first LP close; parallel UK SDR disclosure also needed for Nordic LP base", "status": "not_met" }
+  ],
+  "principalAdverseImpacts": [
+    { "indicator": "GHG Emissions (Scope 1+2)", "available": true, "value": "1,010 tCO2e/yr", "gap": "Exceptionally low — top quartile SaaS sector performance; Scope 3 (cloud infrastructure) missing" },
+    { "indicator": "Carbon Footprint (tCO2e / $M invested)", "available": true, "value": "Est. 52 tCO2e / $M invested", "gap": "Best-in-class for software sector — strong PAI performance" },
+    { "indicator": "Renewable Energy Usage", "available": true, "value": "78% of energy consumption", "gap": "Pathway to 100% required for credible Article 9 alignment" },
+    { "indicator": "Board Gender Diversity", "available": true, "value": "50% female board", "gap": "Exceeds ESRS 40% threshold — fully compliant" },
+    { "indicator": "Workforce Gender Pay Gap", "available": false, "value": null, "gap": "Not reported — mandatory PAI indicator 12; high risk for UK SDR compliance" },
+    { "indicator": "Employee Engagement (eNPS)", "available": true, "value": "eNPS 42, 8.2% voluntary turnover", "gap": "Top quartile for SaaS sector — strong social indicator" },
+    { "indicator": "Anti-corruption Policy", "available": false, "value": null, "gap": "Not documented — required for ESRS G1-1 and SFDR PAI indicator 15" }
+  ],
+  "upgradePath": {
+    "currentArticle": "Article 8",
+    "nextArticle": "Article 9",
+    "requiredActions": [
+      "Define fund-level sustainable investment objective with measurable KPIs (e.g. MWh of renewable capacity enabled per year)",
+      "Establish minimum sustainable investment percentage (≥80% recommended — aligned to business model)",
+      "Complete DNSH assessment for digital infrastructure activities — EU Taxonomy ICT sector criteria",
+      "Document gender pay equity analysis across UK and Nordic entities",
+      "Develop Impact Measurement & Management framework aligned to IMP five dimensions of impact",
+      "Commission third-party SFDR Article 9 readiness audit before next fund close"
+    ],
+    "estimatedTimeToUpgrade": "12–16 months — shortest upgrade path in portfolio"
+  },
+  "disclosureRequirements": [
+    { "requirement": "SFDR Article 8 pre-contractual disclosure", "status": "missing", "action": "Publish Article 8 fund disclosure — deadline: before first LP close" },
+    { "requirement": "UK SDR Consumer-Facing Disclosure", "status": "missing", "action": "Prepare parallel UK SDR disclosure for UK LP base — different regime post-Brexit, cannot reuse SFDR document" },
+    { "requirement": "Periodic PAI reporting (14 mandatory indicators)", "status": "partial", "action": "GHG and D&I data available; expand to full mandatory indicator set — pay gap and anti-corruption urgent" },
+    { "requirement": "Product contribution disclosure", "status": "partial", "action": "Quantify MWh of renewable capacity enabled by the SaaS platform annually — required for Article 9 impact claim" }
+  ],
+  "lpNarrative": "CleanEnergy SaaS is a strong Article 8 fund with a credible near-term pathway to Article 9. The portfolio company's renewable-enabling business model, minimal carbon footprint (52 tCO2e/$M — best-in-class), and best-in-class D&I metrics satisfy most Article 9 substance requirements — only the formal objective definition and DNSH documentation are outstanding. For LPs with Article 8 mandates, this is a high-conviction allocation. For Article 9-mandated LPs — including PFZW (€33.5B AUM), AP Pension, and PensionDanmark — we recommend a side-letter committing to Article 9 upgrade within 16 months of close.",
+  "regulatoryRisk": "Low — Post-Omnibus I (March 2026): CSRD scope raised to 1,000+ employees AND €450M+ turnover. With 95 employees, CleanEnergy SaaS is almost certainly out of mandatory CSRD scope. This reduces the compliance burden significantly but also removes the forced disclosure framework that would have strengthened LP transparency. UK SDR creates a parallel compliance obligation for the Nordic LP base — dual SFDR/SDR disclosure strategy still required as the two regimes are not mutually compatible. SFDR 2.0 Transition category: full marketing rights, 'CleanEnergy' brand name preserved. EUDR not applicable (SaaS sector, no commodity exposure). ISSB IFRS S2 Scope 3 Cat.15 amendment (effective 2027) may simplify cloud infrastructure emissions reporting.",
+  "sfdr2": {
+    "category": "Transition",
+    "confidence": "high",
+    "rationale": "CleanEnergy SaaS is the portfolio's strongest SFDR 2.0 candidate — and critically, it is the only company that benefits from a classification upgrade relative to SFDR 1.0. Under the new system, Article 8 is eliminated, but CleanEnergy's 78% renewable energy, climate-enabling SaaS product, and demonstrably low carbon footprint (52 tCO2e/$M) position it squarely in the Transition category. The ≥70% threshold is achievable: the SaaS platform itself drives renewable energy adoption across utility clients, meaning a high proportion of the fund's invested capital can be argued to be transitioning economic activities. A formal transition plan and Scope 3 (cloud infrastructure) measurement would cement this. The Sustainable category is a stretch at this stage — EU Taxonomy ICT alignment documentation is absent.",
+    "exclusionCompliance": {
+      "weapons": true,
+      "tobacco": true,
+      "coal": true,
+      "ungcOecd": "pass"
+    },
+    "threshold70pct": {
+      "met": true,
+      "currentEstimate": "~75–80% — core SaaS product directly enables renewable energy deployment; 78% renewable operations; top-quartile emissions intensity all support Transition threshold claim",
+      "gap": "Formal transition plan required documenting how invested capital drives 1.5°C-aligned economic transition. Scope 3 cloud infrastructure emissions must be measured to complete the picture."
+    },
+    "taxonomyShortcut": {
+      "applicable": false,
+      "taxonomyAlignment": "Estimated 10–15% — EU Taxonomy ICT sector criteria (climate adaptation/mitigation) potentially applicable to the renewable optimisation SaaS. Below ≥15% Taxonomy shortcut for Sustainable — but close. DNSH documentation would unlock the shortcut."
+    },
+    "keyChanges": [
+      "Article 8 is eliminated — CleanEnergy migrates UP to Transition, not down to ESG Basics",
+      "This is the only portfolio company that improves its classification position under SFDR 2.0",
+      "The 70% threshold is achievable given the climate-enabling business model — but must be formally documented",
+      "Simplified 2-page disclosure replaces current complex pre-contractual template — reduces compliance burden"
+    ],
+    "gaps": [
+      "Formal transition plan aligned to 1.5°C pathway — required for Transition category credibility",
+      "Scope 3 cloud infrastructure emissions — completes the GHG picture for threshold documentation",
+      "EU Taxonomy DNSH assessment for ICT activities — would unlock Taxonomy shortcut toward Sustainable",
+      "Gender pay gap disclosure — mandatory across all SFDR 2.0 categories",
+      "Anti-corruption policy — required PAI indicator under 2.0 baseline"
+    ],
+    "migrationTimeline": "CleanEnergy is 2.0-ready with 6–9 months of focused work. Draft the transition plan now (2026), complete DNSH assessment, and file for Transition category at implementation (2028). This is a competitive advantage — most peers will be fighting to avoid Non-categorised.",
+    "marketingRisk": {
+      "level": "safe",
+      "canUseEsgInName": true,
+      "canMakeMarketingClaims": true,
+      "nameRisk": "'CleanEnergy SaaS' contains 'Clean' — a sustainability term. Under SFDR 2.0, Transition category funds have FULL marketing rights including ESG/sustainability terms in the fund name. The 'CleanEnergy' brand is not only preserved but legitimised under the new regime. No rebranding risk.",
+      "implication": "CleanEnergy is one of the few funds that gains marketing rights under SFDR 2.0 while peers lose them. Full sustainability claims in marketing documents and fund name permitted. This creates a competitive differentiation advantage in LP fundraising — Transition-category funds will be the preferred vehicle for climate-focused LPs who previously only accepted Article 9."
+    },
+    "paiObligations": {
+      "entityLevelRequired": false,
+      "productLevelRequired": true,
+      "flexibility": "As a Transition fund, product-level PAI reporting is required — but with a critical advantage: CleanEnergy is NOT restricted to Annex I indicators. It can use custom material indicators relevant to its business model, such as MWh of renewable capacity enabled by the SaaS platform, customer utility decarbonisation rate, or grid emissions intensity of managed assets. This allows a more meaningful and differentiated impact narrative than the generic 14-indicator list.",
+      "complianceCostImpact": "Mixed impact: entity-level PAI statement abolished (saves ~€30-50K annually), but product-level PAI with custom indicators requires new measurement infrastructure. Net effect: approximately cost-neutral in year 1, then 15-20% savings from simplified 2-page disclosure template vs current RTS format. The custom indicator flexibility is a quality improvement, not just cost reduction."
+    }
+  }
+}

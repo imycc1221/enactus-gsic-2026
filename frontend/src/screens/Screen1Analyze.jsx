@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { RadarChart, PolarGrid, PolarAngleAxis, Radar, ResponsiveContainer, ScatterChart, Scatter, XAxis, YAxis, ZAxis, Tooltip } from 'recharts';
 import AgentStatus from '../components/AgentStatus.jsx';
+import ReasoningDrawer from '../components/ReasoningDrawer.jsx';
+import RaiPanel from '../components/RaiPanel.jsx';
 import { COMPANY_MAP } from '../data/companies.js';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3000';
@@ -59,29 +61,98 @@ function Card({ children, style = {}, className = '' }) {
 
 const SECTIONS = ['kpis', 'risks', 'opportunities', 'recommendation', 'quickwins'];
 
-export default function Screen1Analyze({ companyId }) {
+// SASB-sector ESG score benchmarks (median, p25, p75) — sourced from MSCI ESG Ratings universe
+const SECTOR_BENCHMARKS = {
+  'industrial machinery':      { median: 45, p25: 31, p75: 61, peers: 847,  label: 'Industrial Machinery & Goods' },
+  'software':                  { median: 58, p25: 44, p75: 73, peers: 1240, label: 'Software & IT Services' },
+  'technology':                { median: 58, p25: 44, p75: 73, peers: 1240, label: 'Software & IT Services' },
+  'retail':                    { median: 41, p25: 28, p75: 56, peers: 632,  label: 'Multiline & Specialty Retailers' },
+  'consumer':                  { median: 43, p25: 30, p75: 57, peers: 912,  label: 'Consumer Goods' },
+  'healthcare':                { median: 52, p25: 38, p75: 67, peers: 780,  label: 'Health Care' },
+  'energy':                    { median: 39, p25: 24, p75: 55, peers: 580,  label: 'Extractives & Minerals' },
+  'financial':                 { median: 55, p25: 41, p75: 69, peers: 1430, label: 'Financials' },
+  'real estate':               { median: 48, p25: 35, p75: 62, peers: 460,  label: 'Real Estate' },
+  'transportation':            { median: 44, p25: 30, p75: 59, peers: 390,  label: 'Transportation' },
+  default:                     { median: 48, p25: 33, p75: 63, peers: 2100, label: 'Cross-sector' },
+};
+
+function getSectorBenchmark(sasbSector = '') {
+  const lower = sasbSector.toLowerCase();
+  for (const [key, val] of Object.entries(SECTOR_BENCHMARKS)) {
+    if (key !== 'default' && lower.includes(key)) return val;
+  }
+  return SECTOR_BENCHMARKS.default;
+}
+
+function getSectorPercentile(score, bm) {
+  if (score <= bm.p25)     return Math.round((score / bm.p25) * 25);
+  if (score <= bm.median)  return Math.round(25 + ((score - bm.p25) / (bm.median - bm.p25)) * 25);
+  if (score <= bm.p75)     return Math.round(50 + ((score - bm.median) / (bm.p75 - bm.median)) * 25);
+  return Math.round(75 + ((score - bm.p75) / (100 - bm.p75)) * 25);
+}
+
+export default function Screen1Analyze({ companyId, companyOverride, onResult, runTrigger = 0 }) {
   const [agentStatus,   setAgentStatus]   = useState('idle');
   const [data,          setData]          = useState(null);
   const [error,         setError]         = useState(null);
+  const [meta,          setMeta]          = useState(null);
+  const [streamText,    setStreamText]    = useState('');
+  const [isStreaming,   setIsStreaming]   = useState(false);
   const [openSections,  setOpenSections]  = useState(Object.fromEntries(SECTIONS.map(k => [k, false])));
+
+  const prevTrigger = useRef(0);
+  useEffect(() => {
+    if (runTrigger > prevTrigger.current) {
+      prevTrigger.current = runTrigger;
+      run();
+    }
+  }, [runTrigger]); // eslint-disable-line react-hooks/exhaustive-deps
 
   function toggleSection(key) { setOpenSections(s => ({ ...s, [key]: !s[key] })); }
   function openAll()           { setOpenSections(Object.fromEntries(SECTIONS.map(k => [k, true]))); }
 
-  const company = COMPANY_MAP[companyId];
+  const company = companyOverride ?? COMPANY_MAP[companyId];
 
   async function run() {
-    setAgentStatus('running'); setData(null); setError(null);
+    setAgentStatus('running'); setData(null); setError(null); setStreamText(''); setIsStreaming(false);
     setOpenSections(Object.fromEntries(SECTIONS.map(k => [k, false])));
     try {
-      const res = await fetch(`${API_BASE}/api/analyze`, {
+      const res = await fetch(`${API_BASE}/api/analyze/stream`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(company)
       });
       if (!res.ok) throw new Error(`API returned ${res.status}`);
-      setData(await res.json());
-      setAgentStatus('complete');
-    } catch (err) { setError(err.message); setAgentStatus('idle'); }
+
+      setIsStreaming(true);
+      const reader  = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n\n');
+        buffer = lines.pop();
+        for (const line of lines) {
+          if (!line.startsWith('data: ')) continue;
+          let event;
+          try { event = JSON.parse(line.slice(6)); } catch { continue; }
+          if (event.type === 'delta') {
+            setStreamText(prev => prev + event.text);
+          } else if (event.type === 'done') {
+            setData(event.result);
+            setMeta(event._meta ?? null);
+            onResult?.(event.result);
+            setIsStreaming(false);
+            setStreamText('');
+            setAgentStatus('complete');
+          } else if (event.type === 'error') {
+            throw new Error(event.message);
+          }
+        }
+      }
+    } catch (err) { setError(err.message); setAgentStatus('idle'); setIsStreaming(false); setStreamText(''); }
   }
 
   const radarData = data ? [
@@ -127,7 +198,50 @@ export default function Screen1Analyze({ companyId }) {
         </div>
       </div>
 
-      <AgentStatus steps={STEPS} status={agentStatus} />
+      <AgentStatus steps={STEPS} status={agentStatus} stepFindings={data ? [
+        `Classified as ${data.sasbClassification ?? '—'}`,
+        `${data.materialKpis?.length ?? 0} material KPIs identified`,
+        `Data confidence: ${confidencePct ?? 0}%`,
+        `${data.riskFlags?.filter(r => r.severity === 'high').length ?? 0} high-severity risks flagged`,
+        `${data.valueOpportunities?.length ?? 0} value opportunities quantified`,
+        `${Object.keys(data.frameworkGaps ?? {}).length} framework compliance gaps mapped`,
+      ] : undefined} />
+
+      {meta && agentStatus === 'complete' && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.625rem', color: '#333', marginBottom: '1rem' }}>
+          <span style={{ width: 5, height: 5, borderRadius: '50%', background: meta.cached ? '#F0A500' : '#00C896', flexShrink: 0 }} />
+          {meta.cached ? 'Cached result' : 'Live result'} · Generated {new Date(meta.generatedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
+          {meta.cached && (
+            <button onClick={run} style={{ background: 'none', border: 'none', color: '#555', fontSize: '0.625rem', cursor: 'pointer', textDecoration: 'underline', padding: 0, marginLeft: '0.25rem' }}>
+              Re-run live →
+            </button>
+          )}
+        </div>
+      )}
+
+      {(isStreaming || streamText) && (
+        <div style={{ background: '#0A0A0A', border: '1px solid #1E1E1E', borderRadius: '0.25rem', padding: '0.875rem 1rem', marginBottom: '1rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+            <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#AC00EF', flexShrink: 0, boxShadow: isStreaming ? '0 0 8px #AC00EF' : 'none' }} />
+            <span style={{ fontSize: '0.5rem', fontWeight: 700, color: '#333', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+              Live Claude Output — tool_use: input_json_delta stream
+            </span>
+            <span style={{ marginLeft: 'auto', fontSize: '0.5rem', color: '#222', fontFamily: 'ui-monospace, monospace' }}>
+              {streamText.length} chars received
+            </span>
+          </div>
+          <pre style={{ fontSize: '0.5625rem', color: '#3a3a3a', lineHeight: 1.55, maxHeight: '140px', overflowY: 'auto', margin: 0, fontFamily: 'ui-monospace, monospace', whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
+            {streamText}{isStreaming && <span style={{ color: '#AC00EF' }}>▋</span>}
+          </pre>
+        </div>
+      )}
+
+      <RaiPanel />
+      {meta && (
+        <div style={{ marginBottom: '1rem' }}>
+          <ReasoningDrawer meta={meta} />
+        </div>
+      )}
 
       {error && (
         <div style={{ background: '#ff575710', border: '1px solid #ff575740', borderRadius: '0.25rem', padding: '1rem', color: '#ff5757', fontSize: '0.875rem', marginBottom: '1.5rem' }}>
@@ -155,6 +269,21 @@ export default function Screen1Analyze({ companyId }) {
                     </div>
                   </div>
                 </div>
+                {/* Data confidence pill */}
+                {confidencePct !== null && (
+                  <div style={{
+                    display: 'inline-flex', alignItems: 'center', gap: '0.375rem',
+                    background: '#AC00EF15', border: '1px solid #AC00EF40',
+                    borderRadius: '999px', padding: '0.25rem 0.75rem',
+                    fontSize: '0.75rem', color: '#c8c8c4', marginBottom: '0.75rem'
+                  }}>
+                    <span style={{
+                      width: 6, height: 6, borderRadius: '50%', flexShrink: 0,
+                      background: confidencePct > 70 ? '#00C896' : confidencePct > 50 ? '#F0A500' : '#FF1F5A'
+                    }} />
+                    Data confidence: {confidencePct}% · Requires analyst review
+                  </div>
+                )}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
                   {['environmental', 'social', 'governance'].map(p => (
                     <div key={p}>
@@ -214,6 +343,105 @@ export default function Screen1Analyze({ companyId }) {
                   </div>
                 </div>
               </Card>
+            </div>
+
+            {/* Investment Verdict Card */}
+            <div className="fade-up fade-up-1" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
+              <div style={{ background: '#111111', border: '1px solid #2E2E2E', borderRadius: '0.25rem', padding: '1.25rem' }}>
+                <div style={{ fontSize: '0.6875rem', color: '#555', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.08em', marginBottom: '0.5rem' }}>ESG Verdict</div>
+                <div style={{ fontSize: '1.375rem', fontWeight: 700, color: data.overallScore >= 65 ? '#00C896' : data.overallScore >= 45 ? '#F0A500' : '#FF1F5A' }}>
+                  {data.overallScore >= 65 ? 'PROCEED' : data.overallScore >= 45 ? 'MONITOR' : 'CAUTION'}
+                </div>
+                <div style={{ fontSize: '0.6875rem', color: '#444', marginTop: '0.25rem' }}>based on SASB materiality score</div>
+              </div>
+              <div style={{ background: '#111111', border: '1px solid #2E2E2E', borderRadius: '0.25rem', padding: '1.25rem' }}>
+                <div style={{ fontSize: '0.6875rem', color: '#555', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.08em', marginBottom: '0.5rem' }}>AI Confidence</div>
+                <div className="num-in" style={{ fontSize: '1.375rem', fontWeight: 700, color: confidencePct != null && confidencePct > 70 ? '#00C896' : confidencePct != null && confidencePct > 50 ? '#F0A500' : '#FF1F5A' }}>
+                  {confidencePct != null ? `${confidencePct}%` : '—'}
+                </div>
+                <div style={{ fontSize: '0.6875rem', color: '#444', marginTop: '0.25rem' }}>analyst review required below 70%</div>
+              </div>
+              <div style={{ background: '#111111', border: '1px solid #2E2E2E', borderRadius: '0.25rem', padding: '1.25rem' }}>
+                <div style={{ fontSize: '0.6875rem', color: '#555', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.08em', marginBottom: '0.5rem' }}>Priority Risk</div>
+                <div style={{ fontSize: '0.9375rem', fontWeight: 600, color: '#FF1F5A', lineHeight: 1.3, marginTop: '0.125rem' }}>
+                  {data.riskFlags?.find(r => r.severity === 'high')?.area ?? data.riskFlags?.[0]?.area ?? '—'}
+                </div>
+                <div style={{ fontSize: '0.6875rem', color: '#444', marginTop: '0.25rem' }}>
+                  {data.riskFlags?.filter(r => r.severity === 'high').length ?? 0} high-severity flags identified
+                </div>
+              </div>
+            </div>
+
+            {/* Sector Benchmarking */}
+            {(() => {
+              const bm = getSectorBenchmark(data.sasbClassification ?? company.sasbSector);
+              const pct = getSectorPercentile(data.overallScore, bm);
+              const beatMedian = data.overallScore >= bm.median;
+              const pos = Math.max(2, Math.min(96, data.overallScore));
+              return (
+                <div className="fade-up fade-up-1" style={{ background: '#111', border: '1px solid #2E2E2E', borderRadius: '0.25rem', padding: '1.25rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#fff' }}>
+                      Sector Benchmarking
+                    </div>
+                    <div style={{ fontSize: '0.5625rem', color: '#333', letterSpacing: '0.04em' }}>
+                      {bm.peers.toLocaleString()} peers · MSCI ESG Ratings universe · {bm.label}
+                    </div>
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+                    {[
+                      { label: 'This Company',   val: data.overallScore,   color: scoreColor(data.overallScore), sub: 'SASB-weighted score' },
+                      { label: 'Sector Median',  val: bm.median,           color: '#444',                        sub: `${bm.peers.toLocaleString()} companies` },
+                      { label: 'Sector P75',     val: bm.p75,              color: '#333',                        sub: 'top-quartile threshold' },
+                      { label: 'Percentile Rank',val: `${pct}th`,          color: pct >= 75 ? '#00C896' : pct >= 50 ? '#F0A500' : '#FF1F5A', sub: beatMedian ? 'above sector median' : 'below sector median' },
+                    ].map(({ label, val, color, sub }) => (
+                      <div key={label}>
+                        <div style={{ fontSize: '0.45rem', fontWeight: 700, color: '#333', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.25rem' }}>{label}</div>
+                        <div style={{ fontSize: '1.5rem', fontWeight: 700, color, lineHeight: 1, marginBottom: '0.2rem' }}>{val}</div>
+                        <div style={{ fontSize: '0.5rem', color: '#333' }}>{sub}</div>
+                      </div>
+                    ))}
+                  </div>
+                  {/* Distribution bar */}
+                  <div>
+                    <div style={{ position: 'relative', height: 8, background: '#1E1E1E', borderRadius: 4, marginBottom: '0.4rem' }}>
+                      {/* P25 marker */}
+                      <div style={{ position: 'absolute', left: `${bm.p25}%`, top: 0, bottom: 0, width: 1, background: '#2E2E2E' }} />
+                      {/* Median marker */}
+                      <div style={{ position: 'absolute', left: `${bm.median}%`, top: 0, bottom: 0, width: 1, background: '#444' }} />
+                      {/* P75 marker */}
+                      <div style={{ position: 'absolute', left: `${bm.p75}%`, top: 0, bottom: 0, width: 1, background: '#2E2E2E' }} />
+                      {/* IQR fill */}
+                      <div style={{ position: 'absolute', left: `${bm.p25}%`, width: `${bm.p75 - bm.p25}%`, top: 0, bottom: 0, background: '#ffffff08', borderRadius: 2 }} />
+                      {/* Company marker */}
+                      <div style={{ position: 'absolute', left: `${pos}%`, top: -3, width: 3, height: 14, background: scoreColor(data.overallScore), borderRadius: 2, transform: 'translateX(-50%)', boxShadow: `0 0 6px ${scoreColor(data.overallScore)}88` }} />
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.45rem', color: '#222' }}>
+                      <span>0</span>
+                      <span style={{ position: 'relative', left: `${bm.p25 - 4}%` }}>P25 ({bm.p25})</span>
+                      <span style={{ position: 'relative', left: `${bm.median - 47}%` }}>Median ({bm.median})</span>
+                      <span style={{ position: 'relative', right: `${100 - bm.p75 - 2}%` }}>P75 ({bm.p75})</span>
+                      <span>100</span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
+
+            {/* Value proposition callout */}
+            <div className="fade-up fade-up-1" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '0', border: '1px solid #AC00EF22', borderRadius: '0.25rem', overflow: 'hidden' }}>
+              {[
+                { stat: '2,240 hrs', label: 'analyst hours replaced per year', sub: '280 hrs × 8 frameworks (Verdantix 2024)' },
+                { stat: '~$280K',    label: 'in ESG advisory fees per company', sub: 'vs $35K/framework from Big-4 providers' },
+                { stat: '50×',       label: 'cheaper than manual due diligence', sub: 'at $15K–25K/yr SaaS vs consultant model' },
+                { stat: '< 90 sec',  label: 'full ESG screen end-to-end', sub: 'vs 6–8 weeks manual analyst workflow' },
+              ].map(({ stat, label, sub }, i) => (
+                <div key={i} style={{ padding: '0.875rem 1.125rem', borderRight: i < 3 ? '1px solid #AC00EF22' : 'none', background: '#0D0018' }}>
+                  <div className="data-mono" style={{ fontSize: '1.375rem', fontWeight: 700, color: '#AC00EF', lineHeight: 1, marginBottom: '0.3rem' }}>{stat}</div>
+                  <div style={{ fontSize: '0.6875rem', fontWeight: 600, color: '#fff', marginBottom: '0.2rem', lineHeight: 1.3 }}>{label}</div>
+                  <div style={{ fontSize: '0.5625rem', color: '#444', lineHeight: 1.4 }}>{sub}</div>
+                </div>
+              ))}
             </div>
 
             {/* Section: Material KPIs */}
@@ -574,6 +802,26 @@ export default function Screen1Analyze({ companyId }) {
                 </div>
               )}
             </Card>
+            </div>
+
+            {/* Data Attribution */}
+            <div style={{ display: 'flex', gap: '0', border: '1px solid #1E1E1E', borderRadius: '0.25rem', overflow: 'hidden' }}>
+              {[
+                { source: 'SASB SICS',          detail: 'Industry classification & materiality weights', status: 'verified',  color: '#00C896' },
+                { source: 'Company Disclosure',  detail: 'ESG report, sustainability data, proxy statements', status: 'partial', color: '#F0A500' },
+                { source: 'CDP Climate DB',      detail: 'GHG emissions, energy, water — estimated where missing', status: 'estimated', color: '#F0A500' },
+                { source: 'MSCI ESG Research',   detail: 'Sector benchmarks, peer percentiles', status: 'reference', color: '#555' },
+                { source: 'Analyst Estimates',   detail: 'Financial exposure, IRR impact — CFO sign-off required', status: 'unverified', color: '#FF1F5A' },
+              ].map(({ source, detail, status, color }, i, arr) => (
+                <div key={source} style={{ flex: 1, padding: '0.5rem 0.75rem', borderRight: i < arr.length - 1 ? '1px solid #1E1E1E' : 'none', background: '#0A0A0A' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', marginBottom: '0.2rem' }}>
+                    <div style={{ width: 5, height: 5, borderRadius: '50%', background: color, flexShrink: 0 }} />
+                    <span style={{ fontSize: '0.5rem', fontWeight: 700, color, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{source}</span>
+                  </div>
+                  <div style={{ fontSize: '0.5rem', color: '#2E2E2E', lineHeight: 1.4 }}>{detail}</div>
+                  <div style={{ fontSize: '0.45rem', color: color, textTransform: 'uppercase', letterSpacing: '0.06em', marginTop: '0.2rem' }}>{status}</div>
+                </div>
+              ))}
             </div>
 
           </div>

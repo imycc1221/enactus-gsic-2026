@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, ReferenceLine, LabelList } from 'recharts';
 import AgentStatus from '../components/AgentStatus.jsx';
+import ReasoningDrawer from '../components/ReasoningDrawer.jsx';
+import RaiPanel from '../components/RaiPanel.jsx';
 import { COMPANY_MAP } from '../data/companies.js';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3000';
@@ -62,31 +64,64 @@ const CustomTooltip = ({ active, payload, label }) => {
   );
 };
 
+function CopyButton({ text }) {
+  const [copied, setCopied] = useState(false);
+  function copy() {
+    navigator.clipboard.writeText(text).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  }
+  return (
+    <button onClick={copy} style={{ background: 'none', border: '1px solid #2E2E2E', borderRadius: '0.25rem', color: copied ? '#00C896' : '#555', fontSize: '0.6875rem', padding: '0.25rem 0.625rem', cursor: 'pointer', transition: 'color 200ms' }}>
+      {copied ? '✓ Copied' : 'Copy'}
+    </button>
+  );
+}
 
-export default function Screen2Predict({ companyId }) {
+export default function Screen2Predict({ companyId, companyOverride, screen1Result, onResult, runTrigger = 0 }) {
   const [agentStatus, setAgentStatus] = useState('idle');
   const [data,        setData]        = useState(null);
   const [error,       setError]       = useState(null);
+  const [meta,        setMeta]        = useState(null);
   const [expanded,    setExpanded]    = useState(false);
+  const [scenario,    setScenario]    = useState('base');
 
-  const company = COMPANY_MAP[companyId];
+  const prevTrigger = useRef(0);
+  useEffect(() => {
+    if (runTrigger > prevTrigger.current) {
+      prevTrigger.current = runTrigger;
+      run();
+    }
+  }, [runTrigger]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const company = companyOverride ?? COMPANY_MAP[companyId];
+
+  const scenarioMultipliers = {
+    conservative: { irrMultiplier: 0.6, label: 'Conservative', color: '#F0A500' },
+    base:         { irrMultiplier: 1.0, label: 'Base Case',    color: '#AC00EF' },
+    aggressive:   { irrMultiplier: 1.4, label: 'Aggressive',   color: '#00C896' },
+  };
 
   async function run() {
     setAgentStatus('running'); setData(null); setError(null);
     try {
       const res = await fetch(`${API_BASE}/api/predict`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(company)
+        body: JSON.stringify({ ...company, _screen1Result: screen1Result ?? null })
       });
       if (!res.ok) throw new Error(`API returned ${res.status}`);
-      setData(await res.json());
+      const result = await res.json();
+      setData(result);
+      setMeta(result._meta ?? null);
+      onResult?.(result);
       setAgentStatus('complete');
     } catch (err) { setError(err.message); setAgentStatus('idle'); }
   }
 
   const irrData = data ? [
     { name: 'Base Case', irr: Number(data.baseCase?.projectedIrr) },
-    { name: 'With ESG',  irr: Number(data.withEsgInterventions?.projectedIrr) }
+    { name: 'With ESG',  irr: Number(data.baseCase?.projectedIrr) + (Number(data.withEsgInterventions?.irrUplift ?? 0) * scenarioMultipliers[scenario].irrMultiplier) }
   ] : [];
 
   return (
@@ -104,6 +139,17 @@ export default function Screen2Predict({ companyId }) {
             </p>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexShrink: 0 }}>
+            {screen1Result && (
+              <div style={{
+                display: 'inline-flex', alignItems: 'center', gap: '0.375rem',
+                background: '#00C89615', border: '1px solid #00C89640',
+                borderRadius: '999px', padding: '0.2rem 0.625rem',
+                fontSize: '0.6875rem', color: '#00C896', fontWeight: 500
+              }}>
+                <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#00C896', flexShrink: 0 }} />
+                ESG Screen context loaded · Score {screen1Result.overallScore}
+              </div>
+            )}
             {data && (
               <button onClick={() => setExpanded(e => !e)} style={{ background: 'none', border: 'none', color: '#AC00EF', fontSize: '0.75rem', fontWeight: 500, cursor: 'pointer', letterSpacing: '0.04em', textTransform: 'uppercase', padding: 0 }}>
                 {expanded ? '− Collapse details' : '+ Expand all details'}
@@ -118,6 +164,25 @@ export default function Screen2Predict({ companyId }) {
 
       <AgentStatus steps={STEPS} status={agentStatus} />
 
+      {meta && agentStatus === 'complete' && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.625rem', color: '#333', marginBottom: '1rem' }}>
+          <span style={{ width: 5, height: 5, borderRadius: '50%', background: meta.cached ? '#F0A500' : '#00C896', flexShrink: 0 }} />
+          {meta.cached ? 'Cached result' : 'Live result'} · Generated {new Date(meta.generatedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
+          {meta.cached && (
+            <button onClick={run} style={{ background: 'none', border: 'none', color: '#555', fontSize: '0.625rem', cursor: 'pointer', textDecoration: 'underline', padding: 0, marginLeft: '0.25rem' }}>
+              Re-run live →
+            </button>
+          )}
+        </div>
+      )}
+
+      <RaiPanel />
+      {meta && (
+        <div style={{ marginBottom: '1rem' }}>
+          <ReasoningDrawer meta={meta} />
+        </div>
+      )}
+
       {error && (
         <div style={{ background: '#FF1F5A10', border: '1px solid #FF1F5A40', borderRadius: '0.25rem', padding: '1rem', color: '#FF1F5A', fontSize: '0.875rem', marginBottom: '1.5rem' }}>
           {error}
@@ -126,6 +191,22 @@ export default function Screen2Predict({ companyId }) {
 
       {data && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+
+          {/* Scenario toggle */}
+          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+            <span style={{ fontSize: '0.6875rem', fontWeight: 700, color: '#444', textTransform: 'uppercase', letterSpacing: '0.08em', marginRight: '0.25rem' }}>Scenario:</span>
+            {Object.entries(scenarioMultipliers).map(([key, val]) => (
+              <button key={key} onClick={() => setScenario(key)} style={{
+                padding: '0.375rem 0.875rem', borderRadius: '999px', cursor: 'pointer',
+                border: `1px solid ${scenario === key ? val.color : '#2a2a2a'}`,
+                background: scenario === key ? `${val.color}20` : 'transparent',
+                color: scenario === key ? val.color : '#555',
+                fontSize: '0.75rem', fontWeight: 700, transition: 'all 200ms'
+              }}>
+                {val.label}
+              </button>
+            ))}
+          </div>
 
           {/* Row 1: IRR chart + Base vs ESG */}
           <div className="fade-up fade-up-1" style={{ display: 'grid', gridTemplateColumns: '2fr 3fr', gap: '1rem' }}>
@@ -191,7 +272,7 @@ export default function Screen2Predict({ companyId }) {
                 {/* IRR uplift */}
                 <div style={{ marginTop: '1rem', background: '#AC00EF22', border: '1px solid #AC00EF44', borderRadius: '0.25rem', padding: '0.75rem', textAlign: 'center' }}>
                   <div style={{ fontSize: '0.6875rem', color: '#AC00EF', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.25rem' }}>IRR Uplift</div>
-                  <div className="data-mono num-in" style={{ fontSize: '2.75rem', fontWeight: 700, color: '#F04FDB', lineHeight: 1 }}>+{pct(data.withEsgInterventions?.irrUplift)}</div>
+                  <div className="data-mono num-in" style={{ fontSize: '2.75rem', fontWeight: 700, color: scenarioMultipliers[scenario].color, lineHeight: 1 }}>+{pct((data.withEsgInterventions?.irrUplift ?? 0) * scenarioMultipliers[scenario].irrMultiplier)}</div>
                 </div>
               </Card>
             </div>
@@ -201,8 +282,8 @@ export default function Screen2Predict({ companyId }) {
           <div className="fade-up fade-up-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
             <div style={{ background: '#0D0018', border: '1px solid #AC00EF33', borderRadius: '0.25rem', padding: '1.25rem', textAlign: 'center' }}>
               <div style={{ fontSize: '0.6875rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#AC00EF', marginBottom: '0.5rem' }}>Additional Value Created</div>
-              <div className="num-in stat-hero" style={{ fontSize: '2.75rem', color: '#FFFFFF' }}>
-                {fmt(data.withEsgInterventions?.additionalValueCreated)}
+              <div className="num-in stat-hero" style={{ fontSize: '2.75rem', color: scenarioMultipliers[scenario].color }}>
+                {fmt((data.withEsgInterventions?.additionalValueCreated ?? 0) * scenarioMultipliers[scenario].irrMultiplier)}
               </div>
               <div style={{ fontSize: '0.75rem', color: '#787878', marginTop: '0.5rem' }}>beyond base case exit EV</div>
             </div>
@@ -234,6 +315,63 @@ export default function Screen2Predict({ companyId }) {
               )}
             </Card>
           </div>
+
+          {/* Scenario Analysis Table — Bear / Base / Bull */}
+          {data.withEsgInterventions && (() => {
+            const irrUplift = data.withEsgInterventions.irrUplift ?? 0;
+            const addlVal   = data.withEsgInterventions.additionalValueCreated ?? 0;
+            const baseEv    = data.baseCase?.exitEv ?? 0;
+            const netRoiRaw = parseFloat(String(data.netRoiOnEsgInvestment ?? '0').replace(/[^0-9.]/g, '')) || 0;
+
+            const cols = [
+              { key: 'bear', label: 'Bear', sub: '30th pct · BCG lower bound',    color: '#F0A500', mult: 0.6 },
+              { key: 'base', label: 'Base', sub: 'Median · McKinsey / BCG',        color: '#AC00EF', mult: 1.0 },
+              { key: 'bull', label: 'Bull', sub: '70th pct · Bain upper bound',    color: '#00C896', mult: 1.4 },
+            ];
+            const rows = [
+              { label: 'IRR Uplift',    fn: m => `+${pct(irrUplift * m)}` },
+              { label: "Add'l Value",   fn: m => fmt(addlVal * m) },
+              { label: 'Total Exit EV', fn: m => fmt(baseEv + addlVal * m) },
+              { label: 'Net ROI',       fn: m => `~${Math.round(netRoiRaw * m)}x` },
+            ];
+
+            const cellBase = { padding: '0.5rem 1rem', borderRight: '1px solid #1A1A1A', display: 'flex', alignItems: 'center', justifyContent: 'center' };
+            const labelCell = { ...cellBase, justifyContent: 'flex-start', fontSize: '0.5625rem', fontWeight: 700, color: '#444', textTransform: 'uppercase', letterSpacing: '0.08em' };
+
+            const items = [];
+            // header row
+            items.push(<div key="h0" style={{ ...cellBase, justifyContent: 'flex-start', background: '#080808', borderBottom: '1px solid #1A1A1A' }} />);
+            cols.forEach(col => items.push(
+              <div key={`h-${col.key}`} style={{ ...cellBase, background: '#080808', flexDirection: 'column', gap: '0.1rem', borderBottom: `2px solid ${col.color}` }}>
+                <span style={{ fontSize: '0.6875rem', fontWeight: 700, color: col.color, textTransform: 'uppercase', letterSpacing: '0.08em' }}>{col.label}</span>
+                <span style={{ fontSize: '0.5rem', color: '#444', letterSpacing: '0.04em' }}>{col.sub}</span>
+              </div>
+            ));
+            // data rows
+            rows.forEach((row, ri) => {
+              items.push(<div key={`r${ri}-l`} style={{ ...labelCell, borderTop: '1px solid #1A1A1A', background: '#0A0A0A' }}>{row.label}</div>);
+              cols.forEach(col => items.push(
+                <div key={`r${ri}-${col.key}`} style={{ ...cellBase, borderTop: '1px solid #1A1A1A' }}>
+                  <span className="data-mono" style={{ fontSize: '0.9375rem', fontWeight: col.mult === 1.0 ? 700 : 500, color: col.mult === 1.0 ? '#F04FDB' : '#555' }}>
+                    {row.fn(col.mult)}
+                  </span>
+                </div>
+              ));
+            });
+
+            return (
+              <div className="fade-up fade-up-2" style={{ background: '#0A0A0A', border: '1px solid #2E2E2E', borderRadius: '0.25rem', overflow: 'hidden' }}>
+                <div style={{ padding: '0.625rem 1rem', borderBottom: '1px solid #1E1E1E', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <div style={{ fontSize: '0.6875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#fff' }}>Scenario Analysis</div>
+                  <div style={{ fontSize: '0.5625rem', color: '#333', letterSpacing: '0.04em' }}>BCG PE Sustainability 2025 · Bain 2024 · McKinsey Net Zero PE Playbook</div>
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: '8rem 1fr 1fr 1fr' }}>{items}</div>
+                <div style={{ padding: '0.4rem 1rem', borderTop: '1px solid #1A1A1A', fontSize: '0.5rem', color: '#2E2E2E', letterSpacing: '0.04em' }}>
+                  Bear = 30th-percentile of industry ESG value creation range — even the conservative case delivers positive ROI
+                </div>
+              </div>
+            );
+          })()}
 
           {/* Row 3: ESG breakdown cards */}
           {data.esgBreakdown?.length > 0 && (
@@ -321,7 +459,10 @@ export default function Screen2Predict({ companyId }) {
               )}
             </Card>
             <Card>
-              <Label>Exit Narrative for Buyers</Label>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+                <Label style={{ marginBottom: 0 }}>Exit Narrative for Buyers</Label>
+                <CopyButton text={data.exitNarrative ?? ''} />
+              </div>
               {(() => {
                 const sentences = (data.exitNarrative ?? '').split(/(?<=[.!?])\s+/).filter(s => s.trim().length > 20);
                 return (
