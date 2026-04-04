@@ -13,8 +13,8 @@ import OnboardingTour   from './components/OnboardingTour.jsx';
 const SCREENS = [
   { id: 'analyze',   label: 'ESG Screener',       desc: 'SASB-filtered materiality analysis' },
   { id: 'predict',   label: 'Value Predictor',     desc: 'IRR uplift financial model' },
-  { id: 'map',       label: 'Framework Mapper',    desc: '1 input — 8 regulatory outputs' },
   { id: 'sfdr',      label: 'SFDR Classifier',     desc: 'Article 6 / 8 / 9 classification' },
+  { id: 'map',       label: 'Framework Mapper',    desc: '1 input — 8 regulatory outputs' },
   { id: 'portfolio',  label: 'Portfolio Dashboard', desc: 'All companies — parallel AI analysis' },
   { id: 'ic-memo',    label: 'IC Memo',             desc: 'Investment committee memorandum' },
   { id: 'greenwash',  label: 'Greenwash Detector',  desc: 'Claims vs evidence forensics' },
@@ -197,6 +197,16 @@ export default function App() {
     setScreen('ic-memo');
   }
 
+  function resetResults() {
+    runAllRef.current = false;
+    setRunAllActive(false);
+    setAnalyzeResults(p   => { const n = { ...p }; delete n[activeKey]; return n; });
+    setPredictResults(p   => { const n = { ...p }; delete n[activeKey]; return n; });
+    setSfdrResults(p      => { const n = { ...p }; delete n[activeKey]; return n; });
+    setMapResults(p       => { const n = { ...p }; delete n[activeKey]; return n; });
+    setGreenwashResults(p => { const n = { ...p }; delete n[activeKey]; return n; });
+  }
+
   // ── Workflow status per screen ────────────────────────────────────────────
   const results = {
     analyze:   analyzeResults[activeKey],
@@ -266,6 +276,21 @@ export default function App() {
                 <>⚡ Run All Analyses</>
               )}
             </button>
+
+            {doneCount > 0 && !runAllActive && (
+              <button
+                onClick={resetResults}
+                style={{
+                  background: 'none', border: '1px solid #2E2E2E', borderRadius: '0.25rem',
+                  color: '#555', fontSize: '0.75rem', padding: '0 0.75rem', minHeight: '2.25rem',
+                  cursor: 'pointer', letterSpacing: '0.02em', transition: 'color 200ms',
+                }}
+                onMouseEnter={e => e.currentTarget.style.color = '#fff'}
+                onMouseLeave={e => e.currentTarget.style.color = '#555'}
+              >
+                Reset
+              </button>
+            )}
 
             <div style={{ width: '1px', height: '1.5rem', background: '#2E2E2E' }} />
 
