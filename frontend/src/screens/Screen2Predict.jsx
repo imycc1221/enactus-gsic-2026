@@ -98,9 +98,9 @@ export default function Screen2Predict({ companyId, companyOverride, screen1Resu
   const company = companyOverride ?? COMPANY_MAP[companyId];
 
   const scenarioMultipliers = {
-    conservative: { irrMultiplier: 0.6, label: 'Conservative', color: '#F0A500' },
-    base:         { irrMultiplier: 1.0, label: 'Base Case',    color: '#AC00EF' },
-    aggressive:   { irrMultiplier: 1.4, label: 'Aggressive',   color: '#00C896' },
+    bear: { irrMultiplier: 0.6, label: 'Bear', color: '#F0A500' },
+    base: { irrMultiplier: 1.0, label: 'Base', color: '#AC00EF' },
+    bull: { irrMultiplier: 1.4, label: 'Bull', color: '#00C896' },
   };
 
   async function run() {
@@ -308,7 +308,7 @@ export default function Screen2Predict({ companyId, companyOverride, screen1Resu
                     </div>
                   ))}
                   <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid #2E2E2E', paddingTop: '0.625rem' }}>
-                    <span style={{ fontSize: '0.75rem', color: '#787878', fontWeight: 500 }}>5-year total</span>
+                    <span style={{ fontSize: '0.75rem', color: '#787878', fontWeight: 500 }}>{company.peInvestmentContext?.holdingPeriod ?? 5}-year total</span>
                     <span className="data-mono" style={{ fontSize: '0.9375rem', fontWeight: 600, color: '#fff' }}>{fmt(data.esgImplementationCost.totalFiveYear)}</span>
                   </div>
                 </div>
