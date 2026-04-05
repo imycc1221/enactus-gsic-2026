@@ -20,10 +20,21 @@ const DUE_DILIGENCE_REQUIREMENTS = [
   { id: 'record_keep',  label: 'Record Keeping (5 Years)', detail: 'All due diligence records kept for 5 years. Annual review required if risk assessment basis changes (e.g. EC reclassification of country risk).' },
 ];
 
+// EUDR-exempt sectors: industrial manufacturing with no forest-risk commodity inputs
+const EUDR_EXEMPT_SECTORS = [
+  'industrial machinery', 'industrial components', 'metal', 'electronics', 'semiconductor',
+  'software', 'saas', 'technology', 'financial', 'insurance', 'pharma', 'chemical'
+];
+
+function hasForestRiskSectorExposure(company) {
+  const sector = (company.sector ?? '').toLowerCase();
+  return !EUDR_EXEMPT_SECTORS.some(s => sector.includes(s));
+}
+
 function getRiskLevel(company) {
   const geo = (company.geography ?? '').toLowerCase();
-  const hasHighRisk = ['asia', 'vietnam', 'indonesia', 'malaysia', 'thailand', 'brazil', 'africa'].some(r => geo.includes(r));
-  if (!hasHighRisk) return 'low';
+  const hasHighRiskGeo = ['asia', 'vietnam', 'indonesia', 'malaysia', 'thailand', 'brazil', 'africa'].some(r => geo.includes(r));
+  if (!hasHighRiskGeo || !hasForestRiskSectorExposure(company)) return 'low';
 
   const hasSupplyChain = company.availableData?.supplyChainAudit?.available;
   const coverage = parseFloat(company.availableData?.supplyChainAudit?.auditCoverage ?? '0') || 0;
@@ -37,6 +48,7 @@ function isLargeOperator(company) {
 }
 
 function getAffectedCommodities(company) {
+  if (!hasForestRiskSectorExposure(company)) return [];
   const geo = (company.geography ?? '').toLowerCase();
   const sector = (company.sector ?? '').toLowerCase();
   return COMMODITIES.filter(c =>
@@ -46,9 +58,9 @@ function getAffectedCommodities(company) {
   );
 }
 
-function getDaysUntilDeadline() {
-  const deadline = new Date('2026-12-30');
-  const today    = new Date('2026-04-04'); // pinned to current date
+function getDaysUntilDeadline(largeOperator) {
+  const deadline = largeOperator ? new Date('2026-12-30') : new Date('2027-06-30');
+  const today    = new Date();
   const diff     = deadline - today;
   return Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24)));
 }
@@ -64,7 +76,7 @@ export default function Screen8Eudr({ companyId, companyOverride }) {
   const riskLevel  = getRiskLevel(company);
   const largeOp    = isLargeOperator(company);
   const commodities = getAffectedCommodities(company);
-  const daysLeft   = getDaysUntilDeadline();
+  const daysLeft   = getDaysUntilDeadline(largeOp);
   const cfg        = RISK_CONFIG[riskLevel];
 
   const eudrInScope = riskLevel !== 'low';
@@ -95,8 +107,8 @@ export default function Screen8Eudr({ companyId, companyOverride }) {
               {cfg.label}
             </span>
             <div style={{ textAlign: 'right' }}>
-              <div style={{ fontSize: '0.5625rem', color: '#444', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.15rem' }}>Large-operator deadline</div>
-              <div style={{ fontSize: '0.8125rem', fontWeight: 600, color: '#fff' }}>30 December 2026</div>
+              <div style={{ fontSize: '0.5625rem', color: '#444', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.15rem' }}>{largeOp ? 'Large-operator deadline' : 'SME deadline'}</div>
+              <div style={{ fontSize: '0.8125rem', fontWeight: 600, color: '#fff' }}>{largeOp ? '30 December 2026' : '30 June 2027'}</div>
             </div>
           </div>
         </div>
@@ -109,7 +121,7 @@ export default function Screen8Eudr({ companyId, companyOverride }) {
         <div style={{ background: daysLeft < 200 ? '#1A0A00' : '#0A0A0A', border: `1px solid ${daysLeft < 200 ? '#FF8C0030' : '#2E2E2E'}`, borderRadius: '0.25rem', padding: '1.25rem', textAlign: 'center' }}>
           <div style={{ fontSize: '0.5625rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: daysLeft < 200 ? '#FF8C00' : '#444', marginBottom: '0.5rem' }}>Days to Deadline</div>
           <div className="data-mono" style={{ fontSize: '3.5rem', fontWeight: 700, color: daysLeft < 200 ? '#FF8C00' : '#fff', lineHeight: 1 }}>{daysLeft}</div>
-          <div style={{ fontSize: '0.625rem', color: '#444', marginTop: '0.5rem' }}>30 Dec 2026 (second delay — Reg EU 2024/3234)</div>
+          <div style={{ fontSize: '0.625rem', color: '#444', marginTop: '0.5rem' }}>{largeOp ? '30 Dec 2026' : '30 Jun 2027'} (second delay — Reg EU 2024/3234)</div>
           <div style={{ height: '3px', background: '#1E1E1E', borderRadius: '2px', marginTop: '0.75rem', overflow: 'hidden' }}>
             <div style={{ height: '100%', width: `${Math.min(100, ((270 - daysLeft) / 270) * 100)}%`, background: daysLeft < 200 ? 'linear-gradient(90deg, #FF8C00, #FF1F5A)' : 'linear-gradient(90deg, #00C896, #3B82F6)', borderRadius: '2px', transition: 'width 0.5s' }} />
           </div>

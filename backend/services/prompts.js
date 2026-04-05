@@ -95,8 +95,10 @@ export const analyzeToolSchema = {
           csrd: { type: 'object', properties: { compliant: { type: 'number' }, total: { type: 'number' }, percentage: { type: 'number' }, keyGaps: { type: 'array', items: { type: 'string' } } } },
           sfdr: { type: 'object', properties: { compliant: { type: 'number' }, total: { type: 'number' }, percentage: { type: 'number' }, keyGaps: { type: 'array', items: { type: 'string' } } } },
           tcfd: { type: 'object', properties: { compliant: { type: 'number' }, total: { type: 'number' }, percentage: { type: 'number' }, keyGaps: { type: 'array', items: { type: 'string' } } } },
-          edci: { type: 'object', properties: { compliant: { type: 'number' }, total: { type: 'number' }, percentage: { type: 'number' }, keyGaps: { type: 'array', items: { type: 'string' } } } },
-          sasb: { type: 'object', properties: { compliant: { type: 'number' }, total: { type: 'number' }, percentage: { type: 'number' }, keyGaps: { type: 'array', items: { type: 'string' } } } }
+          issb: { type: 'object', properties: { compliant: { type: 'number' }, total: { type: 'number' }, percentage: { type: 'number' }, keyGaps: { type: 'array', items: { type: 'string' } } } },
+          gri:  { type: 'object', properties: { compliant: { type: 'number' }, total: { type: 'number' }, percentage: { type: 'number' }, keyGaps: { type: 'array', items: { type: 'string' } } } },
+          sasb: { type: 'object', properties: { compliant: { type: 'number' }, total: { type: 'number' }, percentage: { type: 'number' }, keyGaps: { type: 'array', items: { type: 'string' } } } },
+          edci: { type: 'object', properties: { compliant: { type: 'number' }, total: { type: 'number' }, percentage: { type: 'number' }, keyGaps: { type: 'array', items: { type: 'string' } } } }
         }
       },
       dataConfidenceScore: { type: 'number' },
@@ -380,8 +382,9 @@ ESG Screener findings (from upstream ESG Deal Screener Agent — use these to ma
 - Data Confidence: ${Math.round((screen1Result.dataConfidenceScore ?? 0) * 100)}%
 - High-severity risks: ${(screen1Result.riskFlags ?? []).filter(r => r.severity === 'high').map(r => `${r.area} (${r.financialExposure})`).join('; ') || 'none'}
 - Top value opportunities: ${(screen1Result.valueOpportunities ?? []).slice(0, 3).map(o => `${o.initiative} — ${o.estimatedAnnualSavings}, ${o.paybackMonths}mo payback`).join('; ')}
+- Framework compliance gaps: ${Object.entries(screen1Result.frameworkGaps ?? {}).map(([k, v]) => `${k.toUpperCase()} ${v?.percentage ?? '?'}%`).join(', ') || 'none assessed'}
 
-Price these specific opportunities and risks in your financial model. The IRR uplift should reflect remediating the high-severity risks and capturing the top value opportunities above.` : '';
+Price these specific opportunities and risks in your financial model. The IRR uplift should reflect remediating the high-severity risks and capturing the top value opportunities above. Where framework compliance gaps are below 60%, quantify the compliance cost of closing them and include it in esgImplementationCost.` : '';
 
   const userPrompt = `Model the financial impact of deploying the ESG Value Engine for this portfolio company:
 
@@ -441,7 +444,9 @@ SFDR 1.0: Assess all qualifying factors for Article 8/9, evaluate the 7 most rel
 
 SFDR 2.0 (shadow classification): In the sfdr2 field, determine which of the three new categories (ESG Basics / Transition / Sustainable) this fund would most likely receive under the 2025 EC reform. Assess the four mandatory exclusions, whether the 70% threshold is achievable, EU Taxonomy alignment potential, and provide a migration timeline given the 2028-2029 implementation window. Highlight the key classification changes vs SFDR 1.0.
 
-Critically assess the marketingRisk field: if the company name contains "sustainable", "clean", "green", "ESG", or similar terms, flag whether this name would survive the 2.0 marketing restriction rules. Assess the paiObligations field: explain how entity-level PAI abolition and product-level PAI flexibility changes this fund's data collection burden vs today. This dual-readiness analysis is the core value demonstration.`;
+UK SDR (if UK geography or UK LP base): UK SDR is fully in force and is the most immediately binding regulation for UK-based funds. Anti-greenwashing rule in effect since May 2024. Four fund labels (Sustainable Focus, Sustainable Improvers, Sustainable Impact, Sustainable Mixed Goals) since July 2024. Fund naming and marketing rules since April 2025 — funds using sustainability terms in their name must qualify for one of the four labels. If the company is UK-based or has significant UK LP exposure, explicitly assess SDR compliance in the regulatoryRisk field and flag any fund naming conflicts.
+
+Critically assess the marketingRisk field: if the company name contains "sustainable", "clean", "green", "ESG", or similar terms, flag whether this name would survive both SFDR 2.0 marketing restriction rules AND UK SDR naming rules. Assess the paiObligations field: explain how entity-level PAI abolition and product-level PAI flexibility changes this fund's data collection burden vs today. This dual-readiness analysis is the core value demonstration.`;
 
   return { systemPrompt, userPrompt };
 }
@@ -465,7 +470,17 @@ Company: ${JSON.stringify({ name: company.name, sector: company.sector, geograph
 
 Data Point: ${JSON.stringify(dataPoint, null, 2)}
 ${screen1Context}
-For each applicable framework (CSRD/ESRS, SFDR 1.0 + SFDR 2.0, TCFD/IFRS S1+S2, GRI, GRI 18 Biodiversity (if nature-risk relevant), SASB, EDCI, and HKEX ISSB), specify the exact standard reference, required format, and whether our AI can perform the conversion automatically. Note which frameworks are mandatory vs voluntary for this specific company given their size (check employee count and revenue against Omnibus I thresholds). Include HKEX ISSB where relevant — particularly important for Hong Kong-listed or Asia-Pacific companies. Demonstrate the "one input → multiple framework outputs" value proposition.`;
+You MUST produce exactly one mapping row for EACH of the following 7 frameworks — use status "not_applicable" with a brief note if a framework genuinely does not apply, but never omit a row:
+
+1. CSRD/ESRS — cite specific ESRS article (e.g. ESRS E1-6, ESRS S1-9)
+2. SFDR (1.0 + 2.0) — cite PAI indicator number; note how SFDR 2.0 changes the obligation
+3. TCFD — cite which of the 4 TCFD pillars (Governance / Strategy / Risk / Metrics)
+4. IFRS S1/S2 (ISSB / HKEX) — ISSB is the global baseline now active in 36 jurisdictions. HKEX mandates ISSB-aligned ESG reporting for ALL HK-listed companies (mandatory for financial years beginning 1 Jan 2025). Also cite MAS Notice on Environmental Risk Management (Singapore, effective June 2022) where APAC LP exposure exists. Cite specific IFRS S1 or S2 paragraph.
+5. GRI — cite GRI standard number; include GRI 18 Biodiversity (effective Jan 2026) if any nature, land, or deforestation exposure exists, otherwise note not applicable
+6. SASB — cite the specific SASB industry code and metric ID for this company's sector
+7. EDCI — cite which of the 20 EDCI cross-sector metrics this maps to (390+ GP signatories, ~$28T AUM)
+
+For each row: state the exact standard reference, required disclosure format, data materiality, compliance status, and whether AI can automate the conversion. Note which are mandatory vs voluntary given this company's size (Omnibus I thresholds: 1,000+ employees AND €450M+ revenue for CSRD). Demonstrate the "one input → 7 framework outputs" value proposition.`;
 
   return { systemPrompt, userPrompt };
 }

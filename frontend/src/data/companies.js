@@ -98,8 +98,12 @@ export function getRegScoping(company) {
   const isEudrSme     = employees < 250 && revenue < 50_000_000;
   const hasHighRiskGeo = ['asia','vietnam','indonesia','malaysia','thailand','myanmar',
                            'brazil','africa','colombia','peru'].some(r => geo.includes(r));
+  const eudrExemptSectors = ['industrial machinery','industrial components','metal','electronics',
+                              'semiconductor','software','saas','technology','financial','insurance',
+                              'pharma','chemical'];
+  const hasForestRiskSector = !eudrExemptSectors.some(s => (company.sector ?? '').toLowerCase().includes(s));
 
-  if (hasHighRiskGeo) {
+  if (hasHighRiskGeo && hasForestRiskSector) {
     mandatory.push({
       label: 'EU Deforestation Regulation (EUDR)',
       detail: isEudrSme
