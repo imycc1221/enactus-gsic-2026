@@ -11,7 +11,7 @@ const STEPS = [
   'Parsing ESG data point and context...',
   'Scanning CSRD/ESRS article requirements...',
   'Mapping to SFDR PAI indicators...',
-  'Cross-referencing TCFD, GRI, SASB, EDCI...',
+  'Cross-referencing TCFD, IFRS S1/S2 (ISSB), GRI, SASB, EDCI...',
   'Assessing AI automation potential...',
   'Generating multi-framework output...'
 ];
@@ -463,7 +463,7 @@ export default function Screen3Map({ companyId, companyOverride, screen1Result, 
             Click <strong style={{ color: '#fff', fontWeight: 500 }}>Run Framework Mapper</strong> to generate automated cross-framework compliance
           </p>
           <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', flexWrap: 'wrap' }}>
-            {['CSRD / ESRS', 'SFDR', 'TCFD', 'GRI', 'SASB', 'EDCI', 'HKEX / MAS'].map(fw => (
+            {['CSRD / ESRS', 'SFDR', 'TCFD', 'IFRS S1/S2 (ISSB / HKEX)', 'GRI', 'SASB', 'EDCI'].map(fw => (
               <div key={fw} style={{ fontSize: '0.6875rem', fontWeight: 700, color: '#AC00EF', textTransform: 'uppercase', letterSpacing: '0.1em' }}>{fw}</div>
             ))}
           </div>

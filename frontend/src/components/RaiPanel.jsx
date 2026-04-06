@@ -46,40 +46,59 @@ export default function RaiPanel() {
     <div
       className="no-print"
       style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(5, 1fr)',
-        gap: 0,
-        border: '1px solid #1E1E1E',
+        border: '1px solid #2E2E2E',
         borderRadius: '0.25rem',
         overflow: 'hidden',
         marginBottom: '1rem',
+        background: '#0D0D0D',
       }}
     >
-      {PILLARS.map((p, i) => (
-        <div
-          key={p.name}
-          style={{
-            padding: '0.625rem 0.875rem',
-            borderRight: i < 4 ? '1px solid #1E1E1E' : 'none',
-            background: '#0A0A0A',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '0.3rem',
-          }}
-          title={p.desc}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
-            <span style={{ fontSize: '0.6875rem', color: p.color }}>{p.icon}</span>
-            <span style={{ fontSize: '0.5625rem', fontWeight: 700, color: p.color, textTransform: 'uppercase', letterSpacing: '0.08em' }}>{p.name}</span>
-            <span style={{
-              marginLeft: 'auto',
-              width: 5, height: 5, borderRadius: '50%', flexShrink: 0,
-              background: p.status === 'active' ? '#00C896' : '#F0A500',
-            }} />
-          </div>
-          <div style={{ fontSize: '0.5625rem', color: '#444', lineHeight: 1.4 }}>{p.desc}</div>
+      {/* Header row */}
+      <div style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        padding: '0.5rem 0.875rem',
+        borderBottom: '1px solid #1E1E1E',
+        background: '#111',
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#F0A500', boxShadow: '0 0 6px #F0A50080', flexShrink: 0 }} />
+          <span style={{ fontSize: '0.625rem', fontWeight: 700, color: '#F0A500', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+            Responsible AI Review Required
+          </span>
         </div>
-      ))}
+        <span style={{ fontSize: '0.5625rem', color: '#444', letterSpacing: '0.04em' }}>
+          Accenture RAI Principles · Human-in-the-loop before LP use
+        </span>
+      </div>
+
+      {/* Pillars */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 0 }}>
+        {PILLARS.map((p, i) => (
+          <div
+            key={p.name}
+            style={{
+              padding: '0.75rem 0.875rem',
+              borderRight: i < 4 ? '1px solid #1E1E1E' : 'none',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '0.375rem',
+            }}
+            title={p.desc}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
+              <span style={{ fontSize: '0.75rem', color: p.color }}>{p.icon}</span>
+              <span style={{ fontSize: '0.625rem', fontWeight: 700, color: p.color, textTransform: 'uppercase', letterSpacing: '0.08em' }}>{p.name}</span>
+              <span style={{
+                marginLeft: 'auto',
+                width: 6, height: 6, borderRadius: '50%', flexShrink: 0,
+                background: p.status === 'active' ? '#00C896' : '#F0A500',
+                boxShadow: p.status === 'active' ? '0 0 5px #00C89660' : '0 0 5px #F0A50060',
+              }} />
+            </div>
+            <div style={{ fontSize: '0.625rem', color: '#666', lineHeight: 1.5 }}>{p.desc}</div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
