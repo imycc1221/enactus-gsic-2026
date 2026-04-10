@@ -221,7 +221,7 @@ export default function App() {
   const BADGE_SCREENS = { analyze: 'analyze', predict: 'predict', sfdr: 'sfdr', map: 'map', greenwash: 'greenwash' };
 
   return (
-    <div style={{ minHeight: '100vh', background: '#060606', color: '#fff' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--acc-black)', color: '#fff' }}>
 
       <OnboardingTour />
 
@@ -234,127 +234,138 @@ export default function App() {
 
       <button onClick={() => window.print()} className="no-print" style={{
         position: 'fixed', bottom: '1.5rem', right: '1.5rem', zIndex: 50,
-        background: '#AC00EF', color: '#fff', border: 'none', borderRadius: '0.375rem',
-        padding: '0.625rem 1.125rem', fontSize: '0.8125rem', fontWeight: 600,
-        cursor: 'pointer', boxShadow: '0 0 24px #AC00EF44', letterSpacing: '0.02em'
+        background: 'linear-gradient(135deg, #7B00AC, #AC00EF)', color: '#fff', border: 'none',
+        borderRadius: '0.5rem', padding: '0.75rem 1.25rem', fontSize: '0.875rem', fontWeight: 600,
+        cursor: 'pointer', boxShadow: '0 0 32px rgba(172,0,239,0.35)', letterSpacing: '0.02em'
       }}>Export PDF</button>
 
       {/* ── Header ── */}
-      <header style={{ position: 'sticky', top: 0, zIndex: 20, background: '#060606', borderBottom: '1px solid #2E2E2E', height: '80px', display: 'flex', alignItems: 'center', padding: '0 2rem' }}>
+      <header style={{
+        position: 'sticky', top: 0, zIndex: 20,
+        background: 'rgba(5,5,15,0.85)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
+        borderBottom: '1px solid rgba(255,255,255,0.06)',
+        height: '72px', display: 'flex', alignItems: 'center', padding: '0 2rem',
+      }}>
         <div style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
 
+          {/* Left: logo + title */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
             <AccentureLogo />
-            <div style={{ width: '1px', height: '1.5rem', background: '#2E2E2E' }} />
+            <div style={{ width: '1px', height: '1.5rem', background: 'rgba(255,255,255,0.1)' }} />
             <div>
-              <div style={{ fontWeight: 500, fontSize: '0.9375rem', color: '#fff', letterSpacing: '-0.005em' }}>ESG Value Engine</div>
-              <div style={{ fontSize: '0.6875rem', color: '#787878', letterSpacing: '0.04em', marginTop: '1px' }}>GSIC 2026 · Enactus Hong Kong</div>
+              <div style={{ fontWeight: 600, fontSize: '1.0625rem', color: '#fff', letterSpacing: '-0.02em', lineHeight: 1.2 }}>
+                ESG Value Engine
+              </div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', letterSpacing: '0.04em', marginTop: '2px' }}>
+                GSIC 2026 · Enactus Hong Kong
+              </div>
             </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            {/* Run All button */}
+          {/* Right: controls */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem' }}>
             <button
               onClick={startRunAll}
               disabled={runAllActive}
-              style={{
-                padding: '0 1rem', minHeight: '2.25rem', borderRadius: '0.25rem', border: 'none',
-                background: runAllActive ? '#2a1040' : 'linear-gradient(135deg, #7B00AC, #AC00EF)',
-                color: runAllActive ? '#AC00EF' : '#fff', fontSize: '0.75rem', fontWeight: 700,
-                cursor: runAllActive ? 'not-allowed' : 'pointer', letterSpacing: '0.03em',
-                display: 'flex', alignItems: 'center', gap: '0.4rem',
-                boxShadow: runAllActive ? 'none' : '0 0 16px #AC00EF40',
-                transition: 'all 200ms',
+              className="btn-acc"
+              style={{ minHeight: '2.5rem', fontSize: '0.875rem', padding: '0 1.25rem', gap: '0.4rem',
+                background: runAllActive ? 'rgba(172,0,239,0.15)' : undefined,
+                color: runAllActive ? '#AC00EF' : '#fff',
+                boxShadow: runAllActive ? 'none' : undefined,
               }}
             >
               {runAllActive ? (
                 <>
-                  <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#AC00EF', animation: 'pulse 1s infinite' }} />
+                  <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#AC00EF', display: 'inline-block', animation: 'pulse-dot 1.4s ease-in-out infinite' }} />
                   Running…
                 </>
-              ) : (
-                <>⚡ Run All Analyses</>
-              )}
+              ) : <>⚡ Run All</>}
             </button>
 
             {doneCount > 0 && !runAllActive && (
               <button
                 onClick={resetResults}
-                style={{
-                  background: 'none', border: '1px solid #2E2E2E', borderRadius: '0.25rem',
-                  color: '#555', fontSize: '0.75rem', padding: '0 0.75rem', minHeight: '2.25rem',
-                  cursor: 'pointer', letterSpacing: '0.02em', transition: 'color 200ms',
-                }}
-                onMouseEnter={e => e.currentTarget.style.color = '#fff'}
-                onMouseLeave={e => e.currentTarget.style.color = '#555'}
+                className="btn-acc-outline"
+                style={{ minHeight: '2.5rem', fontSize: '0.875rem', padding: '0 1rem' }}
               >
                 Reset
               </button>
             )}
 
-            <div style={{ width: '1px', height: '1.5rem', background: '#2E2E2E' }} />
+            <div style={{ width: '1px', height: '1.5rem', background: 'rgba(255,255,255,0.08)' }} />
 
-            <span style={{ fontSize: '0.5625rem', color: '#333333', textTransform: 'uppercase', letterSpacing: '0.12em', fontWeight: 700 }}>Portfolio</span>
+            <span style={{ fontSize: '0.6875rem', color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', letterSpacing: '0.12em', fontWeight: 700 }}>Portfolio</span>
             {COMPANIES.map(c => (
               <button key={c.id} onClick={() => { setCompanyId(c.id); runAllRef.current = false; setRunAllActive(false); }}
                 className={companyId === c.id ? 'btn-acc' : 'btn-acc-outline'}
-                style={{ minHeight: '2.25rem', fontSize: '0.8125rem', padding: '0 0.875rem', gap: '0.375rem' }}>
+                style={{ minHeight: '2.5rem', fontSize: '0.875rem', padding: '0 1rem', gap: '0.375rem' }}>
                 <CountryBadge code={c.countryCode} />
                 {c.shortName}
               </button>
             ))}
             <button onClick={() => setShowForm(true)}
               className={companyId === CUSTOM_ID ? 'btn-acc' : 'btn-acc-outline'}
-              style={{ minHeight: '2.25rem', fontSize: '0.8125rem', padding: '0 0.875rem', gap: '0.375rem' }}>
+              style={{ minHeight: '2.5rem', fontSize: '0.875rem', padding: '0 1rem' }}>
               {companyId === CUSTOM_ID && customCompany ? customCompany.shortName : '+ Custom'}
             </button>
           </div>
         </div>
       </header>
 
-      {/* ── Nav with status badges ── */}
-      <nav style={{ position: 'sticky', top: '80px', zIndex: 10, background: '#060606', borderBottom: '1px solid #2E2E2E' }}>
-        <div style={{ padding: '0 2rem', display: 'flex' }}>
+      {/* ── Nav ── */}
+      <nav style={{
+        position: 'sticky', top: '72px', zIndex: 10,
+        background: 'rgba(5,5,15,0.9)',
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
+        borderBottom: '1px solid rgba(255,255,255,0.06)',
+      }}>
+        <div style={{ padding: '0 2rem', display: 'flex', overflowX: 'auto' }}>
           {SCREENS.map(s => {
             const hasResult = BADGE_SCREENS[s.id] ? !!results[BADGE_SCREENS[s.id]] : false;
             const isActive  = screen === s.id;
             return (
               <button key={s.id} onClick={() => setScreen(s.id)}
                 style={{
-                  padding: '0 1.25rem', height: '52px', fontSize: '0.875rem',
+                  padding: '0 1.25rem', height: '52px', fontSize: '0.9375rem',
                   fontWeight: isActive ? 600 : 400,
-                  color: isActive ? '#fff' : '#555555',
+                  color: isActive ? '#fff' : 'rgba(255,255,255,0.4)',
                   background: 'none', border: 'none',
                   borderBottom: isActive ? '2px solid #AC00EF' : '2px solid transparent',
                   cursor: 'pointer',
-                  transition: 'color 250ms cubic-bezier(0.25,1,0.5,1), border-color 250ms cubic-bezier(0.25,1,0.5,1)',
-                  display: 'flex', alignItems: 'center', gap: '0.4rem',
-                  whiteSpace: 'nowrap', letterSpacing: '-0.005em',
+                  transition: 'color 250ms var(--ease-out), border-color 250ms var(--ease-out)',
+                  display: 'flex', alignItems: 'center', gap: '0.5rem',
+                  whiteSpace: 'nowrap', letterSpacing: '-0.01em', flexShrink: 0,
                 }}
-                onMouseEnter={e => { if (!isActive) e.currentTarget.style.color = '#fff'; }}
-                onMouseLeave={e => { if (!isActive) e.currentTarget.style.color = '#787878'; }}
+                onMouseEnter={e => { if (!isActive) e.currentTarget.style.color = 'rgba(255,255,255,0.75)'; }}
+                onMouseLeave={e => { if (!isActive) e.currentTarget.style.color = 'rgba(255,255,255,0.4)'; }}
               >
-                {/* Status dot */}
                 {BADGE_SCREENS[s.id] && (
                   <span style={{
-                    width: 6, height: 6, borderRadius: '50%', flexShrink: 0,
-                    background: hasResult ? '#00C896' : '#2E2E2E',
-                    boxShadow: hasResult ? '0 0 6px #00C89680' : 'none',
+                    width: 7, height: 7, borderRadius: '50%', flexShrink: 0,
+                    background: hasResult ? '#00C896' : 'rgba(255,255,255,0.12)',
+                    boxShadow: hasResult ? '0 0 8px #00C89680' : 'none',
                     transition: 'all 300ms',
                   }} />
                 )}
                 {s.label}
                 {isActive && (
-                  <span style={{ fontSize: '0.6875rem', color: '#444444', fontWeight: 400 }}>— {s.desc}</span>
+                  <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.3)', fontWeight: 400 }}>— {s.desc}</span>
                 )}
               </button>
             );
           })}
         </div>
 
-        {/* ── Workflow stepper (analysis screens only) ── */}
+        {/* ── Workflow stepper ── */}
         {ANALYSIS_SCREENS.includes(screen) && (
-          <div style={{ padding: '0.375rem 2rem', borderTop: '1px solid #111', display: 'flex', alignItems: 'center', gap: 0 }}>
+          <div style={{
+            padding: '0.5rem 2rem',
+            borderTop: '1px solid rgba(255,255,255,0.04)',
+            display: 'flex', alignItems: 'center', gap: 0,
+          }}>
             {ANALYSIS_SCREENS.map((sid, i) => {
               const done    = !!results[sid];
               const current = screen === sid;
@@ -364,33 +375,47 @@ export default function App() {
                   <button
                     onClick={() => setScreen(sid)}
                     style={{
-                      display: 'flex', alignItems: 'center', gap: '0.375rem',
-                      background: 'none', border: 'none', cursor: 'pointer', padding: '0.25rem 0.5rem',
-                      borderRadius: '999px',
-                      background: current ? '#AC00EF15' : 'none',
+                      display: 'flex', alignItems: 'center', gap: '0.5rem',
+                      background: current ? 'rgba(172,0,239,0.1)' : 'none',
+                      border: 'none', cursor: 'pointer',
+                      padding: '0.3rem 0.625rem', borderRadius: '999px',
+                      transition: 'background 200ms',
                     }}
                   >
                     <span style={{
-                      width: 18, height: 18, borderRadius: '50%', flexShrink: 0,
+                      width: 22, height: 22, borderRadius: '50%', flexShrink: 0,
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontSize: '0.5rem', fontWeight: 700,
-                      background: done ? '#00C896' : current ? '#AC00EF' : '#1E1E1E',
-                      color: done || current ? '#fff' : '#444',
-                      border: `1px solid ${done ? '#00C89660' : current ? '#AC00EF80' : '#2E2E2E'}`,
+                      fontSize: '0.6875rem', fontWeight: 700,
+                      background: done ? '#00C896' : current ? '#AC00EF' : 'rgba(255,255,255,0.06)',
+                      color: done || current ? '#fff' : 'rgba(255,255,255,0.3)',
+                      border: `1px solid ${done ? 'rgba(0,200,150,0.4)' : current ? 'rgba(172,0,239,0.5)' : 'rgba(255,255,255,0.1)'}`,
+                      boxShadow: done ? '0 0 8px rgba(0,200,150,0.3)' : current ? '0 0 10px rgba(172,0,239,0.4)' : 'none',
+                      transition: 'all 300ms',
                     }}>
                       {done ? '✓' : i + 1}
                     </span>
-                    <span style={{ fontSize: '0.625rem', fontWeight: current ? 700 : 400, color: done ? '#00C896' : current ? '#fff' : '#444', letterSpacing: '0.02em' }}>
+                    <span style={{
+                      fontSize: '0.8125rem', fontWeight: current ? 600 : 400,
+                      color: done ? '#00C896' : current ? '#fff' : 'rgba(255,255,255,0.3)',
+                      letterSpacing: '-0.01em', transition: 'color 300ms',
+                    }}>
                       {scr?.label}
                     </span>
                   </button>
                   {i < ANALYSIS_SCREENS.length - 1 && (
-                    <div style={{ width: '1.5rem', height: '1px', background: results[ANALYSIS_SCREENS[i + 1]] ? '#00C89640' : '#1E1E1E', margin: '0 0.125rem' }} />
+                    <div style={{
+                      width: '2rem', height: '1px',
+                      background: results[ANALYSIS_SCREENS[i + 1]]
+                        ? 'rgba(0,200,150,0.3)'
+                        : 'rgba(255,255,255,0.07)',
+                      margin: '0 0.125rem',
+                      transition: 'background 300ms',
+                    }} />
                   )}
                 </div>
               );
             })}
-            <div style={{ marginLeft: 'auto', fontSize: '0.5rem', color: '#2E2E2E', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+            <div style={{ marginLeft: 'auto', fontSize: '0.75rem', color: 'rgba(255,255,255,0.2)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
               {doneCount}/{ANALYSIS_SCREENS.length} complete
             </div>
           </div>

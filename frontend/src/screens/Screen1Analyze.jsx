@@ -45,7 +45,7 @@ function scoreColor(s) {
 
 function SectionLabel({ children, style = {} }) {
   return (
-    <div style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#fff', marginBottom: '0.75rem', ...style }}>
+    <div style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--text-muted)', marginBottom: '0.875rem', ...style }}>
       {children}
     </div>
   );
@@ -53,7 +53,7 @@ function SectionLabel({ children, style = {} }) {
 
 function Card({ children, style = {}, className = '' }) {
   return (
-    <div className={`card-hover ${className}`} style={{ background: '#111111', border: '1px solid #2E2E2E', borderRadius: '0.25rem', padding: '1.25rem', ...style }}>
+    <div className={`card-hover glass-card ${className}`} style={{ padding: '1.5rem', ...style }}>
       {children}
     </div>
   );
@@ -174,21 +174,21 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
   return (
     <div>
       {/* Company banner */}
-      <div style={{ position: 'relative', borderRadius: '0.25rem', overflow: 'hidden', marginBottom: '1.5rem', background: '#101010', backgroundImage: `url(/images/${companyId}-banner.jpg)`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(0,0,0,0.95) 50%, rgba(0,0,0,0.6))' }} />
-        <div style={{ position: 'relative', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1.5rem', padding: '1.5rem' }}>
+      <div className="glass-card" style={{ position: 'relative', overflow: 'hidden', marginBottom: '2rem', backgroundImage: `url(/images/${companyId}-banner.jpg)`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(120deg, rgba(5,5,15,0.97) 45%, rgba(5,5,15,0.7))' }} />
+        <div style={{ position: 'relative', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1.5rem', padding: '2rem' }}>
           <div>
-            <h1 style={{ fontFamily: 'GT Sectra Fine, Palatino, serif', fontWeight: 300, fontSize: '1.75rem', color: '#fff', marginBottom: '0.25rem', letterSpacing: '-0.01em' }}>
+            <h1 style={{ fontFamily: 'GT Sectra Fine, Palatino, serif', fontWeight: 300, fontSize: '2rem', color: '#fff', marginBottom: '0.5rem', letterSpacing: '-0.02em' }}>
               {company.name}
             </h1>
-            <p style={{ fontSize: '0.875rem', color: '#787878' }}>
+            <p style={{ fontSize: '0.9375rem', color: 'var(--text-muted)', letterSpacing: '-0.01em' }}>
               {company.sasbSector} · {company.geography} · {fmt(company.revenue)} revenue · {company.employees.toLocaleString()} employees
             </p>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexShrink: 0 }}>
             {data && (
-              <button onClick={openAll} style={{ background: 'none', border: 'none', color: '#AC00EF', fontSize: '0.75rem', fontWeight: 500, cursor: 'pointer', letterSpacing: '0.04em', textTransform: 'uppercase', padding: 0 }}>
-                + Open all sections
+              <button onClick={openAll} style={{ background: 'none', border: 'none', color: '#AC00EF', fontSize: '0.875rem', fontWeight: 500, cursor: 'pointer', letterSpacing: '0.04em', textTransform: 'uppercase', padding: 0 }}>
+                + Open all
               </button>
             )}
             <button className="btn-acc" onClick={run} disabled={agentStatus === 'running'}>

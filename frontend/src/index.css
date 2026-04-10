@@ -32,160 +32,327 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Design tokens ───────────────────────────────────────────────────────────── */
+:root {
+  --acc-purple:        #AC00EF;
+  --acc-purple-dark:   #7B00AC;
+  --acc-purple-deeper: #4A0066;
+  --acc-pink:          #F04FDB;
+  --acc-cyan:          #00C8FF;
+  --acc-green:         #00C896;
+  --acc-black:         #05050F;
+  --acc-900:           #0D0D1A;
+  --acc-800:           #151528;
+  --acc-700:           #1E1E35;
+  --acc-600:           #2A2A45;
+  --acc-gray:          #8888AA;
+  --acc-gray-dark:     #5555777;
+  --acc-transition:    cubic-bezier(0.85, 0, 0, 1);
+
+  --text-hero:    #ffffff;
+  --text-body:    #C8C8E0;
+  --text-muted:   #8888AA;
+  --text-ghost:   #55556677;
+  --text-accent:  #AC00EF;
+  --text-pink:    #F04FDB;
+  --text-danger:  #FF1F5A;
+  --surface-card: rgba(255,255,255,0.03);
+  --surface-deep: rgba(10,10,25,0.8);
+  --border-subtle: rgba(255,255,255,0.06);
+  --border-std:    rgba(255,255,255,0.10);
+  --border-accent: rgba(172,0,239,0.35);
+  --ease-out: cubic-bezier(0.25, 1, 0.5, 1);
+
+  /* Typography scale — larger across the board */
+  --text-xs:   0.75rem;    /* 12px — was 0.5625rem/9px */
+  --text-sm:   0.875rem;   /* 14px */
+  --text-base: 1rem;       /* 16px */
+  --text-lg:   1.125rem;   /* 18px */
+  --text-xl:   1.375rem;   /* 22px */
+  --text-2xl:  1.75rem;    /* 28px */
+  --text-3xl:  2.25rem;    /* 36px */
+  --text-hero: 3rem;       /* 48px */
+}
+
 /* ── Base ───────────────────────────────────────────────────────────────────── */
 @layer base {
-  :root {
-    --acc-purple:        #AC00EF;
-    --acc-purple-dark:   #7B00AC;
-    --acc-purple-deeper: #4A0066;
-    --acc-pink:          #F04FDB;
-    --acc-black:         #060606;
-    --acc-900:           #111111;
-    --acc-800:           #1E1E1E;
-    --acc-700:           #2E2E2E;
-    --acc-gray:          #787878;
-    --acc-gray-dark:     #555555;
-    --acc-transition:    cubic-bezier(0.85, 0, 0, 1);
-  }
-
   * {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    letter-spacing: -0.005em;
   }
 
   body {
-    background: #060606;
-    color: #fff;
+    background: var(--acc-black);
+    color: var(--text-body);
     font-family: 'Graphik', Arial, Helvetica, sans-serif;
     font-weight: 400;
+    font-size: var(--text-base);
+    line-height: 1.6;
   }
 
-  /* Selection */
   ::selection {
     background: #4A0066;
     color: #fff;
   }
 
-  /* Focus visible */
   :focus-visible {
     outline: 2px solid #AC00EF;
     outline-offset: 4px;
   }
 }
 
-/* ── Accenture button overrides ─────────────────────────────────────────────── */
+/* ── Ambient background — gradient orbs (Linear/Vercel style) ────────────────── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% -10%, rgba(172,0,239,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 10%, rgba(0,200,255,0.06) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 30% at 50% 80%, rgba(172,0,239,0.07) 0%, transparent 50%);
+}
+
+/* Subtle mesh grid overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 100% 100% at 50% 0%, black 40%, transparent 100%);
+}
+
+header, nav, main, footer { position: relative; z-index: 1; }
+
+/* ── Buttons ─────────────────────────────────────────────────────────────────── */
 @layer components {
 
-  /* Gradient primary button — matches Accenture CTA exactly */
   .btn-acc {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    min-height: 3rem;
-    padding: 0 1.25rem;
-    background: linear-gradient(to right, #7B00AC, #AC00EF);
+    min-height: 2.75rem;
+    padding: 0 1.5rem;
+    background: linear-gradient(135deg, #7B00AC, #AC00EF, #C040FF);
     color: #fff;
     font-family: 'Graphik', Arial, sans-serif;
     font-weight: 600;
-    font-size: 0.875rem;
+    font-size: var(--text-sm);
     border: none;
-    border-radius: 0;
+    border-radius: 0.5rem;
     cursor: pointer;
-    transition: background 550ms cubic-bezier(0.85, 0, 0, 1),
-                opacity 550ms cubic-bezier(0.85, 0, 0, 1);
+    transition: all 300ms cubic-bezier(0.25, 1, 0.5, 1);
     white-space: nowrap;
+    letter-spacing: 0.01em;
+    box-shadow: 0 0 20px rgba(172,0,239,0.25), inset 0 1px 0 rgba(255,255,255,0.15);
   }
 
   .btn-acc:hover:not(:disabled) {
-    background: linear-gradient(to right, #5C0080, #7B00AC);
+    background: linear-gradient(135deg, #9000C8, #C040FF, #D860FF);
+    box-shadow: 0 0 32px rgba(172,0,239,0.45), inset 0 1px 0 rgba(255,255,255,0.2);
+    transform: translateY(-1px);
   }
 
   .btn-acc:active:not(:disabled) {
-    background: #5C0080;
+    transform: translateY(0) scale(0.98);
+    box-shadow: 0 0 12px rgba(172,0,239,0.3);
   }
 
   .btn-acc:disabled {
     opacity: 0.4;
     cursor: not-allowed;
+    box-shadow: none;
   }
 
-  /* Outlined secondary button */
   .btn-acc-outline {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    min-height: 3rem;
+    min-height: 2.75rem;
     padding: 0 1.25rem;
-    background: transparent;
-    color: #fff;
+    background: rgba(255,255,255,0.03);
+    color: var(--text-body);
     font-family: 'Graphik', Arial, sans-serif;
     font-weight: 500;
-    font-size: 0.875rem;
-    border: 1px solid #2b2b2b;
-    border-radius: 0;
+    font-size: var(--text-sm);
+    border: 1px solid var(--border-std);
+    border-radius: 0.5rem;
     cursor: pointer;
-    transition: border-color 550ms cubic-bezier(0.85, 0, 0, 1),
-                color 550ms cubic-bezier(0.85, 0, 0, 1);
+    transition: all 250ms cubic-bezier(0.25, 1, 0.5, 1);
     white-space: nowrap;
+    backdrop-filter: blur(8px);
   }
 
   .btn-acc-outline:hover:not(:disabled) {
-    border-color: #AC00EF;
-    color: #F04FDB;
+    border-color: var(--border-accent);
+    color: #fff;
+    background: rgba(172,0,239,0.08);
+    box-shadow: 0 0 16px rgba(172,0,239,0.15);
   }
 
-  .btn-acc-outline.active {
-    background: #AC00EF;
+  .btn-acc-outline.active, .btn-acc-outline:active:not(:disabled) {
+    background: rgba(172,0,239,0.15);
     border-color: #AC00EF;
     color: #fff;
   }
 
-  /* Accenture card */
+  /* Accenture legacy card */
   .acc-card {
-    background: #101010;
-    border: 1px solid #2b2b2b;
-    border-radius: 0.25rem;
-    transition: border-color 550ms cubic-bezier(0.85, 0, 0, 1);
+    background: var(--surface-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 0.75rem;
+    backdrop-filter: blur(12px);
+    transition: border-color 300ms var(--ease-out);
   }
-
   .acc-card:hover {
-    border-color: #3d3d3d;
+    border-color: var(--border-std);
   }
 
-  /* Section label */
   .acc-label {
-    font-size: 0.75rem;
+    font-size: var(--text-xs);
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: #fff;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
   }
 
   /* Scrollbar */
   ::-webkit-scrollbar        { width: 6px; height: 6px; }
-  ::-webkit-scrollbar-track  { background: #111111; }
+  ::-webkit-scrollbar-track  { background: var(--acc-900); }
   ::-webkit-scrollbar-thumb  { background: #AC00EF; border-radius: 3px; }
   ::-webkit-scrollbar-thumb:hover { background: #7B00AC; }
 }
 
-/* ── Design tokens ───────────────────────────────────────────────────────────── */
-:root {
-  --text-hero:    #ffffff;
-  --text-body:    #c8c8c4;
-  --text-muted:   #787878;
-  --text-ghost:   #444444;
-  --text-accent:  #AC00EF;
-  --text-pink:    #F04FDB;
-  --text-danger:  #FF1F5A;
-  --surface-card: #111111;
-  --surface-deep: #0D0D0D;
-  --border-subtle:#1E1E1E;
-  --border-std:   #2E2E2E;
-  --ease-out: cubic-bezier(0.25, 1, 0.5, 1);
+/* ── Glass card (Linear/Harness style) ───────────────────────────────────────── */
+.glass-card {
+  background: rgba(255,255,255,0.03);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 0.75rem;
+  position: relative;
+  overflow: hidden;
 }
 
-/* ── Utility: divider ────────────────────────────────────────────────────────── */
+.glass-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(172,0,239,0.6), rgba(200,200,255,0.4), transparent);
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* ── Gradient border card ────────────────────────────────────────────────────── */
+.grad-border {
+  position: relative;
+  background: var(--acc-900);
+  border-radius: 0.75rem;
+}
+.grad-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 0.75rem;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(172,0,239,0.5), rgba(0,200,255,0.2), rgba(172,0,239,0.1));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ── Gradient text ───────────────────────────────────────────────────────────── */
+.gradient-text {
+  background: linear-gradient(135deg, #ffffff 0%, #E040FF 50%, #AC00EF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-cyan {
+  background: linear-gradient(135deg, #ffffff 0%, #80E8FF 50%, #00C8FF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-green {
+  background: linear-gradient(135deg, #80FFD4 0%, #00C896 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Section label ───────────────────────────────────────────────────────────── */
+.section-label {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+
+/* ── Stat display ────────────────────────────────────────────────────────────── */
+.stat-label {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-bottom: 0.25rem;
+}
+.stat-hero {
+  font-family: 'GT Sectra Fine', Palatino, serif;
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: #fff;
+}
+.stat-hero-lg  { font-size: var(--text-3xl); }
+.stat-hero-xl  { font-size: var(--text-hero); }
+
+/* ── Card hover ──────────────────────────────────────────────────────────────── */
+.card-hover {
+  position: relative;
+  overflow: hidden;
+  transition: border-color 300ms var(--ease-out),
+              box-shadow   300ms var(--ease-out),
+              transform    200ms var(--ease-out);
+}
+.card-hover::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #AC00EF88, transparent);
+  opacity: 0;
+  transition: opacity 300ms var(--ease-out);
+  pointer-events: none;
+}
+.card-hover:hover {
+  border-color: rgba(172,0,239,0.4) !important;
+  box-shadow: 0 0 0 1px rgba(172,0,239,0.15), 0 8px 40px rgba(172,0,239,0.12);
+  transform: translateY(-1px);
+}
+.card-hover:hover::before {
+  opacity: 1;
+}
+
+/* ── Glow effects ────────────────────────────────────────────────────────────── */
+.glow-purple { box-shadow: 0 0 32px rgba(172,0,239,0.25); }
+.glow-green  { box-shadow: 0 0 24px rgba(0,200,150,0.25); }
+.glow-red    { box-shadow: 0 0 24px rgba(255,31,90,0.25); }
+
+/* ── Divider ─────────────────────────────────────────────────────────────────── */
 .acc-divider {
   height: 1px;
   background: var(--border-subtle);
@@ -193,23 +360,20 @@
   margin: 0;
 }
 
-/* ── Utility: stat block (label + hero number) ───────────────────────────────── */
-.stat-label {
-  font-size: 0.5625rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--text-ghost);
-  margin-bottom: 0.2rem;
-}
-.stat-hero {
-  font-family: 'GT Sectra Fine', Palatino, serif;
-  font-weight: 300;
+/* ── Monospace ───────────────────────────────────────────────────────────────── */
+.data-mono {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
   letter-spacing: -0.02em;
-  line-height: 1;
 }
 
-/* ── Spinner for AgentStatus ────────────────────────────────────────────────── */
+/* ── Table row hover ─────────────────────────────────────────────────────────── */
+.row-hover {
+  transition: background 180ms var(--ease-out);
+}
+.row-hover:hover { background: rgba(255,255,255,0.04) !important; }
+
+/* ── Spinner ─────────────────────────────────────────────────────────────────── */
 @keyframes spin-slow {
   to { transform: rotate(360deg); }
 }
@@ -217,7 +381,7 @@
   animation: spin-slow 1s linear infinite;
 }
 
-/* ── Pulse dot (AgentStatus running indicator) ───────────────────────────────── */
+/* ── Pulse dot ───────────────────────────────────────────────────────────────── */
 @keyframes pulse-dot {
   0%, 100% { opacity: 1;   transform: scale(1); }
   50%       { opacity: 0.5; transform: scale(0.8); }
@@ -226,49 +390,78 @@
   animation: pulse-dot 1.4s ease-in-out infinite;
 }
 
-/* ── Button micro-interactions ───────────────────────────────────────────────── */
-.btn-acc {
-  transition: background 550ms cubic-bezier(0.85, 0, 0, 1),
-              opacity    550ms cubic-bezier(0.85, 0, 0, 1),
-              transform  120ms cubic-bezier(0.25, 1, 0.5, 1) !important;
+/* ── Screen entrance ─────────────────────────────────────────────────────────── */
+@keyframes screenIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
-.btn-acc:active:not(:disabled) {
-  transform: scale(0.97);
-}
-.btn-acc-outline {
-  transition: border-color 550ms cubic-bezier(0.85, 0, 0, 1),
-              color        550ms cubic-bezier(0.85, 0, 0, 1),
-              transform    120ms cubic-bezier(0.25, 1, 0.5, 1) !important;
-}
-.btn-acc-outline:active:not(:disabled) {
-  transform: scale(0.97);
+.screen-enter {
+  animation: screenIn 360ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-/* ── Section expand/collapse entrance ───────────────────────────────────────── */
+/* ── Section entrance ────────────────────────────────────────────────────────── */
 @keyframes sectionIn {
-  from { opacity: 0; transform: translateY(-8px); }
+  from { opacity: 0; transform: translateY(-6px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 .section-body-enter {
   animation: sectionIn 240ms cubic-bezier(0.25, 1, 0.5, 1) both;
 }
 
-/* ── Screen-level entrance (tab switching) ───────────────────────────────────── */
-@keyframes screenIn {
+/* ── Fade up stagger ─────────────────────────────────────────────────────────── */
+@keyframes fadeUp {
   from { opacity: 0; transform: translateY(12px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-.screen-enter {
-  animation: screenIn 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+.fade-up   { animation: fadeUp 400ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+.fade-up-1 { animation-delay: 60ms; }
+.fade-up-2 { animation-delay: 120ms; }
+.fade-up-3 { animation-delay: 180ms; }
+.fade-up-4 { animation-delay: 240ms; }
+.fade-up-5 { animation-delay: 300ms; }
+.fade-up-6 { animation-delay: 360ms; }
+
+/* ── Number reveal ───────────────────────────────────────────────────────────── */
+@keyframes numIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.num-in {
+  animation: numIn 500ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-/* ── AgentStatus step entrance ───────────────────────────────────────────────── */
-@keyframes stepReveal {
-  from { opacity: 0; transform: translateX(-8px); }
-  to   { opacity: 1; transform: translateX(0); }
+/* ── Bar fill ────────────────────────────────────────────────────────────────── */
+@keyframes barFill {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+.bar-fill {
+  transform-origin: left center;
+  animation: barFill 900ms cubic-bezier(0.25, 1, 0.5, 1) both;
 }
 
-/* ── Reduced motion overrides ────────────────────────────────────────────────── */
+/* ── Flowing gradient animation (Linear/Harness header orb) ─────────────────── */
+@keyframes orbFloat {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%       { transform: translate(20px, -15px) scale(1.05); }
+  66%       { transform: translate(-10px, 10px) scale(0.97); }
+}
+.orb-float {
+  animation: orbFloat 8s ease-in-out infinite;
+}
+
+/* ── Header glow line ────────────────────────────────────────────────────────── */
+header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(172,0,239,0.5) 30%, rgba(0,200,255,0.3) 60%, transparent 100%);
+  pointer-events: none;
+}
+
+/* ── Reduced motion ──────────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -277,30 +470,15 @@
   }
 }
 
-/* ── Print / Export to PDF ───────────────────────────────────────────────────── */
+/* ── Print ───────────────────────────────────────────────────────────────────── */
 @media print {
   @page { size: A4; margin: 18mm 15mm; }
-
-  body { background: #060606 !important; color: #fff !important; }
-  body::before { display: none !important; }
-
-  /* Hide chrome */
-  header, nav, footer,
-  .no-print,
-  .btn-acc, .btn-acc-outline,
-  button { display: none !important; }
-
-  /* Expand collapsed sections for print */
+  body { background: #05050F !important; color: #fff !important; }
+  body::before, body::after { display: none !important; }
+  header, nav, footer, .no-print, .btn-acc, .btn-acc-outline, button { display: none !important; }
   main { padding: 0 !important; max-width: 100% !important; }
-
-  /* Cards keep dark style */
   .card-hover { break-inside: avoid; }
   .card-hover::before { display: none !important; }
-
-  /* Page break between major result rows */
-  .fade-up-3, .fade-up-4, .fade-up-5 { break-before: auto; }
-
-  /* Print header replacement */
   main::before {
     content: 'ESG Value Engine  ·  Accenture  ·  Enactus GSIC 2026';
     display: block;
@@ -312,108 +490,4 @@
     border-bottom: 1px solid #2E2E2E;
     padding-bottom: 4mm;
   }
-}
-
-/* ── Dot-grid background (Palantir-style) ────────────────────────────────────── */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 1;
-  background-image: radial-gradient(circle, #2E2E2E 1px, transparent 1px);
-  background-size: 28px 28px;
-}
-
-/* Ensure content sits above the dot grid */
-header, nav, main, footer { position: relative; z-index: 1; }
-
-/* ── Section fade-in animation ───────────────────────────────────────────────── */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-.fade-up {
-  animation: fadeUp 400ms cubic-bezier(0.85, 0, 0, 1) both;
-}
-.fade-up-1 { animation-delay: 60ms; }
-.fade-up-2 { animation-delay: 120ms; }
-.fade-up-3 { animation-delay: 180ms; }
-.fade-up-4 { animation-delay: 240ms; }
-.fade-up-5 { animation-delay: 300ms; }
-.fade-up-6 { animation-delay: 360ms; }
-
-/* ── Card glow on hover ──────────────────────────────────────────────────────── */
-.card-hover {
-  transition: border-color 400ms cubic-bezier(0.85,0,0,1),
-              box-shadow   400ms cubic-bezier(0.85,0,0,1);
-}
-.card-hover:hover {
-  border-color: #AC00EF66 !important;
-  box-shadow: 0 0 0 1px #AC00EF33, 0 8px 32px #AC00EF14;
-}
-
-/* ── Monospace data values (Gotham-style precision) ─────────────────────────── */
-.data-mono {
-  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', ui-monospace, monospace;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -0.02em;
-}
-
-/* ── Intelligence-grade card inner scan line ─────────────────────────────────── */
-.card-hover::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 1px;
-  background: linear-gradient(to right, transparent, #AC00EF88, transparent);
-  opacity: 0;
-  transition: opacity 400ms cubic-bezier(0.85,0,0,1);
-  pointer-events: none;
-}
-.card-hover {
-  position: relative;
-  overflow: hidden;
-}
-.card-hover:hover::before {
-  opacity: 1;
-}
-
-/* ── Table row hover ─────────────────────────────────────────────────────────── */
-.row-hover {
-  transition: background 180ms cubic-bezier(0.25, 1, 0.5, 1);
-}
-.row-hover:hover { background: #181818 !important; }
-
-/* ── Progress bar fill animation ────────────────────────────────────────────── */
-@keyframes barFill {
-  from { transform: scaleX(0); }
-  to   { transform: scaleX(1); }
-}
-.bar-fill {
-  transform-origin: left center;
-  animation: barFill 900ms cubic-bezier(0.25, 1, 0.5, 1) both;
-}
-
-/* ── Number count-in flicker (display numbers) ───────────────────────────────── */
-@keyframes numIn {
-  from { opacity: 0; transform: translateY(4px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-.num-in {
-  animation: numIn 500ms cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-/* ── Purple ambient glow behind header ───────────────────────────────────────── */
-header::after {
-  content: '';
-  position: absolute;
-  bottom: -1px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 40%;
-  height: 1px;
-  background: linear-gradient(to right, transparent, #AC00EF66, transparent);
-  pointer-events: none;
 }
