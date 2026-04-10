@@ -147,6 +147,7 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
             setIsStreaming(false);
             setStreamText('');
             setAgentStatus('complete');
+            setOpenSections(s => ({ ...s, kpis: true }));
           } else if (event.type === 'error') {
             throw new Error(event.message);
           }
