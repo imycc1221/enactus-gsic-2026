@@ -69,7 +69,7 @@ function Card({ children, style = {}, className = '' }) {
 
 function SectionLabel({ children, style = {} }) {
   return (
-    <div style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#fff', marginBottom: '0.75rem', ...style }}>
+    <div style={{ fontSize: 'var(--fs-label)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#fff', marginBottom: '0.75rem', ...style }}>
       {children}
     </div>
   );
@@ -84,7 +84,7 @@ function CopyButton({ text }) {
     });
   }
   return (
-    <button onClick={copy} style={{ background: 'none', border: '1px solid #2E2E2E', borderRadius: '0.25rem', color: copied ? '#00C896' : '#555', fontSize: '0.6875rem', padding: '0.25rem 0.625rem', cursor: 'pointer', transition: 'color 200ms' }}>
+    <button onClick={copy} style={{ background: 'none', border: '1px solid #2E2E2E', borderRadius: '0.25rem', color: copied ? '#00C896' : '#555', fontSize: 'var(--fs-micro)', padding: '0.25rem 0.625rem', cursor: 'pointer', transition: 'color 200ms' }}>
       {copied ? '✓ Copied' : 'Copy'}
     </button>
   );
@@ -138,10 +138,10 @@ export default function Screen4Sfdr({ companyId, companyOverride, screen1Result,
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(0,0,0,0.95) 50%, rgba(0,0,0,0.6))' }} />
         <div style={{ position: 'relative', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1.5rem', padding: '1.5rem' }}>
           <div>
-            <h1 style={{ fontFamily: 'GT Sectra Fine, Palatino, serif', fontWeight: 300, fontSize: '1.75rem', color: '#fff', marginBottom: '0.25rem', letterSpacing: '-0.01em' }}>
+            <h1 style={{ fontFamily: "'Georgia', serif", fontWeight: 300, fontSize: 'var(--fs-h1)', color: '#fff', marginBottom: '0.25rem', letterSpacing: '-0.01em' }}>
               {company.name}
             </h1>
-            <p style={{ fontSize: '0.875rem', color: '#787878' }}>
+            <p style={{ fontSize: 'var(--fs-sm)', color: '#787878' }}>
               {company.geography} · SFDR Article Classification · Regulation (EU) 2019/2088
             </p>
           </div>
@@ -151,7 +151,7 @@ export default function Screen4Sfdr({ companyId, companyOverride, screen1Result,
                 display: 'inline-flex', alignItems: 'center', gap: '0.375rem',
                 background: '#00C89615', border: '1px solid #00C89640',
                 borderRadius: '999px', padding: '0.2rem 0.625rem',
-                fontSize: '0.6875rem', color: '#00C896', fontWeight: 500
+                fontSize: 'var(--fs-micro)', color: '#00C896', fontWeight: 500
               }}>
                 <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#00C896', flexShrink: 0 }} />
                 ESG Screen context loaded
@@ -174,11 +174,11 @@ export default function Screen4Sfdr({ companyId, companyOverride, screen1Result,
       ] : undefined} />
 
       {meta && agentStatus === 'complete' && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.625rem', color: '#333', marginBottom: '1rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: 'var(--fs-label)', color: '#333', marginBottom: '1rem' }}>
           <span style={{ width: 5, height: 5, borderRadius: '50%', background: meta.cached ? '#888888' : '#00C896', flexShrink: 0 }} />
           {meta.cached ? 'Cached result' : 'Live result'} · Generated {new Date(meta.generatedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
           {meta.cached && (
-            <button onClick={run} style={{ background: 'none', border: 'none', color: '#555', fontSize: '0.625rem', cursor: 'pointer', textDecoration: 'underline', padding: 0, marginLeft: '0.25rem' }}>
+            <button onClick={run} style={{ background: 'none', border: 'none', color: '#555', fontSize: 'var(--fs-label)', cursor: 'pointer', textDecoration: 'underline', padding: 0, marginLeft: '0.25rem' }}>
               Re-run live →
             </button>
           )}
@@ -193,7 +193,7 @@ export default function Screen4Sfdr({ companyId, companyOverride, screen1Result,
       )}
 
       {error && (
-        <div style={{ background: '#FF444410', border: '1px solid #FF444440', borderRadius: '0.25rem', padding: '1rem', color: '#FF4444', fontSize: '0.875rem', marginBottom: '1.5rem' }}>
+        <div style={{ background: '#FF444410', border: '1px solid #FF444440', borderRadius: '0.25rem', padding: '1rem', color: '#FF4444', fontSize: 'var(--fs-sm)', marginBottom: '1.5rem' }}>
           {error}
         </div>
       )}
@@ -211,13 +211,13 @@ export default function Screen4Sfdr({ companyId, companyOverride, screen1Result,
                 <div className="num-in stat-hero" style={{ fontSize: '5rem', color: articleCfg.color, lineHeight: 1, letterSpacing: '-0.04em' }}>
                   Art. {articleCfg.short}
                 </div>
-                <div style={{ fontSize: '0.8125rem', fontWeight: 600, color: articleCfg.color, marginTop: '0.375rem' }}>
+                <div style={{ fontSize: 'var(--fs-sm)', fontWeight: 600, color: articleCfg.color, marginTop: '0.375rem' }}>
                   {articleCfg.label}
                 </div>
               </div>
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.375rem', background: `${confCfg.color}15`, border: `1px solid ${confCfg.color}40`, borderRadius: '999px', padding: '0.2rem 0.625rem', marginTop: '0.75rem' }}>
                 <span style={{ width: 5, height: 5, borderRadius: '50%', background: confCfg.color, flexShrink: 0 }} />
-                <span style={{ fontSize: '0.6875rem', color: confCfg.color, fontWeight: 500 }}>{confCfg.label}</span>
+                <span style={{ fontSize: 'var(--fs-micro)', color: confCfg.color, fontWeight: 500 }}>{confCfg.label}</span>
               </div>
             </Card>
 
@@ -230,7 +230,7 @@ export default function Screen4Sfdr({ companyId, companyOverride, screen1Result,
               <Card key={label}>
                 <SectionLabel>{label}</SectionLabel>
                 <div className="num-in data-mono" style={{ fontSize: '2.75rem', fontWeight: 700, color, lineHeight: 1, marginBottom: '0.375rem' }}>{val}</div>
-                <div style={{ fontSize: '0.6875rem', color: '#444' }}>{sub}</div>
+                <div style={{ fontSize: 'var(--fs-micro)', color: '#444' }}>{sub}</div>
               </Card>
             ))}
           </div>
@@ -246,10 +246,10 @@ export default function Screen4Sfdr({ companyId, companyOverride, screen1Result,
                   const s = STATUS_CONFIG[f.status] ?? STATUS_CONFIG.partial;
                   return (
                     <div key={i} style={{ display: 'grid', gridTemplateColumns: '1.5rem 1fr', gap: '0.75rem', alignItems: 'start', padding: '0.625rem 0.75rem', background: `${s.color}08`, border: `1px solid ${s.color}25`, borderRadius: '0.25rem' }}>
-                      <span style={{ fontSize: '0.875rem', color: s.color, fontWeight: 700, textAlign: 'center', paddingTop: '0.1rem' }}>{s.icon}</span>
+                      <span style={{ fontSize: 'var(--fs-sm)', color: s.color, fontWeight: 700, textAlign: 'center', paddingTop: '0.1rem' }}>{s.icon}</span>
                       <div>
-                        <div style={{ fontSize: '0.8125rem', fontWeight: 600, color: '#fff', marginBottom: '0.2rem' }}>{f.factor}</div>
-                        <div style={{ fontSize: '0.6875rem', color: '#787878', lineHeight: 1.4 }}>{f.assessment}</div>
+                        <div style={{ fontSize: 'var(--fs-sm)', fontWeight: 600, color: '#fff', marginBottom: '0.2rem' }}>{f.factor}</div>
+                        <div style={{ fontSize: 'var(--fs-micro)', color: '#787878', lineHeight: 1.4 }}>{f.assessment}</div>
                       </div>
                     </div>
                   );
@@ -263,15 +263,15 @@ export default function Screen4Sfdr({ companyId, companyOverride, screen1Result,
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.375rem' }}>
                 {data.principalAdverseImpacts?.map((p, i) => (
                   <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', padding: '0.5rem 0.75rem', background: '#0D0D0D', borderRadius: '2px', borderLeft: `2px solid ${p.available ? '#00C896' : '#FF4444'}` }}>
-                    <span style={{ fontSize: '0.625rem', fontWeight: 700, color: p.available ? '#00C896' : '#FF4444', flexShrink: 0, marginTop: '0.15rem', width: '3rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                    <span style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: p.available ? '#00C896' : '#FF4444', flexShrink: 0, marginTop: '0.15rem', width: '3rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                       {p.available ? 'Avail.' : 'Missing'}
                     </span>
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#fff', marginBottom: '0.15rem' }}>{p.indicator}</div>
+                      <div style={{ fontSize: 'var(--fs-label)', fontWeight: 600, color: '#fff', marginBottom: '0.15rem' }}>{p.indicator}</div>
                       {p.available && p.value && (
-                        <div className="data-mono" style={{ fontSize: '0.6875rem', color: '#00C896', marginBottom: '0.15rem' }}>{p.value}</div>
+                        <div className="data-mono" style={{ fontSize: 'var(--fs-micro)', color: '#00C896', marginBottom: '0.15rem' }}>{p.value}</div>
                       )}
-                      <div style={{ fontSize: '0.6875rem', color: '#555', lineHeight: 1.4 }}>{p.gap}</div>
+                      <div style={{ fontSize: 'var(--fs-micro)', color: '#555', lineHeight: 1.4 }}>{p.gap}</div>
                     </div>
                   </div>
                 ))}
@@ -286,19 +286,19 @@ export default function Screen4Sfdr({ companyId, companyOverride, screen1Result,
             <Card style={{ borderLeft: '3px solid #AC00EF' }}>
               <SectionLabel>Upgrade Pathway</SectionLabel>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
-                <div style={{ fontSize: '0.875rem', fontWeight: 700, color: ARTICLE_CONFIG[data.upgradePath?.currentArticle]?.color ?? '#888888', background: `${ARTICLE_CONFIG[data.upgradePath?.currentArticle]?.color ?? '#888888'}15`, border: `1px solid ${ARTICLE_CONFIG[data.upgradePath?.currentArticle]?.color ?? '#888888'}40`, borderRadius: '999px', padding: '0.25rem 0.75rem' }}>
+                <div style={{ fontSize: 'var(--fs-sm)', fontWeight: 700, color: ARTICLE_CONFIG[data.upgradePath?.currentArticle]?.color ?? '#888888', background: `${ARTICLE_CONFIG[data.upgradePath?.currentArticle]?.color ?? '#888888'}15`, border: `1px solid ${ARTICLE_CONFIG[data.upgradePath?.currentArticle]?.color ?? '#888888'}40`, borderRadius: '999px', padding: '0.25rem 0.75rem' }}>
                   {data.upgradePath?.currentArticle}
                 </div>
                 <span style={{ color: '#444', fontSize: '1rem' }}>→</span>
-                <div style={{ fontSize: '0.875rem', fontWeight: 700, color: ARTICLE_CONFIG[data.upgradePath?.nextArticle]?.color ?? '#00C896', background: `${ARTICLE_CONFIG[data.upgradePath?.nextArticle]?.color ?? '#00C896'}15`, border: `1px solid ${ARTICLE_CONFIG[data.upgradePath?.nextArticle]?.color ?? '#00C896'}40`, borderRadius: '999px', padding: '0.25rem 0.75rem' }}>
+                <div style={{ fontSize: 'var(--fs-sm)', fontWeight: 700, color: ARTICLE_CONFIG[data.upgradePath?.nextArticle]?.color ?? '#00C896', background: `${ARTICLE_CONFIG[data.upgradePath?.nextArticle]?.color ?? '#00C896'}15`, border: `1px solid ${ARTICLE_CONFIG[data.upgradePath?.nextArticle]?.color ?? '#00C896'}40`, borderRadius: '999px', padding: '0.25rem 0.75rem' }}>
                   {data.upgradePath?.nextArticle}
                 </div>
-                <span style={{ fontSize: '0.6875rem', color: '#555', marginLeft: 'auto' }}>{data.upgradePath?.estimatedTimeToUpgrade}</span>
+                <span style={{ fontSize: 'var(--fs-micro)', color: '#555', marginLeft: 'auto' }}>{data.upgradePath?.estimatedTimeToUpgrade}</span>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.375rem' }}>
                 {data.upgradePath?.requiredActions?.map((action, i) => (
-                  <div key={i} style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start', fontSize: '0.8125rem', color: '#c8c8c4', lineHeight: 1.5 }}>
-                    <span style={{ color: '#AC00EF', fontWeight: 700, flexShrink: 0, fontSize: '0.75rem', marginTop: '0.15rem' }}>{i + 1}</span>
+                  <div key={i} style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start', fontSize: 'var(--fs-sm)', color: '#c8c8c4', lineHeight: 1.5 }}>
+                    <span style={{ color: '#AC00EF', fontWeight: 700, flexShrink: 0, fontSize: 'var(--fs-label)', marginTop: '0.15rem' }}>{i + 1}</span>
                     <span>{action}</span>
                   </div>
                 ))}
@@ -314,10 +314,10 @@ export default function Screen4Sfdr({ companyId, companyOverride, screen1Result,
                   return (
                     <div key={i} style={{ background: '#0D0D0D', border: `1px solid ${d.color}25`, borderRadius: '0.25rem', padding: '0.625rem 0.875rem' }}>
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.3rem' }}>
-                        <div style={{ fontSize: '0.8125rem', fontWeight: 600, color: '#fff', flex: 1, marginRight: '0.75rem' }}>{r.requirement}</div>
-                        <span style={{ fontSize: '0.5625rem', fontWeight: 700, color: d.color, background: `${d.color}15`, border: `1px solid ${d.color}30`, borderRadius: '2px', padding: '0.15rem 0.375rem', textTransform: 'uppercase', letterSpacing: '0.06em', flexShrink: 0 }}>{d.label}</span>
+                        <div style={{ fontSize: 'var(--fs-sm)', fontWeight: 600, color: '#fff', flex: 1, marginRight: '0.75rem' }}>{r.requirement}</div>
+                        <span style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, color: d.color, background: `${d.color}15`, border: `1px solid ${d.color}30`, borderRadius: '2px', padding: '0.15rem 0.375rem', textTransform: 'uppercase', letterSpacing: '0.06em', flexShrink: 0 }}>{d.label}</span>
                       </div>
-                      <div style={{ fontSize: '0.6875rem', color: '#555', lineHeight: 1.4 }}>{r.action}</div>
+                      <div style={{ fontSize: 'var(--fs-micro)', color: '#555', lineHeight: 1.4 }}>{r.action}</div>
                     </div>
                   );
                 })}
@@ -336,7 +336,7 @@ export default function Screen4Sfdr({ companyId, companyOverride, screen1Result,
                 {(data.lpNarrative ?? '').split(/(?<=[.!?])\s+/).filter(s => s.trim().length > 20).map((s, i) => (
                   <div key={i} style={{ display: 'flex', gap: '0.875rem', alignItems: 'flex-start' }}>
                     <span style={{ width: 4, height: 4, borderRadius: '50%', background: articleCfg.color, flexShrink: 0, marginTop: '0.55rem' }} />
-                    <span style={{ fontSize: '0.875rem', color: '#c8c8c4', lineHeight: 1.7 }}>{s.trim()}</span>
+                    <span style={{ fontSize: 'var(--fs-sm)', color: '#c8c8c4', lineHeight: 1.7 }}>{s.trim()}</span>
                   </div>
                 ))}
               </div>
@@ -344,7 +344,7 @@ export default function Screen4Sfdr({ companyId, companyOverride, screen1Result,
 
             <Card style={{ background: '#0A0A0A', border: '1px solid #FF444433' }}>
               <SectionLabel style={{ color: '#FF4444' }}>Regulatory Risk</SectionLabel>
-              <div style={{ fontSize: '0.875rem', color: '#c8c8c4', lineHeight: 1.7 }}>
+              <div style={{ fontSize: 'var(--fs-sm)', color: '#c8c8c4', lineHeight: 1.7 }}>
                 {data.regulatoryRisk}
               </div>
             </Card>
@@ -363,12 +363,12 @@ export default function Screen4Sfdr({ companyId, companyOverride, screen1Result,
                 {/* Header bar */}
                 <div style={{ background: '#0A0A0A', borderBottom: '1px solid #AC00EF30', padding: '0.875rem 1.25rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                   <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#AC00EF', flexShrink: 0 }} />
-                  <span style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#AC00EF' }}>
+                  <span style={{ fontSize: 'var(--fs-label)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#AC00EF' }}>
                     SFDR 2.0 Dual-Readiness
                   </span>
-                  <span style={{ fontSize: '0.6875rem', color: '#444', marginLeft: '0.25rem' }}>EC Proposal Nov 2025 · Expected 2028–2029</span>
+                  <span style={{ fontSize: 'var(--fs-micro)', color: '#444', marginLeft: '0.25rem' }}>EC Proposal Nov 2025 · Expected 2028–2029</span>
                   <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '0.375rem', background: '#AC00EF10', border: '1px solid #AC00EF30', borderRadius: '999px', padding: '0.2rem 0.625rem' }}>
-                    <span style={{ fontSize: '0.5625rem', fontWeight: 700, color: '#AC00EF', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Future-Proof Analysis</span>
+                    <span style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, color: '#AC00EF', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Future-Proof Analysis</span>
                   </div>
                 </div>
 
@@ -378,35 +378,35 @@ export default function Screen4Sfdr({ companyId, companyOverride, screen1Result,
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr', gap: '1rem', alignItems: 'center' }}>
                     {/* SFDR 1.0 */}
                     <div style={{ background: articleCfg.bg, border: `1px solid ${articleCfg.border}`, borderRadius: '0.25rem', padding: '1rem', textAlign: 'center' }}>
-                      <div style={{ fontSize: '0.6875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#555', marginBottom: '0.5rem' }}>SFDR 1.0 (Current)</div>
-                      <div style={{ fontSize: '2.5rem', fontWeight: 700, color: articleCfg.color, lineHeight: 1, letterSpacing: '-0.03em', fontFamily: 'GT Sectra Fine, Palatino, serif' }}>
+                      <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#555', marginBottom: '0.5rem' }}>SFDR 1.0 (Current)</div>
+                      <div style={{ fontSize: '2.5rem', fontWeight: 700, color: articleCfg.color, lineHeight: 1, letterSpacing: '-0.03em', fontFamily: "'Georgia', serif" }}>
                         {data.recommendedArticle}
                       </div>
-                      <div style={{ fontSize: '0.75rem', color: articleCfg.color, marginTop: '0.375rem', opacity: 0.8 }}>{articleCfg.label}</div>
-                      <div style={{ fontSize: '0.625rem', color: '#444', marginTop: '0.25rem' }}>Regulation EU 2019/2088</div>
+                      <div style={{ fontSize: 'var(--fs-label)', color: articleCfg.color, marginTop: '0.375rem', opacity: 0.8 }}>{articleCfg.label}</div>
+                      <div style={{ fontSize: 'var(--fs-label)', color: '#444', marginTop: '0.25rem' }}>Regulation EU 2019/2088</div>
                     </div>
 
                     {/* Arrow */}
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.375rem' }}>
-                      <div style={{ fontSize: '1.5rem', color: '#AC00EF' }}>→</div>
-                      <div style={{ fontSize: '0.5625rem', color: '#444', textAlign: 'center', textTransform: 'uppercase', letterSpacing: '0.06em' }}>No grandfathering</div>
+                      <div style={{ fontSize: 'var(--fs-h1)', color: '#AC00EF' }}>→</div>
+                      <div style={{ fontSize: 'var(--fs-micro)', color: '#444', textAlign: 'center', textTransform: 'uppercase', letterSpacing: '0.06em' }}>No grandfathering</div>
                     </div>
 
                     {/* SFDR 2.0 */}
                     <div style={{ background: s2cfg.bg, border: `1px solid ${s2cfg.border}`, borderRadius: '0.25rem', padding: '1rem', textAlign: 'center' }}>
-                      <div style={{ fontSize: '0.6875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#555', marginBottom: '0.5rem' }}>SFDR 2.0 (Shadow)</div>
-                      <div style={{ fontSize: '2.5rem', fontWeight: 700, color: s2cfg.color, lineHeight: 1, letterSpacing: '-0.03em', fontFamily: 'GT Sectra Fine, Palatino, serif' }}>
+                      <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#555', marginBottom: '0.5rem' }}>SFDR 2.0 (Shadow)</div>
+                      <div style={{ fontSize: '2.5rem', fontWeight: 700, color: s2cfg.color, lineHeight: 1, letterSpacing: '-0.03em', fontFamily: "'Georgia', serif" }}>
                         {s2.category}
                       </div>
-                      <div style={{ fontSize: '0.75rem', color: s2cfg.color, marginTop: '0.375rem', opacity: 0.8 }}>{s2cfg.icon}</div>
-                      <div style={{ fontSize: '0.625rem', color: '#444', marginTop: '0.25rem' }}>EC Proposal Nov 2025</div>
+                      <div style={{ fontSize: 'var(--fs-label)', color: s2cfg.color, marginTop: '0.375rem', opacity: 0.8 }}>{s2cfg.icon}</div>
+                      <div style={{ fontSize: 'var(--fs-label)', color: '#444', marginTop: '0.25rem' }}>EC Proposal Nov 2025</div>
                     </div>
                   </div>
 
                   {/* Rationale */}
                   <div style={{ background: '#0D0D0D', border: '1px solid #1E1E1E', borderRadius: '0.25rem', padding: '0.875rem' }}>
-                    <div style={{ fontSize: '0.6875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#AC00EF', marginBottom: '0.5rem' }}>Classification Rationale</div>
-                    <div style={{ fontSize: '0.8125rem', color: '#c8c8c4', lineHeight: 1.65 }}>{s2.rationale}</div>
+                    <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#AC00EF', marginBottom: '0.5rem' }}>Classification Rationale</div>
+                    <div style={{ fontSize: 'var(--fs-sm)', color: '#c8c8c4', lineHeight: 1.65 }}>{s2.rationale}</div>
                   </div>
 
                   {/* Three assessment panels */}
@@ -414,7 +414,7 @@ export default function Screen4Sfdr({ companyId, companyOverride, screen1Result,
 
                     {/* Mandatory Exclusions */}
                     <div style={{ background: '#0D0D0D', border: '1px solid #1E1E1E', borderRadius: '0.25rem', padding: '0.875rem' }}>
-                      <div style={{ fontSize: '0.6875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#fff', marginBottom: '0.625rem' }}>Mandatory Exclusions</div>
+                      <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#fff', marginBottom: '0.625rem' }}>Mandatory Exclusions</div>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
                         {[
                           { label: 'Controversial Weapons', ok: excl.weapons },
@@ -422,49 +422,49 @@ export default function Screen4Sfdr({ companyId, companyOverride, screen1Result,
                           { label: 'Coal (≥1% revenue)',    ok: excl.coal },
                         ].map(({ label, ok }) => (
                           <div key={label} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                            <span style={{ fontSize: '0.75rem', color: ok ? '#00C896' : '#FF4444', fontWeight: 700, width: '0.875rem', textAlign: 'center' }}>{ok ? '✓' : '✗'}</span>
-                            <span style={{ fontSize: '0.6875rem', color: ok ? '#c8c8c4' : '#FF4444' }}>{label}</span>
+                            <span style={{ fontSize: 'var(--fs-label)', color: ok ? '#00C896' : '#FF4444', fontWeight: 700, width: '0.875rem', textAlign: 'center' }}>{ok ? '✓' : '✗'}</span>
+                            <span style={{ fontSize: 'var(--fs-micro)', color: ok ? '#c8c8c4' : '#FF4444' }}>{label}</span>
                           </div>
                         ))}
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.125rem' }}>
-                          <span style={{ fontSize: '0.5625rem', fontWeight: 700, color: ungcCfg.color, background: `${ungcCfg.color}15`, border: `1px solid ${ungcCfg.color}40`, borderRadius: '2px', padding: '0.1rem 0.3rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{ungcCfg.label}</span>
-                          <span style={{ fontSize: '0.6875rem', color: '#787878' }}>UNGC / OECD</span>
+                          <span style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, color: ungcCfg.color, background: `${ungcCfg.color}15`, border: `1px solid ${ungcCfg.color}40`, borderRadius: '2px', padding: '0.1rem 0.3rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{ungcCfg.label}</span>
+                          <span style={{ fontSize: 'var(--fs-micro)', color: '#787878' }}>UNGC / OECD</span>
                         </div>
                       </div>
                     </div>
 
                     {/* 70% Threshold */}
                     <div style={{ background: '#0D0D0D', border: `1px solid ${thr.met ? '#00C89630' : '#88888830'}`, borderRadius: '0.25rem', padding: '0.875rem' }}>
-                      <div style={{ fontSize: '0.6875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#fff', marginBottom: '0.375rem' }}>70% Threshold</div>
+                      <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#fff', marginBottom: '0.375rem' }}>70% Threshold</div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
-                        <span style={{ fontSize: '0.6875rem', fontWeight: 700, color: thr.met ? '#00C896' : '#FF4444', background: thr.met ? '#00C89615' : '#FF444415', border: `1px solid ${thr.met ? '#00C89640' : '#FF444440'}`, borderRadius: '2px', padding: '0.15rem 0.375rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                        <span style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, color: thr.met ? '#00C896' : '#FF4444', background: thr.met ? '#00C89615' : '#FF444415', border: `1px solid ${thr.met ? '#00C89640' : '#FF444440'}`, borderRadius: '2px', padding: '0.15rem 0.375rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                           {thr.met ? 'Met' : 'Not Met'}
                         </span>
-                        <span style={{ fontSize: '0.6875rem', color: '#787878' }}>{thr.currentEstimate}</span>
+                        <span style={{ fontSize: 'var(--fs-micro)', color: '#787878' }}>{thr.currentEstimate}</span>
                       </div>
-                      <div style={{ fontSize: '0.6875rem', color: '#555', lineHeight: 1.5 }}>{thr.gap}</div>
+                      <div style={{ fontSize: 'var(--fs-micro)', color: '#555', lineHeight: 1.5 }}>{thr.gap}</div>
                     </div>
 
                     {/* Taxonomy Shortcut */}
                     <div style={{ background: '#0D0D0D', border: `1px solid ${tax.applicable ? '#00C89630' : '#2E2E2E'}`, borderRadius: '0.25rem', padding: '0.875rem' }}>
-                      <div style={{ fontSize: '0.6875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#fff', marginBottom: '0.375rem' }}>Taxonomy Shortcut</div>
+                      <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#fff', marginBottom: '0.375rem' }}>Taxonomy Shortcut</div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
-                        <span style={{ fontSize: '0.6875rem', fontWeight: 700, color: tax.applicable ? '#00C896' : '#555', background: tax.applicable ? '#00C89615' : '#1A1A1A', border: `1px solid ${tax.applicable ? '#00C89640' : '#2E2E2E'}`, borderRadius: '2px', padding: '0.15rem 0.375rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                        <span style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, color: tax.applicable ? '#00C896' : '#555', background: tax.applicable ? '#00C89615' : '#1A1A1A', border: `1px solid ${tax.applicable ? '#00C89640' : '#2E2E2E'}`, borderRadius: '2px', padding: '0.15rem 0.375rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                           {tax.applicable ? 'Unlocked' : 'Not Available'}
                         </span>
-                        <span style={{ fontSize: '0.5625rem', color: '#444' }}>≥15% aligned</span>
+                        <span style={{ fontSize: 'var(--fs-micro)', color: '#444' }}>≥15% aligned</span>
                       </div>
-                      <div style={{ fontSize: '0.6875rem', color: '#555', lineHeight: 1.5 }}>{tax.taxonomyAlignment}</div>
+                      <div style={{ fontSize: 'var(--fs-micro)', color: '#555', lineHeight: 1.5 }}>{tax.taxonomyAlignment}</div>
                     </div>
                   </div>
 
                   {/* Key Changes + Gaps + Timeline */}
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
                     <div style={{ background: '#0D0D0D', border: '1px solid #1E1E1E', borderRadius: '0.25rem', padding: '0.875rem' }}>
-                      <div style={{ fontSize: '0.6875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#AC00EF', marginBottom: '0.5rem' }}>Key Classification Changes</div>
+                      <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#AC00EF', marginBottom: '0.5rem' }}>Key Classification Changes</div>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.375rem' }}>
                         {(s2.keyChanges ?? []).map((c, i) => (
-                          <div key={i} style={{ display: 'flex', gap: '0.625rem', alignItems: 'flex-start', fontSize: '0.6875rem', color: '#c8c8c4', lineHeight: 1.5 }}>
+                          <div key={i} style={{ display: 'flex', gap: '0.625rem', alignItems: 'flex-start', fontSize: 'var(--fs-micro)', color: '#c8c8c4', lineHeight: 1.5 }}>
                             <span style={{ color: '#AC00EF', fontWeight: 700, flexShrink: 0, marginTop: '0.05rem' }}>→</span>
                             <span>{c}</span>
                           </div>
@@ -473,10 +473,10 @@ export default function Screen4Sfdr({ companyId, companyOverride, screen1Result,
                     </div>
 
                     <div style={{ background: '#0D0D0D', border: '1px solid #1E1E1E', borderRadius: '0.25rem', padding: '0.875rem' }}>
-                      <div style={{ fontSize: '0.6875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#888888', marginBottom: '0.5rem' }}>Gaps to Close</div>
+                      <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#888888', marginBottom: '0.5rem' }}>Gaps to Close</div>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.375rem' }}>
                         {(s2.gaps ?? []).map((g, i) => (
-                          <div key={i} style={{ display: 'flex', gap: '0.625rem', alignItems: 'flex-start', fontSize: '0.6875rem', color: '#c8c8c4', lineHeight: 1.5 }}>
+                          <div key={i} style={{ display: 'flex', gap: '0.625rem', alignItems: 'flex-start', fontSize: 'var(--fs-micro)', color: '#c8c8c4', lineHeight: 1.5 }}>
                             <span style={{ color: '#888888', fontWeight: 700, flexShrink: 0, marginTop: '0.05rem' }}>!</span>
                             <span>{g}</span>
                           </div>
@@ -496,8 +496,8 @@ export default function Screen4Sfdr({ companyId, companyOverride, screen1Result,
                         {/* Marketing & Naming Risk */}
                         <div style={{ background: mktgCfg.bg, border: `1px solid ${mktgCfg.border}`, borderRadius: '0.25rem', padding: '0.875rem' }}>
                           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.625rem' }}>
-                            <div style={{ fontSize: '0.6875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#fff' }}>Marketing & Naming Rights</div>
-                            <span style={{ fontSize: '0.5625rem', fontWeight: 700, color: mktgCfg.color, background: `${mktgCfg.color}20`, border: `1px solid ${mktgCfg.color}50`, borderRadius: '2px', padding: '0.15rem 0.4rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                            <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#fff' }}>Marketing & Naming Rights</div>
+                            <span style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, color: mktgCfg.color, background: `${mktgCfg.color}20`, border: `1px solid ${mktgCfg.color}50`, borderRadius: '2px', padding: '0.15rem 0.4rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                               {mktgCfg.label}
                             </span>
                           </div>
@@ -507,13 +507,13 @@ export default function Screen4Sfdr({ companyId, companyOverride, screen1Result,
                               { label: 'Sustainability marketing claims', ok: mktg.canMakeMarketingClaims },
                             ].map(({ label, ok }) => (
                               <div key={label} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                <span style={{ fontSize: '0.75rem', color: ok ? '#00C896' : '#FF4444', fontWeight: 700, width: '0.875rem', textAlign: 'center' }}>{ok ? '✓' : '✗'}</span>
-                                <span style={{ fontSize: '0.6875rem', color: ok ? '#c8c8c4' : '#FF4444' }}>{label}</span>
+                                <span style={{ fontSize: 'var(--fs-label)', color: ok ? '#00C896' : '#FF4444', fontWeight: 700, width: '0.875rem', textAlign: 'center' }}>{ok ? '✓' : '✗'}</span>
+                                <span style={{ fontSize: 'var(--fs-micro)', color: ok ? '#c8c8c4' : '#FF4444' }}>{label}</span>
                               </div>
                             ))}
                           </div>
                           {mktg.nameRisk && (
-                            <div style={{ background: '#00000030', borderRadius: '2px', padding: '0.5rem 0.625rem', fontSize: '0.6875rem', color: '#c8c8c4', lineHeight: 1.5, marginBottom: '0.375rem' }}>
+                            <div style={{ background: '#00000030', borderRadius: '2px', padding: '0.5rem 0.625rem', fontSize: 'var(--fs-micro)', color: '#c8c8c4', lineHeight: 1.5, marginBottom: '0.375rem' }}>
                               <span style={{ fontWeight: 700, color: mktgCfg.color }}>Name risk: </span>{mktg.nameRisk}
                             </div>
                           )}
@@ -524,42 +524,42 @@ export default function Screen4Sfdr({ companyId, companyOverride, screen1Result,
                             const fmt  = n => n >= 1_000_000 ? `€${(n/1_000_000).toFixed(1)}M` : `€${Math.round(n/1000)}K`;
                             return (
                               <div style={{ background: `${mktgCfg.color}10`, border: `1px solid ${mktgCfg.color}30`, borderRadius: '2px', padding: '0.5rem 0.625rem', marginBottom: '0.375rem' }}>
-                                <div style={{ fontSize: '0.5625rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: mktgCfg.color, marginBottom: '0.2rem' }}>Estimated Rebranding Cost (if Non-categorised)</div>
+                                <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: mktgCfg.color, marginBottom: '0.2rem' }}>Estimated Rebranding Cost (if Non-categorised)</div>
                                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem' }}>
-                                  <span className="data-mono" style={{ fontSize: '1.25rem', fontWeight: 700, color: mktgCfg.color }}>{fmt(low)}–{fmt(high)}</span>
-                                  <span style={{ fontSize: '0.5625rem', color: '#555' }}>across {countryCount} operating geograph{countryCount === 1 ? 'y' : 'ies'}</span>
+                                  <span className="data-mono" style={{ fontSize: 'var(--fs-h2)', fontWeight: 700, color: mktgCfg.color }}>{fmt(low)}–{fmt(high)}</span>
+                                  <span style={{ fontSize: 'var(--fs-micro)', color: '#555' }}>across {countryCount} operating geograph{countryCount === 1 ? 'y' : 'ies'}</span>
                                 </div>
-                                <div style={{ fontSize: '0.5625rem', color: '#444', marginTop: '0.2rem' }}>Legal + marketing + signage + digital assets — forced rebranding if fund name prohibited under SFDR 2.0 (2028)</div>
+                                <div style={{ fontSize: 'var(--fs-micro)', color: '#444', marginTop: '0.2rem' }}>Legal + marketing + signage + digital assets — forced rebranding if fund name prohibited under SFDR 2.0 (2028)</div>
                               </div>
                             );
                           })()}
                           {mktg.implication && (
-                            <div style={{ fontSize: '0.6875rem', color: '#787878', lineHeight: 1.5, fontStyle: 'italic' }}>{mktg.implication}</div>
+                            <div style={{ fontSize: 'var(--fs-micro)', color: '#787878', lineHeight: 1.5, fontStyle: 'italic' }}>{mktg.implication}</div>
                           )}
                         </div>
 
                         {/* PAI Obligations */}
                         <div style={{ background: '#0D0D0D', border: '1px solid #1E1E1E', borderRadius: '0.25rem', padding: '0.875rem' }}>
-                          <div style={{ fontSize: '0.6875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#fff', marginBottom: '0.625rem' }}>PAI Obligations (2.0)</div>
+                          <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#fff', marginBottom: '0.625rem' }}>PAI Obligations (2.0)</div>
                           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.375rem', marginBottom: '0.625rem' }}>
                             {[
                               { label: 'Entity-level PAI statement', required: pai.entityLevelRequired, note: 'abolished' },
                               { label: 'Product-level PAI reporting',  required: pai.productLevelRequired, note: 'Transition/Sustainable only' },
                             ].map(({ label, required, note }) => (
                               <div key={label} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                <span style={{ fontSize: '0.75rem', color: required ? '#888888' : '#00C896', fontWeight: 700, width: '0.875rem', textAlign: 'center' }}>{required ? '!' : '✓'}</span>
-                                <span style={{ fontSize: '0.6875rem', color: '#c8c8c4', flex: 1 }}>{label}</span>
-                                <span style={{ fontSize: '0.5625rem', color: required ? '#888888' : '#555', fontStyle: 'italic' }}>{note}</span>
+                                <span style={{ fontSize: 'var(--fs-label)', color: required ? '#888888' : '#00C896', fontWeight: 700, width: '0.875rem', textAlign: 'center' }}>{required ? '!' : '✓'}</span>
+                                <span style={{ fontSize: 'var(--fs-micro)', color: '#c8c8c4', flex: 1 }}>{label}</span>
+                                <span style={{ fontSize: 'var(--fs-micro)', color: required ? '#888888' : '#555', fontStyle: 'italic' }}>{note}</span>
                               </div>
                             ))}
                           </div>
                           {pai.flexibility && (
-                            <div style={{ background: '#00000030', borderRadius: '2px', padding: '0.5rem 0.625rem', fontSize: '0.6875rem', color: '#c8c8c4', lineHeight: 1.5, marginBottom: '0.375rem' }}>
+                            <div style={{ background: '#00000030', borderRadius: '2px', padding: '0.5rem 0.625rem', fontSize: 'var(--fs-micro)', color: '#c8c8c4', lineHeight: 1.5, marginBottom: '0.375rem' }}>
                               <span style={{ fontWeight: 700, color: '#AC00EF' }}>Indicator flexibility: </span>{pai.flexibility}
                             </div>
                           )}
                           {pai.complianceCostImpact && (
-                            <div style={{ fontSize: '0.6875rem', color: '#787878', lineHeight: 1.5, fontStyle: 'italic' }}>{pai.complianceCostImpact}</div>
+                            <div style={{ fontSize: 'var(--fs-micro)', color: '#787878', lineHeight: 1.5, fontStyle: 'italic' }}>{pai.complianceCostImpact}</div>
                           )}
                         </div>
                       </div>
@@ -568,10 +568,10 @@ export default function Screen4Sfdr({ companyId, companyOverride, screen1Result,
 
                   {/* Migration timeline */}
                   <div style={{ background: '#0A0A0A', border: '1px solid #AC00EF30', borderRadius: '0.25rem', padding: '0.875rem', display: 'flex', gap: '0.75rem', alignItems: 'flex-start' }}>
-                    <span style={{ fontSize: '0.875rem', flexShrink: 0, marginTop: '0.05rem' }}>🗓</span>
+                    <span style={{ fontSize: 'var(--fs-sm)', flexShrink: 0, marginTop: '0.05rem' }}>🗓</span>
                     <div>
-                      <div style={{ fontSize: '0.6875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#AC00EF', marginBottom: '0.3rem' }}>Migration Timeline</div>
-                      <div style={{ fontSize: '0.8125rem', color: '#c8c8c4', lineHeight: 1.6 }}>{s2.migrationTimeline}</div>
+                      <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#AC00EF', marginBottom: '0.3rem' }}>Migration Timeline</div>
+                      <div style={{ fontSize: 'var(--fs-sm)', color: '#c8c8c4', lineHeight: 1.6 }}>{s2.migrationTimeline}</div>
                     </div>
                   </div>
 
@@ -585,10 +585,10 @@ export default function Screen4Sfdr({ companyId, companyOverride, screen1Result,
 
       {agentStatus === 'idle' && !data && (
         <div style={{ border: '1px dashed #2E2E2E', borderRadius: '0.25rem', padding: '4rem 2rem', textAlign: 'center' }}>
-          <div style={{ fontFamily: 'GT Sectra Fine, Palatino, serif', fontSize: '1.25rem', fontWeight: 300, color: '#fff', marginBottom: '0.75rem', letterSpacing: '-0.01em' }}>
+          <div style={{ fontFamily: "'Georgia', serif", fontSize: 'var(--fs-h2)', fontWeight: 300, color: '#fff', marginBottom: '0.75rem', letterSpacing: '-0.01em' }}>
             Ready to classify {company.shortName}
           </div>
-          <p style={{ fontSize: '0.8125rem', color: '#555555', marginBottom: '2rem' }}>
+          <p style={{ fontSize: 'var(--fs-sm)', color: '#555555', marginBottom: '2rem' }}>
             Click <strong style={{ color: '#fff', fontWeight: 500 }}>Run SFDR Classifier</strong> to determine Article 6, 8, or 9 classification
           </p>
           <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', flexWrap: 'wrap' }}>
@@ -599,8 +599,8 @@ export default function Screen4Sfdr({ companyId, companyOverride, screen1Result,
               { label: 'LP Narrative',         desc: 'Ready-to-send LP disclosure'     },
             ].map(({ label, desc }) => (
               <div key={label} style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: '0.6875rem', fontWeight: 700, color: '#AC00EF', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.25rem' }}>{label}</div>
-                <div style={{ fontSize: '0.6875rem', color: '#333333' }}>{desc}</div>
+                <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, color: '#AC00EF', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.25rem' }}>{label}</div>
+                <div style={{ fontSize: 'var(--fs-micro)', color: '#333333' }}>{desc}</div>
               </div>
             ))}
           </div>

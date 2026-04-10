@@ -65,7 +65,7 @@ function FrameworkBadge({ fw }) {
       ) : (
         <div style={{ width: '1.5rem', height: '1rem', background: '#1a1a1a', border: '1px solid #333', borderRadius: '2px' }} />
       )}
-      <span style={{ fontSize: '0.5rem', fontWeight: 700, color: '#787878', letterSpacing: '0.06em', textTransform: 'uppercase', lineHeight: 1 }}>{meta.abbr}</span>
+      <span style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: '#787878', letterSpacing: '0.06em', textTransform: 'uppercase', lineHeight: 1 }}>{meta.abbr}</span>
     </div>
   );
 }
@@ -84,7 +84,7 @@ function Card({ children, style = {}, className = '' }) {
 }
 
 function Label({ children }) {
-  return <div style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#fff', marginBottom: '0.75rem' }}>{children}</div>;
+  return <div style={{ fontSize: 'var(--fs-label)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#fff', marginBottom: '0.75rem' }}>{children}</div>;
 }
 
 export default function Screen3Map({ companyId, companyOverride, screen1Result, onResult, runTrigger = 0 }) {
@@ -139,16 +139,16 @@ export default function Screen3Map({ companyId, companyOverride, screen1Result, 
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(0,0,0,0.95) 50%, rgba(0,0,0,0.6))' }} />
         <div style={{ position: 'relative', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1.5rem', padding: '1.5rem' }}>
           <div>
-            <h1 style={{ fontFamily: 'GT Sectra Fine, Palatino, serif', fontWeight: 300, fontSize: '1.75rem', color: '#fff', marginBottom: '0.25rem' }}>
+            <h1 style={{ fontFamily: "'Georgia', serif", fontWeight: 300, fontSize: 'var(--fs-h1)', color: '#fff', marginBottom: '0.25rem' }}>
               {company.name}
             </h1>
-            <p style={{ fontSize: '0.875rem', color: '#787878' }}>
+            <p style={{ fontSize: 'var(--fs-sm)', color: '#787878' }}>
               {company.geography} · {company.regulatoryExposure.join(' · ')}
             </p>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexShrink: 0 }}>
             {data && (
-              <button onClick={() => setExpanded(e => !e)} style={{ background: 'none', border: 'none', color: '#AC00EF', fontSize: '0.75rem', fontWeight: 500, cursor: 'pointer', letterSpacing: '0.04em', textTransform: 'uppercase', padding: 0 }}>
+              <button onClick={() => setExpanded(e => !e)} style={{ background: 'none', border: 'none', color: '#AC00EF', fontSize: 'var(--fs-label)', fontWeight: 500, cursor: 'pointer', letterSpacing: '0.04em', textTransform: 'uppercase', padding: 0 }}>
                 {expanded ? '− Collapse details' : '+ Expand all details'}
               </button>
             )}
@@ -162,11 +162,11 @@ export default function Screen3Map({ companyId, companyOverride, screen1Result, 
       <AgentStatus steps={STEPS} status={agentStatus} />
 
       {meta && agentStatus === 'complete' && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.625rem', color: '#333', marginBottom: '1rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: 'var(--fs-label)', color: '#333', marginBottom: '1rem' }}>
           <span style={{ width: 5, height: 5, borderRadius: '50%', background: meta.cached ? '#888888' : '#00C896', flexShrink: 0 }} />
           {meta.cached ? 'Cached result' : 'Live result'} · Generated {new Date(meta.generatedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
           {meta.cached && (
-            <button onClick={run} style={{ background: 'none', border: 'none', color: '#555', fontSize: '0.625rem', cursor: 'pointer', textDecoration: 'underline', padding: 0, marginLeft: '0.25rem' }}>
+            <button onClick={run} style={{ background: 'none', border: 'none', color: '#555', fontSize: 'var(--fs-label)', cursor: 'pointer', textDecoration: 'underline', padding: 0, marginLeft: '0.25rem' }}>
               Re-run live →
             </button>
           )}
@@ -181,7 +181,7 @@ export default function Screen3Map({ companyId, companyOverride, screen1Result, 
       )}
 
       {error && (
-        <div style={{ background: '#FF444410', border: '1px solid #FF444440', borderRadius: '0.25rem', padding: '1rem', color: '#FF4444', fontSize: '0.875rem', marginBottom: '1.5rem' }}>
+        <div style={{ background: '#FF444410', border: '1px solid #FF444440', borderRadius: '0.25rem', padding: '1rem', color: '#FF4444', fontSize: 'var(--fs-sm)', marginBottom: '1.5rem' }}>
           {error}
         </div>
       )}
@@ -196,12 +196,12 @@ export default function Screen3Map({ companyId, companyOverride, screen1Result, 
             <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', flexShrink: 0 }}>
               <div style={{ textAlign: 'center' }}>
                 <div className="num-in stat-hero" style={{ fontSize: '4rem', color: '#AC00EF' }}>1</div>
-                <div style={{ fontSize: '0.5625rem', fontWeight: 700, color: '#AC00EF', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: '0.25rem' }}>data input</div>
+                <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, color: '#AC00EF', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: '0.25rem' }}>data input</div>
               </div>
               <div style={{ width: '1.5rem', height: '1px', background: '#AC00EF44', flexShrink: 0 }} />
               <div style={{ textAlign: 'center' }}>
                 <div className="num-in stat-hero" style={{ fontSize: '4rem', color: '#AC00EF', animationDelay: '100ms' }}>{total}</div>
-                <div style={{ fontSize: '0.5625rem', fontWeight: 700, color: '#AC00EF', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: '0.25rem' }}>frameworks</div>
+                <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, color: '#AC00EF', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: '0.25rem' }}>frameworks</div>
               </div>
             </div>
 
@@ -217,7 +217,7 @@ export default function Screen3Map({ companyId, companyOverride, screen1Result, 
               ].map(({ val, label, color }) => (
                 <div key={label} style={{ textAlign: 'center' }}>
                   <div className="num-in stat-hero" style={{ fontSize: '2.5rem', color }}>{val}</div>
-                  <div style={{ fontSize: '0.5625rem', fontWeight: 700, color: '#444444', textTransform: 'uppercase', letterSpacing: '0.08em', marginTop: '0.35rem' }}>{label}</div>
+                  <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, color: '#444444', textTransform: 'uppercase', letterSpacing: '0.08em', marginTop: '0.35rem' }}>{label}</div>
                 </div>
               ))}
             </div>
@@ -234,15 +234,15 @@ export default function Screen3Map({ companyId, companyOverride, screen1Result, 
                     </PieChart>
                   </ResponsiveContainer>
                   <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <span className="data-mono" style={{ fontSize: '0.875rem', fontWeight: 700, color: '#fff' }}>{Math.round((compliant / total) * 100)}%</span>
+                    <span className="data-mono" style={{ fontSize: 'var(--fs-sm)', fontWeight: 700, color: '#fff' }}>{Math.round((compliant / total) * 100)}%</span>
                   </div>
                 </div>
-                <div style={{ fontSize: '0.5625rem', color: '#787878', textTransform: 'uppercase', letterSpacing: '0.06em', marginTop: '0.375rem' }}>compliant</div>
+                <div style={{ fontSize: 'var(--fs-micro)', color: '#787878', textTransform: 'uppercase', letterSpacing: '0.06em', marginTop: '0.375rem' }}>compliant</div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem', marginTop: '0.5rem' }}>
                   {complianceDonut.map(d => (
                     <div key={d.name} style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
                       <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: d.color, flexShrink: 0 }} />
-                      <span style={{ fontSize: '0.5rem', color: '#787878', whiteSpace: 'nowrap' }}>{d.name} ({d.value})</span>
+                      <span style={{ fontSize: 'var(--fs-label)', color: '#787878', whiteSpace: 'nowrap' }}>{d.name} ({d.value})</span>
                     </div>
                   ))}
                 </div>
@@ -251,10 +251,10 @@ export default function Screen3Map({ companyId, companyOverride, screen1Result, 
 
             {/* Accenture thesis */}
             <div style={{ marginLeft: 'auto', maxWidth: '16rem' }}>
-              <div style={{ fontSize: '0.6875rem', color: '#AC00EF', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.375rem' }}>
+              <div style={{ fontSize: 'var(--fs-micro)', color: '#AC00EF', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.375rem' }}>
                 The ESG Value Engine thesis
               </div>
-              <p style={{ fontSize: '0.8125rem', color: '#787878', lineHeight: 1.5 }}>
+              <p style={{ fontSize: 'var(--fs-sm)', color: '#787878', lineHeight: 1.5 }}>
                 One data submission. Automated multi-framework compliance. Accenture's consulting layer provides strategic interpretation.
               </p>
             </div>
@@ -267,35 +267,35 @@ export default function Screen3Map({ companyId, companyOverride, screen1Result, 
             return (
               <div className="fade-up fade-up-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
                 <div style={{ background: '#0A0A0A', border: '1px solid #FF444425', borderRadius: '0.25rem', padding: '0.875rem' }}>
-                  <div style={{ fontSize: '0.5625rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#FF4444', marginBottom: '0.5rem' }}>
+                  <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#FF4444', marginBottom: '0.5rem' }}>
                     Legally Mandatory
                   </div>
                   {scoping.mandatory.length === 0 ? (
-                    <div style={{ fontSize: '0.6875rem', color: '#444', fontStyle: 'italic' }}>No mandatory obligations at current company size (post-Omnibus I)</div>
+                    <div style={{ fontSize: 'var(--fs-micro)', color: '#444', fontStyle: 'italic' }}>No mandatory obligations at current company size (post-Omnibus I)</div>
                   ) : scoping.mandatory.map((item, i) => (
                     <div key={i} style={{ display: 'flex', gap: '0.5rem', alignItems: 'flex-start', padding: '0.375rem 0', borderTop: i > 0 ? '1px solid #1A1A1A' : 'none' }}>
-                      <span style={{ fontSize: '0.5rem', fontWeight: 700, color: urgencyColor[item.urgency] ?? '#888888', background: `${urgencyColor[item.urgency] ?? '#888888'}20`, border: `1px solid ${urgencyColor[item.urgency] ?? '#888888'}40`, borderRadius: '2px', padding: '0.1rem 0.3rem', textTransform: 'uppercase', letterSpacing: '0.06em', flexShrink: 0, marginTop: '0.15rem' }}>{item.urgency}</span>
+                      <span style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: urgencyColor[item.urgency] ?? '#888888', background: `${urgencyColor[item.urgency] ?? '#888888'}20`, border: `1px solid ${urgencyColor[item.urgency] ?? '#888888'}40`, borderRadius: '2px', padding: '0.1rem 0.3rem', textTransform: 'uppercase', letterSpacing: '0.06em', flexShrink: 0, marginTop: '0.15rem' }}>{item.urgency}</span>
                       <div>
-                        <div style={{ fontSize: '0.6875rem', fontWeight: 600, color: '#fff', marginBottom: '0.15rem' }}>{item.label}</div>
-                        <div style={{ fontSize: '0.5625rem', color: '#555', lineHeight: 1.5 }}>{item.detail}</div>
+                        <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 600, color: '#fff', marginBottom: '0.15rem' }}>{item.label}</div>
+                        <div style={{ fontSize: 'var(--fs-micro)', color: '#555', lineHeight: 1.5 }}>{item.detail}</div>
                       </div>
                     </div>
                   ))}
                 </div>
                 <div style={{ background: '#0A0A0A', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '0.25rem', padding: '0.875rem' }}>
-                  <div style={{ fontSize: '0.5625rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#CCCCCC', marginBottom: '0.5rem' }}>
+                  <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#CCCCCC', marginBottom: '0.5rem' }}>
                     De Facto (LP Pressure + SFDR 2.0)
                   </div>
                   {scoping.deFacto.map((item, i) => (
                     <div key={i} style={{ display: 'flex', gap: '0.5rem', alignItems: 'flex-start', padding: '0.375rem 0', borderTop: i > 0 ? '1px solid #1A1A1A' : 'none' }}>
-                      <span style={{ fontSize: '0.875rem', flexShrink: 0 }}>→</span>
+                      <span style={{ fontSize: 'var(--fs-sm)', flexShrink: 0 }}>→</span>
                       <div>
-                        <div style={{ fontSize: '0.6875rem', fontWeight: 600, color: '#c8c8c4', marginBottom: '0.15rem' }}>{item.label}</div>
-                        <div style={{ fontSize: '0.5625rem', color: '#444', lineHeight: 1.5 }}>{item.detail}</div>
+                        <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 600, color: '#c8c8c4', marginBottom: '0.15rem' }}>{item.label}</div>
+                        <div style={{ fontSize: 'var(--fs-micro)', color: '#444', lineHeight: 1.5 }}>{item.detail}</div>
                       </div>
                     </div>
                   ))}
-                  <div style={{ marginTop: '0.5rem', paddingTop: '0.5rem', borderTop: '1px solid #1A1A1A', fontSize: '0.5rem', color: '#444444', fontStyle: 'italic' }}>
+                  <div style={{ marginTop: '0.5rem', paddingTop: '0.5rem', borderTop: '1px solid #1A1A1A', fontSize: 'var(--fs-label)', color: '#444444', fontStyle: 'italic' }}>
                     De facto obligations persist even when no mandatory reporting threshold is met — LP mandates and SFDR 2.0 do not have employee/revenue exemptions.
                   </div>
                 </div>
@@ -307,8 +307,8 @@ export default function Screen3Map({ companyId, companyOverride, screen1Result, 
           <Card className="fade-up fade-up-2">
             <Label>Input Data Point</Label>
             <div style={{ background: '#1E1E1E', border: '1px solid #444444', borderRadius: '0.25rem', padding: '0.875rem' }}>
-              <div style={{ fontSize: '0.875rem', fontWeight: 500, color: '#fff', marginBottom: '0.375rem' }}>{DATA_POINT_LABELS[companyId]}</div>
-              {data.inputSummary && <p style={{ fontSize: '0.75rem', color: '#787878', lineHeight: 1.5 }}>{data.inputSummary}</p>}
+              <div style={{ fontSize: 'var(--fs-sm)', fontWeight: 500, color: '#fff', marginBottom: '0.375rem' }}>{DATA_POINT_LABELS[companyId]}</div>
+              {data.inputSummary && <p style={{ fontSize: 'var(--fs-label)', color: '#787878', lineHeight: 1.5 }}>{data.inputSummary}</p>}
             </div>
           </Card>
 
@@ -316,10 +316,10 @@ export default function Screen3Map({ companyId, companyOverride, screen1Result, 
           {data.mappings?.length > 0 && (
             <div className="fade-up fade-up-3" style={{ background: '#080808', border: '1px solid #2E2E2E', borderRadius: '0.25rem', overflow: 'hidden' }}>
               <div style={{ padding: '0.625rem 1rem', borderBottom: '1px solid #1A1A1A', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <div style={{ fontSize: '0.6875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#fff' }}>Cross-Framework Field Crosswalk</div>
-                <div style={{ fontSize: '0.5625rem', color: '#333' }}>One data submission → exact field name per framework — drop directly into regulatory filing</div>
+                <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#fff' }}>Cross-Framework Field Crosswalk</div>
+                <div style={{ fontSize: 'var(--fs-micro)', color: '#333' }}>One data submission → exact field name per framework — drop directly into regulatory filing</div>
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '6rem 1fr 1fr', fontSize: '0.5625rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '6rem 1fr 1fr', fontSize: 'var(--fs-micro)' }}>
                 {/* header */}
                 {['Framework', 'Exact Disclosure Field', 'Reporting Format'].map((h, i) => (
                   <div key={h} style={{ padding: '0.4rem 0.75rem', background: '#0D0D0D', borderRight: i < 2 ? '1px solid #1A1A1A' : 'none', fontWeight: 700, color: '#444', textTransform: 'uppercase', letterSpacing: '0.07em' }}>{h}</div>
@@ -345,7 +345,7 @@ export default function Screen3Map({ companyId, companyOverride, screen1Result, 
 
           {/* Framework mapping grid */}
           <div className="fade-up fade-up-3">
-            <div style={{ fontSize: '0.6875rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#787878', marginBottom: '0.75rem' }}>
+            <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#787878', marginBottom: '0.75rem' }}>
               Multi-Framework Output — one submission, automated cross-framework compliance
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
@@ -361,16 +361,16 @@ export default function Screen3Map({ companyId, companyOverride, screen1Result, 
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.75rem', padding: '0.875rem 1rem 0' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem', minWidth: 0 }}>
                         <FrameworkBadge fw={m.framework} />
-                        <div style={{ fontWeight: 600, fontSize: '0.9375rem', color: '#fff', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        <div style={{ fontWeight: 600, fontSize: 'var(--fs-body)', color: '#fff', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                           {m.framework}
                         </div>
                       </div>
                       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.3rem', flexShrink: 0 }}>
-                        <span style={{ fontSize: '0.6875rem', padding: '0.2rem 0.625rem', background: s.bg, color: s.text, border: `1px solid ${s.border}`, borderRadius: '2px', fontWeight: 600, whiteSpace: 'nowrap', letterSpacing: '0.02em' }}>
+                        <span style={{ fontSize: 'var(--fs-micro)', padding: '0.2rem 0.625rem', background: s.bg, color: s.text, border: `1px solid ${s.border}`, borderRadius: '2px', fontWeight: 600, whiteSpace: 'nowrap', letterSpacing: '0.02em' }}>
                           {s.label}
                         </span>
                         {m.automatable && (
-                          <span style={{ fontSize: '0.5625rem', color: '#AC00EF', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', background: '#AC00EF15', border: '1px solid #AC00EF33', borderRadius: '2px', padding: '0.1rem 0.375rem' }}>
+                          <span style={{ fontSize: 'var(--fs-micro)', color: '#AC00EF', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', background: '#AC00EF15', border: '1px solid #AC00EF33', borderRadius: '2px', padding: '0.1rem 0.375rem' }}>
                             AI-AUTOMATABLE
                           </span>
                         )}
@@ -380,7 +380,7 @@ export default function Screen3Map({ companyId, companyOverride, screen1Result, 
                     {/* Standard disclosures (pink, clamped) */}
                     {m.standard && (
                       <div style={{ margin: '0.625rem 1rem 0', padding: '0.5rem 0.75rem', background: '#AC00EF0A', borderLeft: '2px solid #AC00EF44', borderRadius: '0 2px 2px 0' }}>
-                        <div style={{ fontSize: '0.6875rem', color: '#AC00EF', lineHeight: 1.55, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: expanded ? 99 : 2, WebkitBoxOrient: 'vertical' }}>
+                        <div style={{ fontSize: 'var(--fs-micro)', color: '#AC00EF', lineHeight: 1.55, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: expanded ? 99 : 2, WebkitBoxOrient: 'vertical' }}>
                           {m.standard}
                         </div>
                       </div>
@@ -395,8 +395,8 @@ export default function Screen3Map({ companyId, companyOverride, screen1Result, 
                         m.note ? { k: 'Note', v: m.note } : null
                       ].filter(Boolean).map(({ k, v }, idx, arr) => (
                         <div key={k} style={{ display: 'grid', gridTemplateColumns: '5.5rem 1fr', gap: '0 0.625rem', padding: '0.4rem 0', borderBottom: idx < arr.length - 1 ? '1px solid #1A1A1A' : 'none' }}>
-                          <span style={{ fontSize: '0.625rem', fontWeight: 700, color: '#555555', textTransform: 'uppercase', letterSpacing: '0.07em', paddingTop: '0.1rem', lineHeight: 1.4 }}>{k}</span>
-                          <span style={{ fontSize: '0.75rem', color: '#a0a0a0', lineHeight: 1.55, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: expanded ? 99 : 2, WebkitBoxOrient: 'vertical' }}>{v}</span>
+                          <span style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: '#555555', textTransform: 'uppercase', letterSpacing: '0.07em', paddingTop: '0.1rem', lineHeight: 1.4 }}>{k}</span>
+                          <span style={{ fontSize: 'var(--fs-label)', color: '#a0a0a0', lineHeight: 1.55, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: expanded ? 99 : 2, WebkitBoxOrient: 'vertical' }}>{v}</span>
                         </div>
                       ))}
                     </div>
@@ -410,16 +410,16 @@ export default function Screen3Map({ companyId, companyOverride, screen1Result, 
           <div className="fade-up fade-up-4" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
             <Card>
               <Label>Automation Potential</Label>
-              <p style={{ fontSize: '0.8125rem', color: '#c8c8c4', lineHeight: 1.65, marginBottom: '1rem', ...clamp(3, expanded) }}>{data.automationPotential}</p>
+              <p style={{ fontSize: 'var(--fs-sm)', color: '#c8c8c4', lineHeight: 1.65, marginBottom: '1rem', ...clamp(3, expanded) }}>{data.automationPotential}</p>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                 <div style={{ flex: 1, height: '3px', background: '#1E1E1E', borderRadius: '2px' }}>
                   <div className="bar-fill" style={{ height: '100%', width: `${total > 0 ? (automatable / total) * 100 : 0}%`, background: 'linear-gradient(to right, #7B00AC, #AC00EF)', borderRadius: '2px' }} />
                 </div>
-                <span className="data-mono" style={{ fontSize: '0.875rem', fontWeight: 600, color: '#AC00EF' }}>
+                <span className="data-mono" style={{ fontSize: 'var(--fs-sm)', fontWeight: 600, color: '#AC00EF' }}>
                   {total > 0 ? Math.round((automatable / total) * 100) : 0}%
                 </span>
               </div>
-              <div style={{ fontSize: '0.6875rem', color: '#444444', marginTop: '0.375rem' }}>
+              <div style={{ fontSize: 'var(--fs-micro)', color: '#444444', marginTop: '0.375rem' }}>
                 {automatable} of {total} mappings fully automatable by AI
               </div>
             </Card>
@@ -430,12 +430,12 @@ export default function Screen3Map({ companyId, companyOverride, screen1Result, 
                 {data.missingToComplete?.length > 0
                   ? data.missingToComplete.map((item, i) => (
                       <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', padding: '0.5rem 0.75rem', background: '#0D0D0D', borderLeft: '2px solid #AC00EF44', borderRadius: '0 2px 2px 0' }}>
-                        <span style={{ fontSize: '0.5625rem', fontWeight: 700, color: '#AC00EF', textTransform: 'uppercase', letterSpacing: '0.08em', marginTop: '0.15rem', flexShrink: 0 }}>Gap</span>
-                        <span style={{ fontSize: '0.75rem', color: '#787878', lineHeight: 1.55, ...clamp(2, expanded) }}>{item}</span>
+                        <span style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, color: '#AC00EF', textTransform: 'uppercase', letterSpacing: '0.08em', marginTop: '0.15rem', flexShrink: 0 }}>Gap</span>
+                        <span style={{ fontSize: 'var(--fs-label)', color: '#787878', lineHeight: 1.55, ...clamp(2, expanded) }}>{item}</span>
                       </div>
                     ))
                   : (
-                    <div style={{ padding: '0.75rem 1rem', background: '#AC00EF0A', border: '1px solid #AC00EF33', borderRadius: '0.25rem', fontSize: '0.8125rem', color: '#FFFFFF', fontWeight: 500 }}>
+                    <div style={{ padding: '0.75rem 1rem', background: '#AC00EF0A', border: '1px solid #AC00EF33', borderRadius: '0.25rem', fontSize: 'var(--fs-sm)', color: '#FFFFFF', fontWeight: 500 }}>
                       All frameworks satisfied with available data
                     </div>
                   )
@@ -447,7 +447,7 @@ export default function Screen3Map({ companyId, companyOverride, screen1Result, 
           {data.summary && (
             <Card className="fade-up fade-up-5">
               <Label>Summary</Label>
-              <p style={{ fontSize: '0.875rem', color: '#c8c8c4', lineHeight: 1.7, ...clamp(4, expanded) }}>{data.summary}</p>
+              <p style={{ fontSize: 'var(--fs-sm)', color: '#c8c8c4', lineHeight: 1.7, ...clamp(4, expanded) }}>{data.summary}</p>
             </Card>
           )}
 
@@ -456,15 +456,15 @@ export default function Screen3Map({ companyId, companyOverride, screen1Result, 
 
       {agentStatus === 'idle' && !data && (
         <div style={{ border: '1px dashed #2E2E2E', borderRadius: '0.25rem', padding: '4rem 2rem', textAlign: 'center' }}>
-          <div style={{ fontFamily: 'GT Sectra Fine, Palatino, serif', fontSize: '1.25rem', fontWeight: 300, color: '#fff', marginBottom: '0.75rem', letterSpacing: '-0.01em' }}>
+          <div style={{ fontFamily: "'Georgia', serif", fontSize: 'var(--fs-h2)', fontWeight: 300, color: '#fff', marginBottom: '0.75rem', letterSpacing: '-0.01em' }}>
             One input. Six framework outputs.
           </div>
-          <p style={{ fontSize: '0.8125rem', color: '#555555', marginBottom: '2rem' }}>
+          <p style={{ fontSize: 'var(--fs-sm)', color: '#555555', marginBottom: '2rem' }}>
             Click <strong style={{ color: '#fff', fontWeight: 500 }}>Run Framework Mapper</strong> to generate automated cross-framework compliance
           </p>
           <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', flexWrap: 'wrap' }}>
             {['CSRD / ESRS', 'SFDR', 'TCFD', 'IFRS S1/S2 (ISSB / HKEX)', 'GRI', 'SASB', 'EDCI'].map(fw => (
-              <div key={fw} style={{ fontSize: '0.6875rem', fontWeight: 700, color: '#AC00EF', textTransform: 'uppercase', letterSpacing: '0.1em' }}>{fw}</div>
+              <div key={fw} style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, color: '#AC00EF', textTransform: 'uppercase', letterSpacing: '0.1em' }}>{fw}</div>
             ))}
           </div>
         </div>

@@ -53,8 +53,8 @@ export default function AgentStatus({ steps, status, stepFindings }) {
         />
         <span
           style={{
-            fontFamily: 'Graphik, Arial, sans-serif',
-            fontSize: '0.6875rem',
+            fontFamily: "'Inter', -apple-system, sans-serif",
+            fontSize: 'var(--fs-micro)',
             fontWeight: 500,
             letterSpacing: '0.08em',
             textTransform: 'uppercase',
@@ -64,12 +64,12 @@ export default function AgentStatus({ steps, status, stepFindings }) {
           {status === 'running' ? 'ESG Agent Processing' : 'Analysis Complete'}
         </span>
         {status === 'complete' && (
-          <span style={{ marginLeft: 'auto', fontSize: '0.75rem', color: '#299e00', fontWeight: 500 }}>
+          <span style={{ marginLeft: 'auto', fontSize: 'var(--fs-label)', color: '#299e00', fontWeight: 500 }}>
             ✓ Done
           </span>
         )}
         {status === 'running' && (
-          <span style={{ marginLeft: 'auto', fontSize: '0.6875rem', color: '#a100ff', fontWeight: 500 }}>
+          <span style={{ marginLeft: 'auto', fontSize: 'var(--fs-micro)', color: '#a100ff', fontWeight: 500 }}>
             powered by Claude AI
           </span>
         )}
@@ -93,16 +93,16 @@ export default function AgentStatus({ steps, status, stepFindings }) {
               {/* Step indicator */}
               <div style={{ width: '1rem', flexShrink: 0, textAlign: 'center' }}>
                 {isDone ? (
-                  <span style={{ color: '#299e00', fontSize: '0.75rem' }}>✓</span>
+                  <span style={{ color: '#299e00', fontSize: 'var(--fs-label)' }}>✓</span>
                 ) : isCurrent ? (
                   <span
                     className="animate-spin-slow"
-                    style={{ color: '#a100ff', fontSize: '0.875rem', display: 'inline-block' }}
+                    style={{ color: '#a100ff', fontSize: 'var(--fs-sm)', display: 'inline-block' }}
                   >
                     ⟳
                   </span>
                 ) : (
-                  <span style={{ color: '#2b2b2b', fontSize: '0.75rem' }}>○</span>
+                  <span style={{ color: '#2b2b2b', fontSize: 'var(--fs-label)' }}>○</span>
                 )}
               </div>
 
@@ -110,8 +110,8 @@ export default function AgentStatus({ steps, status, stepFindings }) {
               <div style={{ flex: 1, minWidth: 0 }}>
                 <span
                   style={{
-                    fontFamily: 'Graphik, Arial, sans-serif',
-                    fontSize: '0.8125rem',
+                    fontFamily: "'Inter', -apple-system, sans-serif",
+                    fontSize: 'var(--fs-sm)',
                     fontWeight: isCurrent ? 500 : 400,
                     color: isDone ? '#3d3d3d' : isCurrent ? '#dcafff' : '#2b2b2b',
                     textDecoration: isDone ? 'line-through' : 'none',
@@ -123,8 +123,8 @@ export default function AgentStatus({ steps, status, stepFindings }) {
                 </span>
                 {isDone && stepFindings?.[i] && (
                   <div style={{
-                    fontSize: '0.6875rem', color: '#444', marginTop: '0.15rem',
-                    fontFamily: 'Graphik, Arial, sans-serif', lineHeight: 1.4
+                    fontSize: 'var(--fs-micro)', color: '#444', marginTop: '0.15rem',
+                    fontFamily: "'Inter', -apple-system, sans-serif", lineHeight: 1.4
                   }}>
                     → {stepFindings[i]}
                   </div>

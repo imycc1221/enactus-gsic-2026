@@ -27,8 +27,8 @@ const SCREENS = [
 function AccentureLogo() {
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-      <span style={{ fontFamily: 'Graphik, Arial, sans-serif', fontWeight: 600, fontSize: '1.75rem', color: '#AC00EF', lineHeight: 1, letterSpacing: '-0.02em' }}>&gt;</span>
-      <span style={{ fontFamily: 'Graphik, Arial, sans-serif', fontWeight: 600, fontSize: '1.0625rem', color: '#fff', letterSpacing: '-0.01em', textTransform: 'lowercase' }}>accenture</span>
+      <span style={{ fontFamily: "'Inter', -apple-system, sans-serif", fontWeight: 600, fontSize: 'var(--fs-h1)', color: '#AC00EF', lineHeight: 1, letterSpacing: '-0.02em' }}>&gt;</span>
+      <span style={{ fontFamily: "'Inter', -apple-system, sans-serif", fontWeight: 600, fontSize: 'var(--fs-h2)', color: '#fff', letterSpacing: '-0.01em', textTransform: 'lowercase' }}>accenture</span>
     </div>
   );
 }
@@ -53,10 +53,10 @@ function CustomForm({ onSubmit, onClose }) {
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
   const inputStyle = {
     background: '#0D0D0D', border: '1px solid #2E2E2E', borderRadius: '0.25rem',
-    color: '#fff', fontSize: '0.8125rem', padding: '0.5rem 0.75rem', width: '100%',
-    fontFamily: 'Graphik, Arial, sans-serif', outline: 'none'
+    color: '#fff', fontSize: 'var(--fs-sm)', padding: '0.5rem 0.75rem', width: '100%',
+    fontFamily: "'Inter', -apple-system, sans-serif", outline: 'none'
   };
-  const labelStyle = { fontSize: '0.625rem', fontWeight: 700, color: '#555', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.375rem', display: 'block' };
+  const labelStyle = { fontSize: 'var(--fs-label)', fontWeight: 700, color: '#555', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.375rem', display: 'block' };
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -85,8 +85,8 @@ function CustomForm({ onSubmit, onClose }) {
     <div style={{ position: 'fixed', inset: 0, background: '#000000cc', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={onClose}>
       <form onSubmit={handleSubmit} onClick={e => e.stopPropagation()} style={{ background: '#111111', border: '1px solid #2E2E2E', borderRadius: '0.5rem', padding: '2rem', width: '520px', maxWidth: '95vw', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
         <div>
-          <div style={{ fontFamily: 'GT Sectra Fine, Palatino, serif', fontSize: '1.25rem', fontWeight: 300, color: '#fff', marginBottom: '0.25rem' }}>Custom Company Analysis</div>
-          <div style={{ fontSize: '0.75rem', color: '#555' }}>Enter any company — Claude runs a live ESG analysis with no cached data</div>
+          <div style={{ fontFamily: "'Georgia', serif", fontSize: 'var(--fs-h2)', fontWeight: 300, color: '#fff', marginBottom: '0.25rem' }}>Custom Company Analysis</div>
+          <div style={{ fontSize: 'var(--fs-label)', color: '#555' }}>Enter any company — Claude runs a live ESG analysis with no cached data</div>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
           <div style={{ gridColumn: '1/-1' }}>
@@ -127,8 +127,8 @@ function CustomForm({ onSubmit, onClose }) {
           </div>
         </div>
         <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end', marginTop: '0.25rem' }}>
-          <button type="button" onClick={onClose} className="btn-acc-outline" style={{ minHeight: '2.25rem', fontSize: '0.8125rem', padding: '0 1rem' }}>Cancel</button>
-          <button type="submit" className="btn-acc" style={{ minHeight: '2.25rem', fontSize: '0.8125rem', padding: '0 1.25rem' }}>Analyse with Claude →</button>
+          <button type="button" onClick={onClose} className="btn-acc-outline" style={{ minHeight: '2.25rem', fontSize: 'var(--fs-sm)', padding: '0 1rem' }}>Cancel</button>
+          <button type="submit" className="btn-acc" style={{ minHeight: '2.25rem', fontSize: 'var(--fs-sm)', padding: '0 1.25rem' }}>Analyse with Claude →</button>
         </div>
       </form>
     </div>
@@ -238,7 +238,7 @@ export default function App() {
       <button onClick={() => window.print()} className="no-print" style={{
         position: 'fixed', bottom: '1.5rem', right: '1.5rem', zIndex: 50,
         background: 'linear-gradient(135deg, #7B00AC, #AC00EF)', color: '#fff', border: 'none',
-        borderRadius: '0.5rem', padding: '0.75rem 1.25rem', fontSize: '0.875rem', fontWeight: 600,
+        borderRadius: '0.5rem', padding: '0.75rem 1.25rem', fontSize: 'var(--fs-sm)', fontWeight: 600,
         cursor: 'pointer', boxShadow: '0 0 32px rgba(172,0,239,0.35)', letterSpacing: '0.02em'
       }}>Export PDF</button>
 
@@ -258,10 +258,10 @@ export default function App() {
             <AccentureLogo />
             <div style={{ width: '1px', height: '1.5rem', background: 'rgba(255,255,255,0.1)' }} />
             <div>
-              <div style={{ fontWeight: 600, fontSize: '1.0625rem', color: '#fff', letterSpacing: '-0.02em', lineHeight: 1.2 }}>
+              <div style={{ fontWeight: 600, fontSize: 'var(--fs-h2)', color: '#fff', letterSpacing: '-0.02em', lineHeight: 1.2 }}>
                 ESG Value Engine
               </div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', letterSpacing: '0.04em', marginTop: '2px' }}>
+              <div style={{ fontSize: 'var(--fs-label)', color: 'var(--text-muted)', letterSpacing: '0.04em', marginTop: '2px' }}>
                 GSIC 2026 · Enactus Hong Kong
               </div>
             </div>
@@ -273,7 +273,7 @@ export default function App() {
               onClick={startRunAll}
               disabled={runAllActive}
               className="btn-acc"
-              style={{ minHeight: '2.5rem', fontSize: '0.875rem', padding: '0 1.25rem', gap: '0.4rem',
+              style={{ minHeight: '2.5rem', fontSize: 'var(--fs-sm)', padding: '0 1.25rem', gap: '0.4rem',
                 background: runAllActive ? 'rgba(172,0,239,0.15)' : undefined,
                 color: runAllActive ? '#AC00EF' : '#fff',
                 boxShadow: runAllActive ? 'none' : undefined,
@@ -291,7 +291,7 @@ export default function App() {
               <button
                 onClick={resetResults}
                 className="btn-acc-outline"
-                style={{ minHeight: '2.5rem', fontSize: '0.875rem', padding: '0 1rem' }}
+                style={{ minHeight: '2.5rem', fontSize: 'var(--fs-sm)', padding: '0 1rem' }}
               >
                 Reset
               </button>
@@ -299,18 +299,18 @@ export default function App() {
 
             <div style={{ width: '1px', height: '1.5rem', background: 'rgba(255,255,255,0.08)' }} />
 
-            <span style={{ fontSize: '0.6875rem', color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', letterSpacing: '0.12em', fontWeight: 700 }}>Portfolio</span>
+            <span style={{ fontSize: 'var(--fs-micro)', color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', letterSpacing: '0.12em', fontWeight: 700 }}>Portfolio</span>
             {COMPANIES.map(c => (
               <button key={c.id} onClick={() => { setCompanyId(c.id); runAllRef.current = false; setRunAllActive(false); }}
                 className={companyId === c.id ? 'btn-acc' : 'btn-acc-outline'}
-                style={{ minHeight: '2.5rem', fontSize: '0.875rem', padding: '0 1rem', gap: '0.375rem' }}>
+                style={{ minHeight: '2.5rem', fontSize: 'var(--fs-sm)', padding: '0 1rem', gap: '0.375rem' }}>
                 <CountryBadge code={c.countryCode} />
                 {c.shortName}
               </button>
             ))}
             <button onClick={() => setShowForm(true)}
               className={companyId === CUSTOM_ID ? 'btn-acc' : 'btn-acc-outline'}
-              style={{ minHeight: '2.5rem', fontSize: '0.875rem', padding: '0 1rem' }}>
+              style={{ minHeight: '2.5rem', fontSize: 'var(--fs-sm)', padding: '0 1rem' }}>
               {companyId === CUSTOM_ID && customCompany ? customCompany.shortName : '+ Custom'}
             </button>
           </div>
@@ -335,7 +335,7 @@ export default function App() {
             return (
               <button key={s.id} onClick={() => setScreen(s.id)}
                 style={{
-                  padding: '0 1rem', height: '52px', fontSize: '0.9375rem',
+                  padding: '0 1rem', height: '52px', fontSize: 'var(--fs-body)',
                   fontWeight: isActive ? 600 : 400,
                   color: isActive ? '#fff' : 'rgba(255,255,255,0.4)',
                   background: 'none', border: 'none',
@@ -360,7 +360,7 @@ export default function App() {
                 )}
                 {s.label}
                 {isActive && (
-                  <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.3)', fontWeight: 400 }}>— {s.desc}</span>
+                  <span style={{ fontSize: 'var(--fs-label)', color: 'rgba(255,255,255,0.3)', fontWeight: 400 }}>— {s.desc}</span>
                 )}
               </button>
             );
@@ -398,7 +398,7 @@ export default function App() {
                     <span style={{
                       width: 22, height: 22, borderRadius: '50%', flexShrink: 0,
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontSize: '0.6875rem', fontWeight: 700,
+                      fontSize: 'var(--fs-micro)', fontWeight: 700,
                       background: done ? '#00C896' : current ? '#AC00EF' : 'rgba(255,255,255,0.06)',
                       color: done || current ? '#fff' : 'rgba(255,255,255,0.3)',
                       border: `1px solid ${done ? 'rgba(0,200,150,0.4)' : current ? 'rgba(172,0,239,0.5)' : 'rgba(255,255,255,0.1)'}`,
@@ -408,7 +408,7 @@ export default function App() {
                       {done ? '✓' : i + 1}
                     </span>
                     <span style={{
-                      fontSize: '0.8125rem', fontWeight: current ? 600 : 400,
+                      fontSize: 'var(--fs-sm)', fontWeight: current ? 600 : 400,
                       color: done ? '#00C896' : current ? '#fff' : 'rgba(255,255,255,0.3)',
                       letterSpacing: '-0.01em', transition: 'color 300ms',
                     }}>
@@ -428,7 +428,7 @@ export default function App() {
                 </div>
               );
             })}
-            <div style={{ marginLeft: 'auto', fontSize: '0.75rem', color: 'rgba(255,255,255,0.2)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+            <div style={{ marginLeft: 'auto', fontSize: 'var(--fs-label)', color: 'rgba(255,255,255,0.2)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
               {doneCount}/{ANALYSIS_SCREENS.length} complete
             </div>
           </div>
@@ -454,11 +454,11 @@ export default function App() {
         <div style={{ maxWidth: '1440px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             <AccentureLogo />
-            <span style={{ fontSize: '0.75rem', color: '#444444' }}>
+            <span style={{ fontSize: 'var(--fs-label)', color: '#444444' }}>
               © 2026 Accenture. ESG Value Engine — Enactus GSIC Challenge
             </span>
           </div>
-          <span style={{ fontSize: '0.6875rem', color: '#2E2E2E', letterSpacing: '0.02em' }}>
+          <span style={{ fontSize: 'var(--fs-micro)', color: '#2E2E2E', letterSpacing: '0.02em' }}>
             Khan, Serafeim &amp; Yoon (2016) · BCG (2025) · EY-Parthenon · Verdantix (2024)
           </span>
         </div>

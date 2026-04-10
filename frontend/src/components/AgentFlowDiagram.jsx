@@ -9,7 +9,7 @@ function FlowArrow({ label }) {
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.2rem', margin: '0.375rem 0' }}>
       <div style={{ width: 1, height: 12, background: '#2E2E2E' }} />
       {label && (
-        <div style={{ fontSize: '0.5rem', color: '#333', background: '#0A0A0A', border: '1px solid #1E1E1E', borderRadius: '999px', padding: '0.1rem 0.5rem', letterSpacing: '0.06em', whiteSpace: 'nowrap' }}>
+        <div style={{ fontSize: 'var(--fs-label)', color: '#333', background: '#0A0A0A', border: '1px solid #1E1E1E', borderRadius: '999px', padding: '0.1rem 0.5rem', letterSpacing: '0.06em', whiteSpace: 'nowrap' }}>
           {label}
         </div>
       )}
@@ -24,16 +24,16 @@ function AgentBox({ num, label, tool, desc, color, bg, border, badge }) {
     <div style={{ padding: '0.75rem 1rem', background: bg, border: `1px solid ${border}`, borderRadius: '0.2rem', flex: 1, minWidth: 0 }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem', marginBottom: '0.3rem' }}>
         <div style={{ width: 18, height: 18, borderRadius: '50%', background: `${color}22`, border: `1px solid ${color}55`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-          <span style={{ fontSize: '0.5625rem', fontWeight: 700, color }}>{num}</span>
+          <span style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, color }}>{num}</span>
         </div>
-        <span style={{ fontSize: '0.6875rem', fontWeight: 700, color }}>{label}</span>
+        <span style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, color }}>{label}</span>
         {badge && (
-          <span style={{ marginLeft: 'auto', fontSize: '0.45rem', fontWeight: 700, color: '#333', background: '#111', border: '1px solid #1E1E1E', borderRadius: '2px', padding: '0.1rem 0.4rem', letterSpacing: '0.05em', fontFamily: 'ui-monospace, monospace', flexShrink: 0 }}>
+          <span style={{ marginLeft: 'auto', fontSize: 'var(--fs-label)', fontWeight: 700, color: '#333', background: '#111', border: '1px solid #1E1E1E', borderRadius: '2px', padding: '0.1rem 0.4rem', letterSpacing: '0.05em', fontFamily: 'ui-monospace, monospace', flexShrink: 0 }}>
             {badge}
           </span>
         )}
       </div>
-      <div style={{ fontSize: '0.5625rem', color: '#444', lineHeight: 1.5, paddingLeft: '1.625rem' }}>
+      <div style={{ fontSize: 'var(--fs-micro)', color: '#444', lineHeight: 1.5, paddingLeft: '1.625rem' }}>
         <span style={{ color: '#2E2E2E', fontFamily: 'ui-monospace, monospace' }}>tool:</span>
         <span style={{ color: `${color}99`, fontFamily: 'ui-monospace, monospace', marginRight: '0.5rem' }}> {tool}</span>
         {desc}
@@ -48,7 +48,7 @@ export default function AgentFlowDiagram() {
 
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.125rem' }}>
-        <div style={{ fontSize: '0.5625rem', fontWeight: 700, color: '#333', textTransform: 'uppercase', letterSpacing: '0.12em' }}>
+        <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, color: '#333', textTransform: 'uppercase', letterSpacing: '0.12em' }}>
           Agentic AI Architecture — 4-Agent Pipeline
         </div>
         <div style={{ display: 'flex', gap: '1rem' }}>
@@ -60,7 +60,7 @@ export default function AgentFlowDiagram() {
           ].map(({ dot, label }) => (
             <div key={label} style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
               <div style={{ width: 5, height: 5, borderRadius: '50%', background: dot, boxShadow: `0 0 4px ${dot}88` }} />
-              <span style={{ fontSize: '0.5rem', color: '#333', letterSpacing: '0.04em' }}>{label}</span>
+              <span style={{ fontSize: 'var(--fs-label)', color: '#333', letterSpacing: '0.04em' }}>{label}</span>
             </div>
           ))}
         </div>
@@ -74,8 +74,8 @@ export default function AgentFlowDiagram() {
           { label: 'Regulatory Stack', sub: 'CSRD / SFDR / TCFD / GRI / SASB / EDCI / ISSB / HKEX', color: '#444' },
         ].map(({ label, sub, color }) => (
           <div key={label} style={{ padding: '0.5rem 0.75rem', background: '#111', border: '1px solid #1E1E1E', borderRadius: '0.2rem', textAlign: 'center' }}>
-            <div style={{ fontSize: '0.5625rem', fontWeight: 700, color, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{label}</div>
-            <div style={{ fontSize: '0.5rem', color: '#2E2E2E', marginTop: '0.15rem', lineHeight: 1.4 }}>{sub}</div>
+            <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, color, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{label}</div>
+            <div style={{ fontSize: 'var(--fs-label)', color: '#2E2E2E', marginTop: '0.15rem', lineHeight: 1.4 }}>{sub}</div>
           </div>
         ))}
       </div>
@@ -108,8 +108,8 @@ export default function AgentFlowDiagram() {
 
       {/* Context injection note */}
       <div style={{ marginTop: '0.375rem', marginBottom: '0.375rem', padding: '0.375rem 0.75rem', background: '#00C89608', border: '1px solid #00C89620', borderRadius: '0.2rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-        <span style={{ fontSize: '0.5rem', fontWeight: 700, color: '#00C896', textTransform: 'uppercase', letterSpacing: '0.08em', flexShrink: 0 }}>Cross-agent context</span>
-        <span style={{ fontSize: '0.5rem', color: '#2E2E2E', lineHeight: 1.5 }}>
+        <span style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: '#00C896', textTransform: 'uppercase', letterSpacing: '0.08em', flexShrink: 0 }}>Cross-agent context</span>
+        <span style={{ fontSize: 'var(--fs-label)', color: '#2E2E2E', lineHeight: 1.5 }}>
           Agent 1 output (overallScore · pillarScores · riskFlags · valueOpportunities) is serialised and injected verbatim into the system prompt of Agents 2 and 3,
           enabling downstream agents to use upstream ESG findings without re-running analysis — zero token duplication, deterministic context passing.
         </span>
@@ -134,8 +134,8 @@ export default function AgentFlowDiagram() {
           { label: 'RAI',                  val: 'Accenture 5-pillar Responsible AI panel on every screen' },
         ].map(({ label, val }) => (
           <div key={label} style={{ flex: 1 }}>
-            <div style={{ fontSize: '0.45rem', fontWeight: 700, color: '#2E2E2E', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.2rem' }}>{label}</div>
-            <div style={{ fontSize: '0.5rem', color: '#333', lineHeight: 1.4 }}>{val}</div>
+            <div style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: '#2E2E2E', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.2rem' }}>{label}</div>
+            <div style={{ fontSize: 'var(--fs-label)', color: '#333', lineHeight: 1.4 }}>{val}</div>
           </div>
         ))}
       </div>

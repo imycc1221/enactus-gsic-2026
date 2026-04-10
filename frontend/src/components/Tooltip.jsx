@@ -51,7 +51,7 @@ export default function Tooltip({ term, text, children }) {
         <span style={{
           position: 'absolute', bottom: 'calc(100% + 6px)', left: '50%', transform: 'translateX(-50%)',
           background: '#1A1A1A', border: '1px solid #3A3A3A', borderRadius: '0.25rem',
-          padding: '0.5rem 0.75rem', width: '18rem', fontSize: '0.6875rem', color: '#c8c8c4',
+          padding: '0.5rem 0.75rem', width: '18rem', fontSize: 'var(--fs-micro)', color: '#c8c8c4',
           lineHeight: 1.6, zIndex: 200, whiteSpace: 'normal', pointerEvents: 'none',
           boxShadow: '0 8px 24px rgba(0,0,0,0.7)',
           display: 'block',

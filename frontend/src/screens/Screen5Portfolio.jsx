@@ -41,7 +41,7 @@ function Card({ children, style = {} }) {
 
 function Label({ children, color }) {
   return (
-    <div style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: color ?? '#fff', marginBottom: '0.75rem' }}>
+    <div style={{ fontSize: 'var(--fs-label)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: color ?? '#fff', marginBottom: '0.75rem' }}>
       {children}
     </div>
   );
@@ -50,7 +50,7 @@ function Label({ children, color }) {
 const CustomTooltip = ({ active, payload, label }) => {
   if (!active || !payload?.length) return null;
   return (
-    <div style={{ background: '#1E1E1E', border: '1px solid #2E2E2E', borderRadius: '0.25rem', padding: '0.75rem', fontSize: '0.75rem' }}>
+    <div style={{ background: '#1E1E1E', border: '1px solid #2E2E2E', borderRadius: '0.25rem', padding: '0.75rem', fontSize: 'var(--fs-label)' }}>
       <p style={{ fontWeight: 600, color: '#fff', marginBottom: '0.25rem' }}>{label}</p>
       {payload.map((p, i) => (
         <p key={i} style={{ color: p.color }}>{p.name}: {Number(p.value).toFixed(1)}{p.unit ?? ''}</p>
@@ -109,10 +109,10 @@ export default function Screen5Portfolio() {
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(172,0,239,0.05) 0%, #000000 100%)' }} />
         <div style={{ position: 'relative', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1.5rem', padding: '1.5rem' }}>
           <div>
-            <h1 style={{ fontFamily: 'GT Sectra Fine, Palatino, serif', fontWeight: 300, fontSize: '1.75rem', color: '#fff', marginBottom: '0.25rem', letterSpacing: '-0.01em' }}>
+            <h1 style={{ fontFamily: "'Georgia', serif", fontWeight: 300, fontSize: 'var(--fs-h1)', color: '#fff', marginBottom: '0.25rem', letterSpacing: '-0.01em' }}>
               ESG Portfolio Overview
             </h1>
-            <p style={{ fontSize: '0.875rem', color: '#787878' }}>
+            <p style={{ fontSize: 'var(--fs-sm)', color: '#787878' }}>
               3 portfolio companies · Simultaneous ESG screen + financial model + SFDR classification
             </p>
           </div>
@@ -125,15 +125,15 @@ export default function Screen5Portfolio() {
       {status === 'running' && (
         <div style={{ background: '#0A0A0A', border: '1px solid #AC00EF33', borderRadius: '0.25rem', padding: '1.25rem 1.5rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <div className="animate-pulse-dot" style={{ width: 7, height: 7, borderRadius: '50%', background: '#AC00EF', flexShrink: 0, boxShadow: '0 0 6px #AC00EF88' }} />
-          <span style={{ fontSize: '0.6875rem', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#616160' }}>
+          <span style={{ fontSize: 'var(--fs-micro)', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#616160' }}>
             Running 9 parallel AI calls — ESG Screen + Value Model + SFDR Classifier for each company
           </span>
-          <span style={{ marginLeft: 'auto', fontSize: '0.6875rem', color: '#AC00EF' }}>powered by Claude AI</span>
+          <span style={{ marginLeft: 'auto', fontSize: 'var(--fs-micro)', color: '#AC00EF' }}>powered by Claude AI</span>
         </div>
       )}
 
       {error && (
-        <div style={{ background: '#FF444410', border: '1px solid #FF444440', borderRadius: '0.25rem', padding: '1rem', color: '#FF4444', fontSize: '0.875rem', marginBottom: '1.5rem' }}>{error}</div>
+        <div style={{ background: '#FF444410', border: '1px solid #FF444440', borderRadius: '0.25rem', padding: '1rem', color: '#FF4444', fontSize: 'var(--fs-sm)', marginBottom: '1.5rem' }}>{error}</div>
       )}
 
       {/* Agent architecture diagram — always visible */}
@@ -158,36 +158,36 @@ export default function Screen5Portfolio() {
 
             return (
               <div className="fade-up fade-up-1" style={{ background: '#0A0A0A', border: '1px solid #AC00EF33', borderRadius: '0.25rem', padding: '1.25rem' }}>
-                <div style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#AC00EF', marginBottom: '1rem' }}>
+                <div style={{ fontSize: 'var(--fs-label)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#AC00EF', marginBottom: '1rem' }}>
                   Investment Priority Ranking
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                   {ranked.map((d, rank) => (
                     <div key={d.company.id} style={{ display: 'grid', gridTemplateColumns: '2rem 1fr auto auto auto auto', gap: '1rem', alignItems: 'center', padding: '0.75rem 1rem', background: rank === 0 ? '#ffffff06' : '#0A0A0A', border: `1px solid ${rank === 0 ? '#AC00EF33' : '#1E1E1E'}`, borderRadius: '0.2rem' }}>
-                      <div style={{ fontSize: '1.5rem', fontWeight: 700, color: rank === 0 ? '#AC00EF' : '#2E2E2E', lineHeight: 1, textAlign: 'center' }}>#{rank + 1}</div>
+                      <div style={{ fontSize: 'var(--fs-h1)', fontWeight: 700, color: rank === 0 ? '#AC00EF' : '#2E2E2E', lineHeight: 1, textAlign: 'center' }}>#{rank + 1}</div>
                       <div>
-                        <div style={{ fontSize: '0.8125rem', fontWeight: 700, color: '#fff' }}>{d.company.shortName}</div>
-                        <div style={{ fontSize: '0.5625rem', color: '#444', marginTop: '0.15rem' }}>{d.company.sasbSector}</div>
+                        <div style={{ fontSize: 'var(--fs-sm)', fontWeight: 700, color: '#fff' }}>{d.company.shortName}</div>
+                        <div style={{ fontSize: 'var(--fs-micro)', color: '#444', marginTop: '0.15rem' }}>{d.company.sasbSector}</div>
                       </div>
                       <div style={{ textAlign: 'center' }}>
-                        <div style={{ fontSize: '0.45rem', fontWeight: 700, color: '#333', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.15rem' }}>Composite</div>
+                        <div style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: '#333', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.15rem' }}>Composite</div>
                         <div style={{ fontSize: '1rem', fontWeight: 700, color: COMPANY_COLORS[d.origIdx] }}>{d.composite}</div>
                       </div>
                       <div style={{ textAlign: 'center' }}>
-                        <div style={{ fontSize: '0.45rem', fontWeight: 700, color: '#333', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.15rem' }}>ESG</div>
-                        <div style={{ fontSize: '0.875rem', fontWeight: 600, color: scoreColor(d.analyze.overallScore ?? 0) }}>{d.analyze.overallScore ?? '—'}/100</div>
+                        <div style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: '#333', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.15rem' }}>ESG</div>
+                        <div style={{ fontSize: 'var(--fs-sm)', fontWeight: 600, color: scoreColor(d.analyze.overallScore ?? 0) }}>{d.analyze.overallScore ?? '—'}/100</div>
                       </div>
                       <div style={{ textAlign: 'center' }}>
-                        <div style={{ fontSize: '0.45rem', fontWeight: 700, color: '#333', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.15rem' }}>Key Driver</div>
-                        <div style={{ fontSize: '0.5625rem', color: '#787878' }}>{d.driver}</div>
+                        <div style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: '#333', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.15rem' }}>Key Driver</div>
+                        <div style={{ fontSize: 'var(--fs-micro)', color: '#787878' }}>{d.driver}</div>
                       </div>
-                      <div style={{ padding: '0.3rem 0.75rem', background: `${d.vColor}15`, border: `1px solid ${d.vColor}40`, borderRadius: '999px', fontSize: '0.5625rem', fontWeight: 700, color: d.vColor, textAlign: 'center', whiteSpace: 'nowrap' }}>
+                      <div style={{ padding: '0.3rem 0.75rem', background: `${d.vColor}15`, border: `1px solid ${d.vColor}40`, borderRadius: '999px', fontSize: 'var(--fs-micro)', fontWeight: 700, color: d.vColor, textAlign: 'center', whiteSpace: 'nowrap' }}>
                         {d.verdict}
                       </div>
                     </div>
                   ))}
                 </div>
-                <div style={{ marginTop: '0.75rem', fontSize: '0.5rem', color: '#222' }}>
+                <div style={{ marginTop: '0.75rem', fontSize: 'var(--fs-label)', color: '#222' }}>
                   Composite score = ESG materiality (35%) + data confidence (15%) + IRR uplift (40%) + SFDR classification (10%)
                 </div>
               </div>
@@ -203,9 +203,9 @@ export default function Screen5Portfolio() {
               { stat: '3× Art. 8',         label: 'SFDR classification', sub: 'all companies LP-ready today' },
             ].map(({ stat, label, sub }, i) => (
               <div key={i} style={{ padding: '0.875rem 1.125rem', borderRight: i < 3 ? '1px solid #AC00EF22' : 'none', background: '#0A0A0A' }}>
-                <div className="data-mono" style={{ fontSize: '1.375rem', fontWeight: 700, color: '#AC00EF', lineHeight: 1, marginBottom: '0.3rem' }}>{stat}</div>
-                <div style={{ fontSize: '0.6875rem', fontWeight: 600, color: '#fff', marginBottom: '0.2rem' }}>{label}</div>
-                <div style={{ fontSize: '0.5625rem', color: '#444' }}>{sub}</div>
+                <div className="data-mono" style={{ fontSize: 'var(--fs-h2)', fontWeight: 700, color: '#AC00EF', lineHeight: 1, marginBottom: '0.3rem' }}>{stat}</div>
+                <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 600, color: '#fff', marginBottom: '0.2rem' }}>{label}</div>
+                <div style={{ fontSize: 'var(--fs-micro)', color: '#444' }}>{sub}</div>
               </div>
             ))}
           </div>
@@ -219,10 +219,10 @@ export default function Screen5Portfolio() {
                 <Card key={d.company.id} style={{ borderTop: `2px solid ${COMPANY_COLORS[i]}` }}>
                   <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '1rem' }}>
                     <div>
-                      <div style={{ fontSize: '0.8125rem', fontWeight: 700, color: '#fff', marginBottom: '0.2rem' }}>{d.company.shortName}</div>
-                      <div style={{ fontSize: '0.625rem', color: '#555' }}>{d.company.sasbSector}</div>
+                      <div style={{ fontSize: 'var(--fs-sm)', fontWeight: 700, color: '#fff', marginBottom: '0.2rem' }}>{d.company.shortName}</div>
+                      <div style={{ fontSize: 'var(--fs-label)', color: '#555' }}>{d.company.sasbSector}</div>
                     </div>
-                    <div style={{ fontSize: '0.625rem', fontWeight: 700, color: artCfg, background: `${artCfg}15`, border: `1px solid ${artCfg}40`, borderRadius: '999px', padding: '0.2rem 0.5rem' }}>
+                    <div style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: artCfg, background: `${artCfg}15`, border: `1px solid ${artCfg}40`, borderRadius: '999px', padding: '0.2rem 0.5rem' }}>
                       {d.sfdr.recommendedArticle}
                     </div>
                   </div>
@@ -234,16 +234,16 @@ export default function Screen5Portfolio() {
                       { label: 'Value Added', val: fmt(d.predict.withEsgInterventions?.additionalValueCreated),              color: '#FFFFFF' },
                     ].map(({ label, val, color }) => (
                       <div key={label}>
-                        <div style={{ fontSize: '0.5rem', fontWeight: 700, color: '#444', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.2rem' }}>{label}</div>
+                        <div style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: '#444', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.2rem' }}>{label}</div>
                         <div className="data-mono" style={{ fontSize: '1rem', fontWeight: 700, color, lineHeight: 1 }}>{val}</div>
                       </div>
                     ))}
                   </div>
                   {highRisks.length > 0 && (
                     <div style={{ marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: '1px solid #1E1E1E' }}>
-                      <div style={{ fontSize: '0.5rem', fontWeight: 700, color: '#444', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.375rem' }}>High-Severity Risks</div>
+                      <div style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: '#444', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.375rem' }}>High-Severity Risks</div>
                       {highRisks.slice(0, 2).map((r, j) => (
-                        <div key={j} style={{ fontSize: '0.6875rem', color: '#FF4444', marginBottom: '0.15rem' }}>· {r.area}</div>
+                        <div key={j} style={{ fontSize: 'var(--fs-micro)', color: '#FF4444', marginBottom: '0.15rem' }}>· {r.area}</div>
                       ))}
                     </div>
                   )}
@@ -261,11 +261,11 @@ export default function Screen5Portfolio() {
               <ResponsiveContainer width="100%" height={240}>
                 <RadarChart data={pillarData} margin={{ top: 10, right: 30, bottom: 10, left: 30 }}>
                   <PolarGrid stroke="#1E1E1E" />
-                  <PolarAngleAxis dataKey="axis" tick={{ fill: '#787878', fontSize: 10, fontFamily: 'Graphik, Arial, sans-serif' }} />
+                  <PolarAngleAxis dataKey="axis" tick={{ fill: '#787878', fontSize: 10, fontFamily: "'Inter', -apple-system, sans-serif" }} />
                   {data.map((d, i) => (
                     <Radar key={d.company.shortName} name={d.company.shortName} dataKey={d.company.shortName} stroke={COMPANY_COLORS[i]} fill={COMPANY_COLORS[i]} fillOpacity={0.08} strokeWidth={1.5} />
                   ))}
-                  <Legend wrapperStyle={{ fontSize: '0.6875rem', color: '#787878', paddingTop: '0.5rem' }} />
+                  <Legend wrapperStyle={{ fontSize: 'var(--fs-micro)', color: '#787878', paddingTop: '0.5rem' }} />
                 </RadarChart>
               </ResponsiveContainer>
             </Card>
@@ -276,14 +276,14 @@ export default function Screen5Portfolio() {
               <ResponsiveContainer width="100%" height={240}>
                 <BarChart data={irrData} barCategoryGap="30%">
                   <CartesianGrid stroke="#1E1E1E" vertical={false} />
-                  <XAxis dataKey="name" tick={{ fill: '#787878', fontSize: 10, fontFamily: 'Graphik, Arial, sans-serif' }} axisLine={false} tickLine={false} />
+                  <XAxis dataKey="name" tick={{ fill: '#787878', fontSize: 10, fontFamily: "'Inter', -apple-system, sans-serif" }} axisLine={false} tickLine={false} />
                   <YAxis tick={{ fill: '#444', fontSize: 10 }} axisLine={false} tickLine={false} unit="%" domain={[0, 'auto']} />
                   <Tooltip content={<CustomTooltip />} cursor={{ fill: '#1E1E1E' }} />
                   <Bar dataKey="base" name="Base IRR" fill="#2E2E2E" radius={[2, 2, 0, 0]} unit="%" />
                   <Bar dataKey="esg"  name="With ESG" radius={[2, 2, 0, 0]} unit="%">
                     {irrData.map((entry, i) => <Cell key={i} fill={COMPANY_COLORS[i]} />)}
                   </Bar>
-                  <Legend wrapperStyle={{ fontSize: '0.6875rem', color: '#787878', paddingTop: '0.5rem' }} />
+                  <Legend wrapperStyle={{ fontSize: 'var(--fs-micro)', color: '#787878', paddingTop: '0.5rem' }} />
                 </BarChart>
               </ResponsiveContainer>
             </Card>
@@ -293,12 +293,12 @@ export default function Screen5Portfolio() {
           <Card className="fade-up fade-up-3">
             <Label>Portfolio Risk Matrix</Label>
             <div style={{ overflowX: 'auto' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8125rem' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 'var(--fs-sm)' }}>
                 <thead>
                   <tr>
-                    <th style={{ textAlign: 'left', padding: '0.5rem 0.75rem', fontSize: '0.5625rem', fontWeight: 700, color: '#444', textTransform: 'uppercase', letterSpacing: '0.08em', width: '40%', borderBottom: '1px solid #1E1E1E' }}>Risk Area</th>
+                    <th style={{ textAlign: 'left', padding: '0.5rem 0.75rem', fontSize: 'var(--fs-micro)', fontWeight: 700, color: '#444', textTransform: 'uppercase', letterSpacing: '0.08em', width: '40%', borderBottom: '1px solid #1E1E1E' }}>Risk Area</th>
                     {data.map((d, i) => (
-                      <th key={d.company.id} style={{ textAlign: 'center', padding: '0.5rem 0.75rem', fontSize: '0.5625rem', fontWeight: 700, color: COMPANY_COLORS[i], textTransform: 'uppercase', letterSpacing: '0.08em', borderBottom: '1px solid #1E1E1E' }}>
+                      <th key={d.company.id} style={{ textAlign: 'center', padding: '0.5rem 0.75rem', fontSize: 'var(--fs-micro)', fontWeight: 700, color: COMPANY_COLORS[i], textTransform: 'uppercase', letterSpacing: '0.08em', borderBottom: '1px solid #1E1E1E' }}>
                         {d.company.shortName}
                       </th>
                     ))}
@@ -322,9 +322,9 @@ export default function Screen5Portfolio() {
                           return (
                             <td key={d.company.id} style={{ textAlign: 'center', padding: '0.5rem 0.75rem' }}>
                               {s ? (
-                                <span style={{ fontSize: '0.5625rem', fontWeight: 700, color: s.color, background: s.bg, borderRadius: '2px', padding: '0.15rem 0.5rem', letterSpacing: '0.06em' }}>{s.label}</span>
+                                <span style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, color: s.color, background: s.bg, borderRadius: '2px', padding: '0.15rem 0.5rem', letterSpacing: '0.06em' }}>{s.label}</span>
                               ) : (
-                                <span style={{ color: '#222', fontSize: '0.625rem' }}>—</span>
+                                <span style={{ color: '#222', fontSize: 'var(--fs-label)' }}>—</span>
                               )}
                             </td>
                           );
@@ -346,9 +346,9 @@ export default function Screen5Portfolio() {
                 const vColor  = verdict === 'PROCEED' ? '#00C896' : verdict === 'MONITOR' ? '#888888' : '#FF4444';
                 return (
                   <div key={d.company.id} style={{ borderLeft: `3px solid ${COMPANY_COLORS[i]}`, paddingLeft: '1rem' }}>
-                    <div style={{ fontSize: '0.6875rem', color: '#555', marginBottom: '0.375rem' }}>{d.company.shortName}</div>
-                    <div style={{ fontSize: '1.125rem', fontWeight: 700, color: vColor, marginBottom: '0.375rem' }}>{verdict}</div>
-                    <div style={{ fontSize: '0.75rem', color: '#787878', lineHeight: 1.5 }}>
+                    <div style={{ fontSize: 'var(--fs-micro)', color: '#555', marginBottom: '0.375rem' }}>{d.company.shortName}</div>
+                    <div style={{ fontSize: 'var(--fs-h2)', fontWeight: 700, color: vColor, marginBottom: '0.375rem' }}>{verdict}</div>
+                    <div style={{ fontSize: 'var(--fs-label)', color: '#787878', lineHeight: 1.5 }}>
                       ESG {d.analyze.overallScore}/100 · {d.sfdr.recommendedArticle} · +{Number(d.predict.withEsgInterventions?.irrUplift ?? 0).toFixed(1)}pp IRR uplift
                     </div>
                   </div>
@@ -362,10 +362,10 @@ export default function Screen5Portfolio() {
 
       {status === 'idle' && !data && (
         <div style={{ border: '1px dashed #2E2E2E', borderRadius: '0.25rem', padding: '3rem 2rem', textAlign: 'center' }}>
-          <div style={{ fontFamily: 'GT Sectra Fine, Palatino, serif', fontSize: '1.25rem', fontWeight: 300, color: '#fff', marginBottom: '0.75rem', letterSpacing: '-0.01em' }}>
+          <div style={{ fontFamily: "'Georgia', serif", fontSize: 'var(--fs-h2)', fontWeight: 300, color: '#fff', marginBottom: '0.75rem', letterSpacing: '-0.01em' }}>
             Portfolio-level ESG analysis
           </div>
-          <p style={{ fontSize: '0.8125rem', color: '#555555', marginBottom: '2rem' }}>
+          <p style={{ fontSize: 'var(--fs-sm)', color: '#555555', marginBottom: '2rem' }}>
             Runs ESG Screen + Value Model + SFDR Classifier for all 3 companies simultaneously — 9 parallel AI calls, results in under 3 seconds
           </p>
           <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', flexWrap: 'wrap' }}>
@@ -376,8 +376,8 @@ export default function Screen5Portfolio() {
               { label: 'IC Summary',      desc: 'Investment committee verdict'     },
             ].map(({ label, desc }) => (
               <div key={label} style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: '0.6875rem', fontWeight: 700, color: '#AC00EF', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.25rem' }}>{label}</div>
-                <div style={{ fontSize: '0.6875rem', color: '#333333' }}>{desc}</div>
+                <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, color: '#AC00EF', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.25rem' }}>{label}</div>
+                <div style={{ fontSize: 'var(--fs-micro)', color: '#333333' }}>{desc}</div>
               </div>
             ))}
           </div>

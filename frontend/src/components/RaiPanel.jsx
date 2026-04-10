@@ -62,11 +62,11 @@ export default function RaiPanel() {
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#888888', boxShadow: '0 0 6px #88888880', flexShrink: 0 }} />
-          <span style={{ fontSize: '0.625rem', fontWeight: 700, color: '#888888', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+          <span style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: '#888888', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
             Responsible AI Review Required
           </span>
         </div>
-        <span style={{ fontSize: '0.5625rem', color: '#444', letterSpacing: '0.04em' }}>
+        <span style={{ fontSize: 'var(--fs-micro)', color: '#444', letterSpacing: '0.04em' }}>
           Accenture RAI Principles · Human-in-the-loop before LP use
         </span>
       </div>
@@ -86,8 +86,8 @@ export default function RaiPanel() {
             title={p.desc}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
-              <span style={{ fontSize: '0.75rem', color: p.color }}>{p.icon}</span>
-              <span style={{ fontSize: '0.625rem', fontWeight: 700, color: p.color, textTransform: 'uppercase', letterSpacing: '0.08em' }}>{p.name}</span>
+              <span style={{ fontSize: 'var(--fs-label)', color: p.color }}>{p.icon}</span>
+              <span style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: p.color, textTransform: 'uppercase', letterSpacing: '0.08em' }}>{p.name}</span>
               <span style={{
                 marginLeft: 'auto',
                 width: 6, height: 6, borderRadius: '50%', flexShrink: 0,
@@ -95,7 +95,7 @@ export default function RaiPanel() {
                 boxShadow: p.status === 'active' ? '0 0 5px #00C89660' : '0 0 5px #88888860',
               }} />
             </div>
-            <div style={{ fontSize: '0.625rem', color: '#666', lineHeight: 1.5 }}>{p.desc}</div>
+            <div style={{ fontSize: 'var(--fs-label)', color: '#666', lineHeight: 1.5 }}>{p.desc}</div>
           </div>
         ))}
       </div>

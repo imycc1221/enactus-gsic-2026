@@ -93,16 +93,16 @@ export default function OnboardingTour({ onDone }) {
         {/* Content */}
         <div style={{ textAlign: 'center' }}>
           <div style={{ fontSize: '2.5rem', marginBottom: '0.75rem' }}>{current.icon}</div>
-          <div style={{ fontFamily: 'GT Sectra Fine, Palatino, serif', fontSize: '1.375rem', fontWeight: 300, color: '#fff', marginBottom: '0.75rem' }}>
+          <div style={{ fontFamily: "'Georgia', serif", fontSize: 'var(--fs-h2)', fontWeight: 300, color: '#fff', marginBottom: '0.75rem' }}>
             {current.title}
           </div>
-          <p style={{ fontSize: '0.875rem', color: '#787878', lineHeight: 1.7 }}>
+          <p style={{ fontSize: 'var(--fs-sm)', color: '#787878', lineHeight: 1.7 }}>
             {current.body}
           </p>
         </div>
 
         {/* Step counter */}
-        <div style={{ textAlign: 'center', fontSize: '0.5625rem', color: '#333', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+        <div style={{ textAlign: 'center', fontSize: 'var(--fs-micro)', color: '#333', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
           Step {step + 1} of {STEPS.length}
         </div>
 
@@ -111,7 +111,7 @@ export default function OnboardingTour({ onDone }) {
           {step > 0 && (
             <button
               onClick={prev}
-              style={{ background: 'none', border: '1px solid #2E2E2E', borderRadius: '0.25rem', color: '#555', fontSize: '0.8125rem', padding: '0.5rem 1.25rem', cursor: 'pointer' }}
+              style={{ background: 'none', border: '1px solid #2E2E2E', borderRadius: '0.25rem', color: '#555', fontSize: 'var(--fs-sm)', padding: '0.5rem 1.25rem', cursor: 'pointer' }}
             >
               ← Back
             </button>
@@ -119,7 +119,7 @@ export default function OnboardingTour({ onDone }) {
           <button
             onClick={next}
             className="btn-acc"
-            style={{ minHeight: '2.25rem', fontSize: '0.8125rem', padding: '0 1.5rem' }}
+            style={{ minHeight: '2.25rem', fontSize: 'var(--fs-sm)', padding: '0 1.5rem' }}
           >
             {step < STEPS.length - 1 ? 'Next →' : 'Start the demo →'}
           </button>
@@ -128,7 +128,7 @@ export default function OnboardingTour({ onDone }) {
         {/* Skip */}
         <button
           onClick={finish}
-          style={{ background: 'none', border: 'none', color: '#333', fontSize: '0.6875rem', cursor: 'pointer', padding: 0 }}
+          style={{ background: 'none', border: 'none', color: '#333', fontSize: 'var(--fs-micro)', cursor: 'pointer', padding: 0 }}
         >
           Skip tour
         </button>

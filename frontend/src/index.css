@@ -1,32 +1,4 @@
-/* ── Accenture Graphik font ─────────────────────────────────────────────────── */
-@font-face {
-  font-family: 'Graphik';
-  src: url('/fonts/graphik-regular-web.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Graphik';
-  src: url('/fonts/graphik-medium-web.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Graphik';
-  src: url('/fonts/graphik-semibold-web.woff2') format('woff2');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'GT Sectra Fine';
-  src: url('/fonts/GT-Sectra-Fine-Book.woff2') format('woff2');
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;1,14..32,400&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -64,6 +36,15 @@
   --text-2xl:  1.75rem;    /* 28px */
   --text-3xl:  2.25rem;    /* 36px */
   --text-hero: 3rem;       /* 48px */
+
+  /* Font-size tokens */
+  --fs-h1:    1.75rem;   /* 28px — page/company titles */
+  --fs-h2:    1.25rem;   /* 20px — section headings */
+  --fs-h3:    1rem;      /* 16px — card headings */
+  --fs-body:  0.9375rem; /* 15px — main body text */
+  --fs-sm:    0.875rem;  /* 14px — secondary text */
+  --fs-label: 0.75rem;   /* 12px — ALL CAPS labels */
+  --fs-micro: 0.6875rem; /* 11px — tight space labels only */
 }
 
 /* ── Base ───────────────────────────────────────────────────────────────────── */
@@ -76,7 +57,7 @@
   body {
     background: var(--acc-black);
     color: var(--text-body);
-    font-family: 'Graphik', Arial, Helvetica, sans-serif;
+    font-family: 'Inter', -apple-system, sans-serif;
     font-weight: 400;
     font-size: var(--text-base);
     line-height: 1.6;
@@ -132,7 +113,7 @@ header, nav, main, footer { position: relative; z-index: 1; }
     padding: 0 1.5rem;
     background: linear-gradient(135deg, #7B00AC, #AC00EF);
     color: #fff;
-    font-family: 'Graphik', Arial, sans-serif;
+    font-family: 'Inter', -apple-system, sans-serif;
     font-weight: 600;
     font-size: var(--text-sm);
     border: none;
@@ -169,7 +150,7 @@ header, nav, main, footer { position: relative; z-index: 1; }
     padding: 0 1.25rem;
     background: rgba(255,255,255,0.03);
     color: var(--text-body);
-    font-family: 'Graphik', Arial, sans-serif;
+    font-family: 'Inter', -apple-system, sans-serif;
     font-weight: 500;
     font-size: var(--text-sm);
     border: 1px solid var(--border-std);
@@ -270,7 +251,7 @@ header, nav, main, footer { position: relative; z-index: 1; }
 
 /* ── Section label ───────────────────────────────────────────────────────────── */
 .section-label {
-  font-size: var(--text-xs);
+  font-size: var(--fs-label);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.12em;
@@ -280,7 +261,7 @@ header, nav, main, footer { position: relative; z-index: 1; }
 
 /* ── Stat display ────────────────────────────────────────────────────────────── */
 .stat-label {
-  font-size: var(--text-xs);
+  font-size: var(--fs-label);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -288,7 +269,7 @@ header, nav, main, footer { position: relative; z-index: 1; }
   margin-bottom: 0.25rem;
 }
 .stat-hero {
-  font-family: 'GT Sectra Fine', Palatino, serif;
+  font-family: 'Georgia', serif;
   font-weight: 300;
   letter-spacing: -0.03em;
   line-height: 1;
