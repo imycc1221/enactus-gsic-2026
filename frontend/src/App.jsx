@@ -384,10 +384,15 @@ export default function App() {
                     onClick={() => setScreen(sid)}
                     style={{
                       display: 'flex', alignItems: 'center', gap: '0.5rem',
-                      background: current ? 'rgba(172,0,239,0.1)' : 'none',
-                      border: 'none', cursor: 'pointer',
+                      background: current
+                        ? (done ? 'rgba(0,200,150,0.1)' : 'rgba(172,0,239,0.1)')
+                        : 'none',
+                      border: current
+                        ? `1px solid ${done ? 'rgba(0,200,150,0.35)' : 'rgba(172,0,239,0.35)'}`
+                        : '1px solid transparent',
+                      cursor: 'pointer',
                       padding: '0.3rem 0.625rem', borderRadius: '999px',
-                      transition: 'background 200ms',
+                      transition: 'all 300ms',
                     }}
                   >
                     <span style={{
