@@ -24,16 +24,16 @@ const STEPS = [
 
 const RISK_CONFIG = {
   low:      { color: '#00C896', bg: '#00C89612', border: '#00C89640', label: 'LOW RISK',      desc: 'Claims broadly supported by evidence' },
-  medium:   { color: '#F0A500', bg: '#F0A50012', border: '#F0A50040', label: 'MEDIUM RISK',   desc: 'Material gaps require remediation' },
-  high:     { color: '#FF6B1A', bg: '#FF6B1A12', border: '#FF6B1A40', label: 'HIGH RISK',     desc: 'Significant claim-evidence mismatch' },
-  critical: { color: '#FF1F5A', bg: '#FF1F5A12', border: '#FF1F5A40', label: 'CRITICAL RISK', desc: 'Active regulatory exposure likely' },
+  medium:   { color: '#888888', bg: '#88888812', border: '#88888840', label: 'MEDIUM RISK',   desc: 'Material gaps require remediation' },
+  high:     { color: '#FF4444', bg: '#FF444412', border: '#FF444440', label: 'HIGH RISK',     desc: 'Significant claim-evidence mismatch' },
+  critical: { color: '#FF4444', bg: '#FF444412', border: '#FF444440', label: 'CRITICAL RISK', desc: 'Active regulatory exposure likely' },
 };
 
 const SEV_CONFIG = {
   minor:    { color: '#AC00EF', label: 'MINOR' },
-  moderate: { color: '#F0A500', label: 'MODERATE' },
-  material: { color: '#FF6B1A', label: 'MATERIAL' },
-  critical: { color: '#FF1F5A', label: 'CRITICAL' },
+  moderate: { color: '#888888', label: 'MODERATE' },
+  material: { color: '#FF4444', label: 'MATERIAL' },
+  critical: { color: '#FF4444', label: 'CRITICAL' },
 };
 
 function Card({ children, style = {} }) {
@@ -89,7 +89,7 @@ export default function Screen7Greenwash({ companyId, companyOverride, screen1Re
   return (
     <div>
       {/* Banner */}
-      <div style={{ position: 'relative', borderRadius: '0.25rem', overflow: 'hidden', marginBottom: '1.5rem', background: '#101010', backgroundImage: `url(/images/${companyId}-banner.jpg)`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+      <div style={{ position: 'relative', borderRadius: '0.25rem', overflow: 'hidden', marginBottom: '1.5rem', background: '#000000', backgroundImage: `url(/images/${companyId}-banner.jpg)`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(0,0,0,0.95) 50%, rgba(0,0,0,0.6))' }} />
         <div style={{ position: 'relative', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1.5rem', padding: '1.5rem' }}>
           <div>
@@ -125,7 +125,7 @@ export default function Screen7Greenwash({ companyId, companyOverride, screen1Re
 
       {meta && agentStatus === 'complete' && (
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.625rem', color: '#333', marginBottom: '1rem' }}>
-          <span style={{ width: 5, height: 5, borderRadius: '50%', background: meta.cached ? '#F0A500' : '#00C896', flexShrink: 0 }} />
+          <span style={{ width: 5, height: 5, borderRadius: '50%', background: meta.cached ? '#888888' : '#00C896', flexShrink: 0 }} />
           {meta.cached ? 'Cached result' : 'Live result'} · Generated {new Date(meta.generatedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
           {meta.cached && (
             <button onClick={run} style={{ background: 'none', border: 'none', color: '#555', fontSize: '0.625rem', cursor: 'pointer', textDecoration: 'underline', padding: 0, marginLeft: '0.25rem' }}>
@@ -139,7 +139,7 @@ export default function Screen7Greenwash({ companyId, companyOverride, screen1Re
       {meta && <div style={{ marginBottom: '1rem' }}><ReasoningDrawer meta={meta} /></div>}
 
       {error && (
-        <div style={{ background: '#FF1F5A10', border: '1px solid #FF1F5A40', borderRadius: '0.25rem', padding: '1rem', color: '#FF1F5A', fontSize: '0.875rem', marginBottom: '1.5rem' }}>{error}</div>
+        <div style={{ background: '#FF444410', border: '1px solid #FF444440', borderRadius: '0.25rem', padding: '1rem', color: '#FF4444', fontSize: '0.875rem', marginBottom: '1.5rem' }}>{error}</div>
       )}
 
       {data && riskCfg && (
@@ -165,8 +165,8 @@ export default function Screen7Greenwash({ companyId, companyOverride, screen1Re
 
             {/* Stats */}
             {[
-              { label: 'Flagged Claims',       val: data.flaggedClaims?.length ?? 0,                                                                    color: '#FF1F5A',  sub: 'require evidence or remediation' },
-              { label: 'Material / Critical',  val: data.flaggedClaims?.filter(c => ['material','critical'].includes(c.severity)).length ?? 0,          color: '#FF6B1A',  sub: 'immediate LP disclosure risk' },
+              { label: 'Flagged Claims',       val: data.flaggedClaims?.length ?? 0,                                                                    color: '#FF4444',  sub: 'require evidence or remediation' },
+              { label: 'Material / Critical',  val: data.flaggedClaims?.filter(c => ['material','critical'].includes(c.severity)).length ?? 0,          color: '#FF4444',  sub: 'immediate LP disclosure risk' },
               { label: 'Positive Indicators',  val: data.positiveIndicators?.length ?? 0,                                                               color: '#00C896',  sub: 'claims supported by data' },
             ].map(({ label, val, color, sub }) => (
               <Card key={label}>
@@ -217,11 +217,11 @@ export default function Screen7Greenwash({ companyId, companyOverride, screen1Re
           {/* Row 3: Red flags + Positive indicators */}
           <div className="fade-up fade-up-3" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
             <Card>
-              <Label color="#FF1F5A">Red Flags</Label>
+              <Label color="#FF4444">Red Flags</Label>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                 {(data.redFlags ?? []).map((flag, i) => (
-                  <div key={i} style={{ display: 'flex', gap: '0.625rem', alignItems: 'flex-start', padding: '0.5rem 0.625rem', background: '#FF1F5A08', border: '1px solid #FF1F5A20', borderRadius: '0.2rem' }}>
-                    <span style={{ color: '#FF1F5A', flexShrink: 0, fontSize: '0.625rem', marginTop: '0.05rem' }}>▲</span>
+                  <div key={i} style={{ display: 'flex', gap: '0.625rem', alignItems: 'flex-start', padding: '0.5rem 0.625rem', background: '#FF444408', border: '1px solid #FF444420', borderRadius: '0.2rem' }}>
+                    <span style={{ color: '#FF4444', flexShrink: 0, fontSize: '0.625rem', marginTop: '0.05rem' }}>▲</span>
                     <span style={{ fontSize: '0.6875rem', color: '#c8c8c4', lineHeight: 1.5 }}>{flag}</span>
                   </div>
                 ))}
@@ -255,8 +255,8 @@ export default function Screen7Greenwash({ companyId, companyOverride, screen1Re
               </div>
             </Card>
 
-            <Card style={{ background: '#0D0018', border: '1px solid #FF1F5A33' }}>
-              <Label color="#FF1F5A">Regulatory Exposure</Label>
+            <Card style={{ background: '#0A0A0A', border: '1px solid #FF444433' }}>
+              <Label color="#FF4444">Regulatory Exposure</Label>
               <div style={{ fontSize: '0.75rem', color: '#c8c8c4', lineHeight: 1.7 }}>{data.regulatoryExposure}</div>
             </Card>
           </div>

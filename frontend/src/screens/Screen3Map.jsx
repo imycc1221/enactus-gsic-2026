@@ -24,9 +24,9 @@ const DATA_POINT_LABELS = {
 
 const STATUS_STYLE = {
   compliant:        { bg: '#AC00EF18', border: '#AC00EF40', text: '#FFFFFF',  label: 'Compliant' },
-  needs_conversion: { bg: '#F04FDB18', border: '#F04FDB40', text: '#F04FDB',  label: 'Needs Conversion' },
-  needs_enrichment: { bg: '#FF1F5A18', border: '#FF1F5A40', text: '#FF1F5A',  label: 'Needs Enrichment' },
-  partial:          { bg: '#F04FDB10', border: '#F04FDB30', text: '#F04FDB',  label: 'Partial' },
+  needs_conversion: { bg: '#AC00EF10', border: '#AC00EF30', text: '#AC00EF',  label: 'Needs Conversion' },
+  needs_enrichment: { bg: '#FF444418', border: '#FF444440', text: '#FF4444',  label: 'Needs Enrichment' },
+  partial:          { bg: '#AC00EF0A', border: '#AC00EF25', text: '#AC00EF',  label: 'Partial' },
   not_applicable:   { bg: '#2E2E2E18', border: '#44444440', text: '#787878',  label: 'N/A' }
 };
 
@@ -126,9 +126,9 @@ export default function Screen3Map({ companyId, companyOverride, screen1Result, 
 
   const complianceDonut = total > 0 ? [
     { name: 'Compliant',         value: data.mappings.filter(m => m.status === 'compliant').length,        color: '#AC00EF' },
-    { name: 'Partial',           value: data.mappings.filter(m => m.status === 'partial').length,          color: '#F04FDB' },
-    { name: 'Needs Conversion',  value: data.mappings.filter(m => m.status === 'needs_conversion').length, color: '#FF8C00' },
-    { name: 'Needs Enrichment',  value: data.mappings.filter(m => m.status === 'needs_enrichment').length, color: '#FF1F5A' },
+    { name: 'Partial',           value: data.mappings.filter(m => m.status === 'partial').length,          color: '#7B00AC' },
+    { name: 'Needs Conversion',  value: data.mappings.filter(m => m.status === 'needs_conversion').length, color: '#888888' },
+    { name: 'Needs Enrichment',  value: data.mappings.filter(m => m.status === 'needs_enrichment').length, color: '#FF4444' },
     { name: 'N/A',               value: data.mappings.filter(m => m.status === 'not_applicable').length,   color: '#2E2E2E' },
   ].filter(d => d.value > 0) : [];
 
@@ -163,7 +163,7 @@ export default function Screen3Map({ companyId, companyOverride, screen1Result, 
 
       {meta && agentStatus === 'complete' && (
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.625rem', color: '#333', marginBottom: '1rem' }}>
-          <span style={{ width: 5, height: 5, borderRadius: '50%', background: meta.cached ? '#F0A500' : '#00C896', flexShrink: 0 }} />
+          <span style={{ width: 5, height: 5, borderRadius: '50%', background: meta.cached ? '#888888' : '#00C896', flexShrink: 0 }} />
           {meta.cached ? 'Cached result' : 'Live result'} · Generated {new Date(meta.generatedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
           {meta.cached && (
             <button onClick={run} style={{ background: 'none', border: 'none', color: '#555', fontSize: '0.625rem', cursor: 'pointer', textDecoration: 'underline', padding: 0, marginLeft: '0.25rem' }}>
@@ -181,7 +181,7 @@ export default function Screen3Map({ companyId, companyOverride, screen1Result, 
       )}
 
       {error && (
-        <div style={{ background: '#FF1F5A10', border: '1px solid #FF1F5A40', borderRadius: '0.25rem', padding: '1rem', color: '#FF1F5A', fontSize: '0.875rem', marginBottom: '1.5rem' }}>
+        <div style={{ background: '#FF444410', border: '1px solid #FF444440', borderRadius: '0.25rem', padding: '1rem', color: '#FF4444', fontSize: '0.875rem', marginBottom: '1.5rem' }}>
           {error}
         </div>
       )}
@@ -190,17 +190,17 @@ export default function Screen3Map({ companyId, companyOverride, screen1Result, 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
 
           {/* Value proposition callout */}
-          <div className="fade-up fade-up-1" style={{ background: '#0d0010', border: '1px solid #AC00EF33', borderRadius: '0.25rem', padding: '1.5rem', display: 'flex', alignItems: 'center', gap: '2rem' }}>
+          <div className="fade-up fade-up-1" style={{ background: '#0A0A0A', border: '1px solid #AC00EF33', borderRadius: '0.25rem', padding: '1.5rem', display: 'flex', alignItems: 'center', gap: '2rem' }}>
 
             {/* 1 input → N frameworks visual */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', flexShrink: 0 }}>
               <div style={{ textAlign: 'center' }}>
-                <div className="num-in stat-hero" style={{ fontSize: '4rem', color: '#F04FDB' }}>1</div>
+                <div className="num-in stat-hero" style={{ fontSize: '4rem', color: '#AC00EF' }}>1</div>
                 <div style={{ fontSize: '0.5625rem', fontWeight: 700, color: '#AC00EF', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: '0.25rem' }}>data input</div>
               </div>
               <div style={{ width: '1.5rem', height: '1px', background: '#AC00EF44', flexShrink: 0 }} />
               <div style={{ textAlign: 'center' }}>
-                <div className="num-in stat-hero" style={{ fontSize: '4rem', color: '#F04FDB', animationDelay: '100ms' }}>{total}</div>
+                <div className="num-in stat-hero" style={{ fontSize: '4rem', color: '#AC00EF', animationDelay: '100ms' }}>{total}</div>
                 <div style={{ fontSize: '0.5625rem', fontWeight: 700, color: '#AC00EF', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: '0.25rem' }}>frameworks</div>
               </div>
             </div>
@@ -212,8 +212,8 @@ export default function Screen3Map({ companyId, companyOverride, screen1Result, 
             <div style={{ display: 'flex', gap: '2.5rem' }}>
               {[
                 { val: compliant,   label: 'immediately compliant', color: '#FFFFFF' },
-                { val: automatable, label: 'AI-automatable',        color: '#F04FDB' },
-                { val: total - compliant, label: 'need action',     color: '#F04FDB' }
+                { val: automatable, label: 'AI-automatable',        color: '#AC00EF' },
+                { val: total - compliant, label: 'need action',     color: '#AC00EF' }
               ].map(({ val, label, color }) => (
                 <div key={label} style={{ textAlign: 'center' }}>
                   <div className="num-in stat-hero" style={{ fontSize: '2.5rem', color }}>{val}</div>
@@ -263,18 +263,18 @@ export default function Screen3Map({ companyId, companyOverride, screen1Result, 
           {/* Regulatory Obligations Split — Mandatory vs De Facto */}
           {(() => {
             const scoping = getRegScoping(company);
-            const urgencyColor = { critical: '#FF1F5A', high: '#FF8C00', medium: '#F0A500' };
+            const urgencyColor = { critical: '#FF4444', high: '#FF4444', medium: '#888888' };
             return (
               <div className="fade-up fade-up-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
-                <div style={{ background: '#0D0005', border: '1px solid #FF1F5A25', borderRadius: '0.25rem', padding: '0.875rem' }}>
-                  <div style={{ fontSize: '0.5625rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#FF1F5A', marginBottom: '0.5rem' }}>
+                <div style={{ background: '#0A0A0A', border: '1px solid #FF444425', borderRadius: '0.25rem', padding: '0.875rem' }}>
+                  <div style={{ fontSize: '0.5625rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#FF4444', marginBottom: '0.5rem' }}>
                     Legally Mandatory
                   </div>
                   {scoping.mandatory.length === 0 ? (
                     <div style={{ fontSize: '0.6875rem', color: '#444', fontStyle: 'italic' }}>No mandatory obligations at current company size (post-Omnibus I)</div>
                   ) : scoping.mandatory.map((item, i) => (
                     <div key={i} style={{ display: 'flex', gap: '0.5rem', alignItems: 'flex-start', padding: '0.375rem 0', borderTop: i > 0 ? '1px solid #1A1A1A' : 'none' }}>
-                      <span style={{ fontSize: '0.5rem', fontWeight: 700, color: urgencyColor[item.urgency] ?? '#F0A500', background: `${urgencyColor[item.urgency] ?? '#F0A500'}20`, border: `1px solid ${urgencyColor[item.urgency] ?? '#F0A500'}40`, borderRadius: '2px', padding: '0.1rem 0.3rem', textTransform: 'uppercase', letterSpacing: '0.06em', flexShrink: 0, marginTop: '0.15rem' }}>{item.urgency}</span>
+                      <span style={{ fontSize: '0.5rem', fontWeight: 700, color: urgencyColor[item.urgency] ?? '#888888', background: `${urgencyColor[item.urgency] ?? '#888888'}20`, border: `1px solid ${urgencyColor[item.urgency] ?? '#888888'}40`, borderRadius: '2px', padding: '0.1rem 0.3rem', textTransform: 'uppercase', letterSpacing: '0.06em', flexShrink: 0, marginTop: '0.15rem' }}>{item.urgency}</span>
                       <div>
                         <div style={{ fontSize: '0.6875rem', fontWeight: 600, color: '#fff', marginBottom: '0.15rem' }}>{item.label}</div>
                         <div style={{ fontSize: '0.5625rem', color: '#555', lineHeight: 1.5 }}>{item.detail}</div>
@@ -282,8 +282,8 @@ export default function Screen3Map({ companyId, companyOverride, screen1Result, 
                     </div>
                   ))}
                 </div>
-                <div style={{ background: '#040D14', border: '1px solid #3B82F625', borderRadius: '0.25rem', padding: '0.875rem' }}>
-                  <div style={{ fontSize: '0.5625rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#3B82F6', marginBottom: '0.5rem' }}>
+                <div style={{ background: '#0A0A0A', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '0.25rem', padding: '0.875rem' }}>
+                  <div style={{ fontSize: '0.5625rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#CCCCCC', marginBottom: '0.5rem' }}>
                     De Facto (LP Pressure + SFDR 2.0)
                   </div>
                   {scoping.deFacto.map((item, i) => (
@@ -295,7 +295,7 @@ export default function Screen3Map({ companyId, companyOverride, screen1Result, 
                       </div>
                     </div>
                   ))}
-                  <div style={{ marginTop: '0.5rem', paddingTop: '0.5rem', borderTop: '1px solid #1A1A1A', fontSize: '0.5rem', color: '#2E3E50', fontStyle: 'italic' }}>
+                  <div style={{ marginTop: '0.5rem', paddingTop: '0.5rem', borderTop: '1px solid #1A1A1A', fontSize: '0.5rem', color: '#444444', fontStyle: 'italic' }}>
                     De facto obligations persist even when no mandatory reporting threshold is met — LP mandates and SFDR 2.0 do not have employee/revenue exemptions.
                   </div>
                 </div>
@@ -415,7 +415,7 @@ export default function Screen3Map({ companyId, companyOverride, screen1Result, 
                 <div style={{ flex: 1, height: '3px', background: '#1E1E1E', borderRadius: '2px' }}>
                   <div className="bar-fill" style={{ height: '100%', width: `${total > 0 ? (automatable / total) * 100 : 0}%`, background: 'linear-gradient(to right, #7B00AC, #AC00EF)', borderRadius: '2px' }} />
                 </div>
-                <span className="data-mono" style={{ fontSize: '0.875rem', fontWeight: 600, color: '#F04FDB' }}>
+                <span className="data-mono" style={{ fontSize: '0.875rem', fontWeight: 600, color: '#AC00EF' }}>
                   {total > 0 ? Math.round((automatable / total) * 100) : 0}%
                 </span>
               </div>
@@ -429,8 +429,8 @@ export default function Screen3Map({ companyId, companyOverride, screen1Result, 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                 {data.missingToComplete?.length > 0
                   ? data.missingToComplete.map((item, i) => (
-                      <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', padding: '0.5rem 0.75rem', background: '#0D0D0D', borderLeft: '2px solid #F04FDB44', borderRadius: '0 2px 2px 0' }}>
-                        <span style={{ fontSize: '0.5625rem', fontWeight: 700, color: '#F04FDB', textTransform: 'uppercase', letterSpacing: '0.08em', marginTop: '0.15rem', flexShrink: 0 }}>Gap</span>
+                      <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', padding: '0.5rem 0.75rem', background: '#0D0D0D', borderLeft: '2px solid #AC00EF44', borderRadius: '0 2px 2px 0' }}>
+                        <span style={{ fontSize: '0.5625rem', fontWeight: 700, color: '#AC00EF', textTransform: 'uppercase', letterSpacing: '0.08em', marginTop: '0.15rem', flexShrink: 0 }}>Gap</span>
                         <span style={{ fontSize: '0.75rem', color: '#787878', lineHeight: 1.55, ...clamp(2, expanded) }}>{item}</span>
                       </div>
                     ))

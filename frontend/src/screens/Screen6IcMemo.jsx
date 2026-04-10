@@ -22,8 +22,8 @@ function x(n)   { return n != null ? `${Number(n).toFixed(2)}x` : '—'; }
 
 function scoreColor(s) {
   if (s >= 75) return '#AC00EF';
-  if (s >= 50) return '#F04FDB';
-  return '#FF1F5A';
+  if (s >= 50) return '#AC00EF';
+  return '#FF4444';
 }
 
 function Divider() {
@@ -79,7 +79,7 @@ export default function Screen6IcMemo({ companyId, companyOverride, analyzeResul
 
   if (!hasAny) return (
     <div>
-      <div style={{ position: 'relative', borderRadius: '0.25rem', overflow: 'hidden', marginBottom: '1.5rem', background: '#0D0018', border: '1px solid #AC00EF22', padding: '1.5rem' }}>
+      <div style={{ position: 'relative', borderRadius: '0.25rem', overflow: 'hidden', marginBottom: '1.5rem', background: '#0A0A0A', border: '1px solid #AC00EF22', padding: '1.5rem' }}>
         <h1 style={{ fontFamily: 'GT Sectra Fine, Palatino, serif', fontWeight: 300, fontSize: '1.75rem', color: '#fff', marginBottom: '0.25rem' }}>
           IC Memorandum
         </h1>
@@ -97,9 +97,9 @@ export default function Screen6IcMemo({ companyId, companyOverride, analyzeResul
 
   const confPct = a.dataConfidenceScore != null ? Math.round(a.dataConfidenceScore * 100) : null;
   const verdict = a.overallScore >= 65 ? 'PROCEED' : a.overallScore >= 45 ? 'MONITOR' : 'CAUTION';
-  const vColor  = verdict === 'PROCEED' ? '#00C896' : verdict === 'MONITOR' ? '#F0A500' : '#FF1F5A';
-  const artCfg  = { 'Article 9': '#00C896', 'Article 8': '#F0A500', 'Article 6': '#FF1F5A' };
-  const artColor = artCfg[s.recommendedArticle] ?? '#F0A500';
+  const vColor  = verdict === 'PROCEED' ? '#00C896' : verdict === 'MONITOR' ? '#888888' : '#FF4444';
+  const artCfg  = { 'Article 9': '#00C896', 'Article 8': '#AC00EF', 'Article 6': '#FF4444' };
+  const artColor = artCfg[s.recommendedArticle] ?? '#888888';
 
   const irrBase = Number(p.baseCase?.projectedIrr ?? 0);
   const irrEsg  = Number(p.baseCase?.projectedIrr ?? 0) + Number(p.withEsgInterventions?.irrUplift ?? 0);
@@ -108,7 +108,7 @@ export default function Screen6IcMemo({ companyId, companyOverride, analyzeResul
   return (
     <div>
       {/* Header banner */}
-      <div style={{ position: 'relative', borderRadius: '0.25rem', overflow: 'hidden', marginBottom: '1.5rem', background: '#0D0018', border: '1px solid #AC00EF22' }}>
+      <div style={{ position: 'relative', borderRadius: '0.25rem', overflow: 'hidden', marginBottom: '1.5rem', background: '#0A0A0A', border: '1px solid #AC00EF22' }}>
         <div style={{ padding: '1.5rem', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1.5rem' }}>
           <div>
             <div style={{ fontSize: '0.5625rem', fontWeight: 700, color: '#AC00EF', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '0.5rem' }}>
@@ -123,8 +123,8 @@ export default function Screen6IcMemo({ companyId, companyOverride, analyzeResul
           </div>
           <div style={{ display: 'flex', gap: '0.75rem', flexShrink: 0 }}>
             {!hasAll && (
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.375rem', background: '#F0A50015', border: '1px solid #F0A50040', borderRadius: '999px', padding: '0.2rem 0.625rem', fontSize: '0.6875rem', color: '#F0A500', fontWeight: 500 }}>
-                <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#F0A500', flexShrink: 0 }} />
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.375rem', background: '#88888815', border: '1px solid #88888840', borderRadius: '999px', padding: '0.2rem 0.625rem', fontSize: '0.6875rem', color: '#888888', fontWeight: 500 }}>
+                <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#888888', flexShrink: 0 }} />
                 Partial — {agentStatus.filter(a => a.done).length}/3 agents run
               </div>
             )}
@@ -168,7 +168,7 @@ export default function Screen6IcMemo({ companyId, companyOverride, analyzeResul
                 { label: 'Hold Period',  val: `${company.peInvestmentContext?.holdingPeriod ?? '—'} years`, color: '#fff' },
                 { label: 'ESG Score',    val: a.overallScore != null ? `${a.overallScore}/100` : '—',  color: scoreColor(a.overallScore ?? 0) },
                 { label: 'SFDR',         val: s.recommendedArticle ?? '—',                              color: artColor },
-                { label: 'IRR Uplift',   val: p.withEsgInterventions ? `+${pct(p.withEsgInterventions.irrUplift)}` : '—', color: '#F04FDB' },
+                { label: 'IRR Uplift',   val: p.withEsgInterventions ? `+${pct(p.withEsgInterventions.irrUplift)}` : '—', color: '#AC00EF' },
                 { label: 'Value Added',  val: addVal ? fmt(addVal) : '—',                               color: '#fff' },
               ].map(({ label, val, color }) => (
                 <div key={label} style={{ padding: '0.625rem 0.75rem', background: '#111', border: '1px solid #1E1E1E', borderRadius: '0.2rem' }}>
@@ -239,7 +239,7 @@ export default function Screen6IcMemo({ companyId, companyOverride, analyzeResul
                 ) : null)}
                 <div style={{ marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: '1px solid #1E1E1E' }}>
                   <div style={{ fontSize: '0.5rem', fontWeight: 700, color: '#333', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.3rem' }}>SASB Classification</div>
-                  <div style={{ fontSize: '0.6875rem', color: '#F04FDB' }}>{a.sasbClassification ?? '—'}</div>
+                  <div style={{ fontSize: '0.6875rem', color: '#AC00EF' }}>{a.sasbClassification ?? '—'}</div>
                 </div>
               </div>
 
@@ -249,7 +249,7 @@ export default function Screen6IcMemo({ companyId, companyOverride, analyzeResul
                   <div style={{ fontSize: '0.5rem', fontWeight: 700, color: '#333', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.5rem' }}>Key Risk Flags</div>
                   {(a.riskFlags ?? []).slice(0, 4).map((r, i) => (
                     <div key={i} style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.3rem', alignItems: 'flex-start' }}>
-                      <span style={{ fontSize: '0.45rem', fontWeight: 700, color: r.severity === 'high' ? '#FF1F5A' : r.severity === 'medium' ? '#F04FDB' : '#AC00EF', textTransform: 'uppercase', flexShrink: 0, marginTop: '0.1rem', width: '2.5rem' }}>{r.severity}</span>
+                      <span style={{ fontSize: '0.45rem', fontWeight: 700, color: r.severity === 'high' ? '#FF4444' : r.severity === 'medium' ? '#AC00EF' : '#AC00EF', textTransform: 'uppercase', flexShrink: 0, marginTop: '0.1rem', width: '2.5rem' }}>{r.severity}</span>
                       <span style={{ fontSize: '0.625rem', color: '#787878', lineHeight: 1.4 }}>{r.area}</span>
                     </div>
                   ))}
@@ -294,10 +294,10 @@ export default function Screen6IcMemo({ companyId, companyOverride, analyzeResul
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem', marginBottom: '1.25rem' }}>
               {[
                 { label: 'Base Case IRR',        val: pct(p.baseCase?.projectedIrr),                   sub: 'compliance-only ESG',               color: '#787878' },
-                { label: 'ESG-Enhanced IRR',      val: pct(irrEsg),                                     sub: 'with ESG interventions',             color: '#F04FDB' },
+                { label: 'ESG-Enhanced IRR',      val: pct(irrEsg),                                     sub: 'with ESG interventions',             color: '#AC00EF' },
                 { label: 'IRR Uplift',            val: `+${pct(p.withEsgInterventions?.irrUplift)}`,    sub: 'ESG alpha vs base case',             color: '#AC00EF' },
                 { label: 'Base Exit Multiple',    val: x(p.baseCase?.exitMultiple),                     sub: 'compliance-only scenario',           color: '#787878' },
-                { label: 'ESG Exit Multiple',     val: x(p.withEsgInterventions?.exitMultiple),         sub: 'with interventions',                 color: '#F04FDB' },
+                { label: 'ESG Exit Multiple',     val: x(p.withEsgInterventions?.exitMultiple),         sub: 'with interventions',                 color: '#AC00EF' },
                 { label: 'Additional Value',      val: fmt(addVal),                                      sub: 'vs base case at exit',              color: '#00C896' },
               ].map(({ label, val, sub, color }) => (
                 <div key={label} style={{ padding: '0.875rem', background: '#111', border: '1px solid #1E1E1E', borderRadius: '0.2rem' }}>
@@ -318,7 +318,7 @@ export default function Screen6IcMemo({ companyId, companyOverride, analyzeResul
                       <span style={{ color: '#AC00EF', fontWeight: 700, flexShrink: 0 }}>{i + 1}.</span>
                       <span style={{ flex: 1 }}>{init.initiative ?? init.description ?? String(init)}</span>
                       {init.irrContribution != null && (
-                        <span style={{ color: '#F04FDB', fontWeight: 600, flexShrink: 0 }}>+{pct(init.irrContribution)}</span>
+                        <span style={{ color: '#AC00EF', fontWeight: 600, flexShrink: 0 }}>+{pct(init.irrContribution)}</span>
                       )}
                     </div>
                   ))}
@@ -346,7 +346,7 @@ export default function Screen6IcMemo({ companyId, companyOverride, analyzeResul
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
                 {(s.qualifyingFactors ?? []).slice(0, 5).map((f, i) => {
-                  const fc = f.status === 'met' ? '#00C896' : f.status === 'partial' ? '#F0A500' : '#FF1F5A';
+                  const fc = f.status === 'met' ? '#00C896' : f.status === 'partial' ? '#888888' : '#FF4444';
                   const sym = f.status === 'met' ? '✓' : f.status === 'partial' ? '◐' : '✗';
                   return (
                     <div key={i} style={{ display: 'flex', gap: '0.625rem', alignItems: 'flex-start', padding: '0.375rem 0', borderBottom: '1px solid #111' }}>
@@ -367,8 +367,8 @@ export default function Screen6IcMemo({ companyId, companyOverride, analyzeResul
               </div>
             </div>
             {s.regulatoryRisk && (
-              <div style={{ padding: '0.625rem 1rem', background: '#FF1F5A08', border: '1px solid #FF1F5A33', borderRadius: '0.2rem', marginBottom: '1.25rem', fontSize: '0.6875rem', color: '#787878', lineHeight: 1.5 }}>
-                <span style={{ color: '#FF1F5A', fontWeight: 700 }}>Regulatory risk: </span>{s.regulatoryRisk}
+              <div style={{ padding: '0.625rem 1rem', background: '#FF444408', border: '1px solid #FF444433', borderRadius: '0.2rem', marginBottom: '1.25rem', fontSize: '0.6875rem', color: '#787878', lineHeight: 1.5 }}>
+                <span style={{ color: '#FF4444', fontWeight: 700 }}>Regulatory risk: </span>{s.regulatoryRisk}
               </div>
             )}
             <Divider />
@@ -398,10 +398,10 @@ export default function Screen6IcMemo({ companyId, companyOverride, analyzeResul
         )}
 
         {/* Analyst certification */}
-        <div style={{ padding: '1rem 1.25rem', background: '#FF1F5A08', border: '1px solid #FF1F5A33', borderRadius: '0.25rem', display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
-          <div style={{ fontSize: '1.125rem', color: '#FF1F5A', flexShrink: 0, lineHeight: 1, marginTop: '0.1rem' }}>⚠</div>
+        <div style={{ padding: '1rem 1.25rem', background: '#FF444408', border: '1px solid #FF444433', borderRadius: '0.25rem', display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
+          <div style={{ fontSize: '1.125rem', color: '#FF4444', flexShrink: 0, lineHeight: 1, marginTop: '0.1rem' }}>⚠</div>
           <div>
-            <div style={{ fontSize: '0.5625rem', fontWeight: 700, color: '#FF1F5A', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.375rem' }}>
+            <div style={{ fontSize: '0.5625rem', fontWeight: 700, color: '#FF4444', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.375rem' }}>
               Analyst Certification Required — Accenture Responsible AI
             </div>
             <div style={{ fontSize: '0.6875rem', color: '#787878', lineHeight: 1.5 }}>

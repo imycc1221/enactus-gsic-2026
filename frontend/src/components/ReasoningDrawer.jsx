@@ -112,9 +112,9 @@ export default function ReasoningDrawer({ meta }) {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.375rem' }}>
                 {[
                   { label: 'Schema enforcement', val: 'tool_choice: forced — zero free-form output', color: '#00C896' },
-                  { label: 'Financial figures',   val: 'Model estimates — require CFO sign-off before LP use', color: '#F0A500' },
-                  { label: 'Regulatory refs',     val: 'Based on training data — verify against live regulation text', color: '#F0A500' },
-                  { label: 'Analyst review',      val: 'Required before any investor-facing output', color: '#FF1F5A' },
+                  { label: 'Financial figures',   val: 'Model estimates — require CFO sign-off before LP use', color: '#888888' },
+                  { label: 'Regulatory refs',     val: 'Based on training data — verify against live regulation text', color: '#888888' },
+                  { label: 'Analyst review',      val: 'Required before any investor-facing output', color: '#FF4444' },
                 ].map(({ label, val, color }) => (
                   <div key={label} style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start', padding: '0.4rem 0.625rem', background: `${color}08`, borderLeft: `2px solid ${color}40`, borderRadius: '0 2px 2px 0' }}>
                     <span style={{ fontSize: '0.5625rem', fontWeight: 700, color, textTransform: 'uppercase', letterSpacing: '0.06em', flexShrink: 0, width: '7rem', marginTop: '0.1rem' }}>{label}</span>

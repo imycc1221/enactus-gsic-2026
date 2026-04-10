@@ -17,18 +17,18 @@ const STEPS = [
 ];
 
 const SEVERITY = {
-  high:   { border: '#FF1F5A44', bg: '#FF1F5A0A', accent: '#FF1F5A' },
-  medium: { border: '#F04FDB44', bg: '#F04FDB0A', accent: '#F04FDB' },
-  low:    { border: '#AC00EF44', bg: '#AC00EF0A', accent: '#AC00EF' }
+  high:   { border: '#FF444444', bg: '#FF44440A', accent: '#FF4444' },
+  medium: { border: '#AC00EF44', bg: '#AC00EF0A', accent: '#AC00EF' },
+  low:    { border: '#AC00EF22', bg: '#AC00EF05', accent: '#888888' }
 };
 
 const DATA_STATUS = {
-  available: { bg: '#AC00EF12', text: '#FFFFFF', border: '#AC00EF40' },
-  partial:   { bg: '#F04FDB12', text: '#F04FDB', border: '#F04FDB40' },
-  missing:   { bg: '#FF1F5A12', text: '#FF1F5A', border: '#FF1F5A40' }
+  available: { bg: '#AC00EF12', text: '#FFFFFF',  border: '#AC00EF40' },
+  partial:   { bg: '#AC00EF0A', text: '#AC00EF',  border: '#AC00EF30' },
+  missing:   { bg: '#FF444412', text: '#FF4444',  border: '#FF444440' }
 };
 
-const FRAMEWORK_COLOR = { csrd: '#AC00EF', sfdr: '#F04FDB', tcfd: '#FFFFFF', edci: '#7B00AC', sasb: '#AC00EF' };
+const FRAMEWORK_COLOR = { csrd: '#AC00EF', sfdr: '#AC00EF', tcfd: '#FFFFFF', edci: '#AC00EF', sasb: '#AC00EF' };
 
 function fmt(n) {
   if (n >= 1_000_000) return `$${(n / 1_000_000).toFixed(0)}M`;
@@ -38,8 +38,8 @@ function fmt(n) {
 
 function scoreColor(s) {
   if (s >= 75) return '#AC00EF';
-  if (s >= 50) return '#F04FDB';
-  return '#FF1F5A';
+  if (s >= 50) return '#AC00EF';
+  return '#FF4444';
 }
 
 
@@ -175,7 +175,7 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
     <div>
       {/* Company banner */}
       <div className="glass-card" style={{ position: 'relative', overflow: 'hidden', marginBottom: '2rem', backgroundImage: `url(/images/${companyId}-banner.jpg)`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(120deg, rgba(5,5,15,0.97) 45%, rgba(5,5,15,0.7))' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(120deg, rgba(0,0,0,0.97) 45%, rgba(0,0,0,0.7))' }} />
         <div style={{ position: 'relative', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1.5rem', padding: '2rem' }}>
           <div>
             <h1 style={{ fontFamily: 'GT Sectra Fine, Palatino, serif', fontWeight: 300, fontSize: '2rem', color: '#fff', marginBottom: '0.5rem', letterSpacing: '-0.02em' }}>
@@ -209,7 +209,7 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
 
       {meta && agentStatus === 'complete' && (
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.625rem', color: '#333', marginBottom: '1rem' }}>
-          <span style={{ width: 5, height: 5, borderRadius: '50%', background: meta.cached ? '#F0A500' : '#00C896', flexShrink: 0 }} />
+          <span style={{ width: 5, height: 5, borderRadius: '50%', background: meta.cached ? '#888888' : '#00C896', flexShrink: 0 }} />
           {meta.cached ? 'Cached result' : 'Live result'} · Generated {new Date(meta.generatedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
           {meta.cached && (
             <button onClick={run} style={{ background: 'none', border: 'none', color: '#555', fontSize: '0.625rem', cursor: 'pointer', textDecoration: 'underline', padding: 0, marginLeft: '0.25rem' }}>
@@ -244,7 +244,7 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
       )}
 
       {error && (
-        <div style={{ background: '#ff575710', border: '1px solid #ff575740', borderRadius: '0.25rem', padding: '1rem', color: '#ff5757', fontSize: '0.875rem', marginBottom: '1.5rem' }}>
+        <div style={{ background: '#FF444410', border: '1px solid #FF444440', borderRadius: '0.25rem', padding: '1rem', color: '#FF4444', fontSize: '0.875rem', marginBottom: '1.5rem' }}>
           {error}
         </div>
       )}
@@ -279,7 +279,7 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
                   }}>
                     <span style={{
                       width: 6, height: 6, borderRadius: '50%', flexShrink: 0,
-                      background: confidencePct > 70 ? '#00C896' : confidencePct > 50 ? '#F0A500' : '#FF1F5A'
+                      background: confidencePct > 70 ? '#00C896' : confidencePct > 50 ? '#888888' : '#FF4444'
                     }} />
                     Data confidence: {confidencePct}% · Requires analyst review
                   </div>
@@ -313,7 +313,7 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
               <Card style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                 <div>
                   <SectionLabel>SASB Classification</SectionLabel>
-                  <div style={{ fontSize: '0.8125rem', fontWeight: 500, color: '#F04FDB' }}>
+                  <div style={{ fontSize: '0.8125rem', fontWeight: 500, color: '#AC00EF' }}>
                     {data.sasbClassification}
                   </div>
                 </div>
@@ -323,7 +323,7 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
                     <div style={{ flex: 1, height: '2px', background: '#1E1E1E', borderRadius: '1px' }}>
                       <div style={{ height: '100%', width: `${confidencePct ?? 0}%`, background: '#AC00EF', borderRadius: '1px', transition: 'width 900ms cubic-bezier(0.25,1,0.5,1)' }} />
                     </div>
-                    <span style={{ fontSize: '0.9375rem', fontWeight: 600, color: '#F04FDB', minWidth: '2.5rem', textAlign: 'right' }}>
+                    <span style={{ fontSize: '0.9375rem', fontWeight: 600, color: '#AC00EF', minWidth: '2.5rem', textAlign: 'right' }}>
                       {confidencePct != null ? `${confidencePct}%` : '—'}
                     </span>
                   </div>
@@ -349,21 +349,21 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
             <div className="fade-up fade-up-1" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
               <div style={{ background: '#111111', border: '1px solid #2E2E2E', borderRadius: '0.25rem', padding: '1.25rem' }}>
                 <div style={{ fontSize: '0.6875rem', color: '#555', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.08em', marginBottom: '0.5rem' }}>ESG Verdict</div>
-                <div style={{ fontSize: '1.375rem', fontWeight: 700, color: data.overallScore >= 65 ? '#00C896' : data.overallScore >= 45 ? '#F0A500' : '#FF1F5A' }}>
+                <div style={{ fontSize: '1.375rem', fontWeight: 700, color: data.overallScore >= 65 ? '#00C896' : data.overallScore >= 45 ? '#888888' : '#FF4444' }}>
                   {data.overallScore >= 65 ? 'PROCEED' : data.overallScore >= 45 ? 'MONITOR' : 'CAUTION'}
                 </div>
                 <div style={{ fontSize: '0.6875rem', color: '#444', marginTop: '0.25rem' }}>based on SASB materiality score</div>
               </div>
               <div style={{ background: '#111111', border: '1px solid #2E2E2E', borderRadius: '0.25rem', padding: '1.25rem' }}>
                 <div style={{ fontSize: '0.6875rem', color: '#555', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.08em', marginBottom: '0.5rem' }}>AI Confidence</div>
-                <div className="num-in" style={{ fontSize: '1.375rem', fontWeight: 700, color: confidencePct != null && confidencePct > 70 ? '#00C896' : confidencePct != null && confidencePct > 50 ? '#F0A500' : '#FF1F5A' }}>
+                <div className="num-in" style={{ fontSize: '1.375rem', fontWeight: 700, color: confidencePct != null && confidencePct > 70 ? '#00C896' : confidencePct != null && confidencePct > 50 ? '#888888' : '#FF4444' }}>
                   {confidencePct != null ? `${confidencePct}%` : '—'}
                 </div>
                 <div style={{ fontSize: '0.6875rem', color: '#444', marginTop: '0.25rem' }}>analyst review required below 70%</div>
               </div>
               <div style={{ background: '#111111', border: '1px solid #2E2E2E', borderRadius: '0.25rem', padding: '1.25rem' }}>
                 <div style={{ fontSize: '0.6875rem', color: '#555', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.08em', marginBottom: '0.5rem' }}>Priority Risk</div>
-                <div style={{ fontSize: '0.9375rem', fontWeight: 600, color: '#FF1F5A', lineHeight: 1.3, marginTop: '0.125rem' }}>
+                <div style={{ fontSize: '0.9375rem', fontWeight: 600, color: '#FF4444', lineHeight: 1.3, marginTop: '0.125rem' }}>
                   {data.riskFlags?.find(r => r.severity === 'high')?.area ?? data.riskFlags?.[0]?.area ?? '—'}
                 </div>
                 <div style={{ fontSize: '0.6875rem', color: '#444', marginTop: '0.25rem' }}>
@@ -393,7 +393,7 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
                       { label: 'This Company',   val: data.overallScore,   color: scoreColor(data.overallScore), sub: 'SASB-weighted score' },
                       { label: 'Sector Median',  val: bm.median,           color: '#444',                        sub: `${bm.peers.toLocaleString()} companies` },
                       { label: 'Sector P75',     val: bm.p75,              color: '#333',                        sub: 'top-quartile threshold' },
-                      { label: 'Percentile Rank',val: `${pct}th`,          color: pct >= 75 ? '#00C896' : pct >= 50 ? '#F0A500' : '#FF1F5A', sub: beatMedian ? 'above sector median' : 'below sector median' },
+                      { label: 'Percentile Rank',val: `${pct}th`,          color: pct >= 75 ? '#00C896' : pct >= 50 ? '#888888' : '#FF4444', sub: beatMedian ? 'above sector median' : 'below sector median' },
                     ].map(({ label, val, color, sub }) => (
                       <div key={label}>
                         <div style={{ fontSize: '0.45rem', fontWeight: 700, color: '#333', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.25rem' }}>{label}</div>
@@ -436,7 +436,7 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
                 { stat: '50×',       label: 'cheaper than manual due diligence', sub: 'at $15K–25K/yr SaaS vs consultant model' },
                 { stat: '< 90 sec',  label: 'full ESG screen end-to-end', sub: 'vs 6–8 weeks manual analyst workflow' },
               ].map(({ stat, label, sub }, i) => (
-                <div key={i} style={{ padding: '0.875rem 1.125rem', borderRight: i < 3 ? '1px solid #AC00EF22' : 'none', background: '#0D0018' }}>
+                <div key={i} style={{ padding: '0.875rem 1.125rem', borderRight: i < 3 ? '1px solid #AC00EF22' : 'none', background: '#0A0A0A' }}>
                   <div className="data-mono" style={{ fontSize: '1.375rem', fontWeight: 700, color: '#AC00EF', lineHeight: 1, marginBottom: '0.3rem' }}>{stat}</div>
                   <div style={{ fontSize: '0.6875rem', fontWeight: 600, color: '#fff', marginBottom: '0.2rem', lineHeight: 1.3 }}>{label}</div>
                   <div style={{ fontSize: '0.5625rem', color: '#444', lineHeight: 1.4 }}>{sub}</div>
@@ -462,7 +462,7 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                       <SectionLabel style={{ marginBottom: 0 }}>Material KPIs — SASB Filtered</SectionLabel>
                       <div style={{ display: 'flex', gap: '0.5rem' }}>
-                        {[['available','#FFFFFF'],['partial','#F04FDB'],['missing','#FF1F5A']].map(([k,c]) => counts[k] > 0 && (
+                        {[['available','#FFFFFF'],['partial','#AC00EF'],['missing','#FF4444']].map(([k,c]) => counts[k] > 0 && (
                           <span key={k} style={{ fontSize: '0.625rem', fontWeight: 700, color: c, background: `${c}15`, border: `1px solid ${c}30`, borderRadius: '2px', padding: '0.15rem 0.4rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{counts[k]} {k}</span>
                         ))}
                       </div>
@@ -535,7 +535,7 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                       <SectionLabel style={{ marginBottom: 0 }}>Risk Flags</SectionLabel>
                       <div style={{ display: 'flex', gap: '0.5rem' }}>
-                        {[['high','#FF1F5A'],['medium','#F04FDB'],['low','#AC00EF']].map(([k,c]) => counts[k] > 0 && (
+                        {[['high','#FF4444'],['medium','#AC00EF'],['low','#888888']].map(([k,c]) => counts[k] > 0 && (
                           <span key={k} style={{ fontSize: '0.625rem', fontWeight: 700, color: c, background: `${c}15`, border: `1px solid ${c}30`, borderRadius: '2px', padding: '0.15rem 0.4rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{counts[k]} {k}</span>
                         ))}
                       </div>
@@ -545,7 +545,7 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
                         const tot = flags.length;
                         const hDeg = (counts.high   / tot) * 360;
                         const mDeg = (counts.medium / tot) * 360;
-                        const grad = `conic-gradient(#FF1F5A 0deg ${hDeg}deg, #F04FDB ${hDeg}deg ${hDeg + mDeg}deg, #AC00EF ${hDeg + mDeg}deg 360deg)`;
+                        const grad = `conic-gradient(#FF4444 0deg ${hDeg}deg, #AC00EF ${hDeg}deg ${hDeg + mDeg}deg, #888888 ${hDeg + mDeg}deg 360deg)`;
                         return (
                           <div style={{ width: 36, height: 36, borderRadius: '50%', background: grad, flexShrink: 0, position: 'relative' }}>
                             <div style={{ position: 'absolute', inset: 9, borderRadius: '50%', background: '#111111' }} />
@@ -553,7 +553,7 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
                         );
                       })()}
                       {highCount > 0 && (
-                        <div className="data-mono" style={{ fontSize: '0.6875rem', fontWeight: 700, color: '#FF1F5A' }}>
+                        <div className="data-mono" style={{ fontSize: '0.6875rem', fontWeight: 700, color: '#FF4444' }}>
                           {highCount} HIGH
                         </div>
                       )}
@@ -640,14 +640,14 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
                         const absVal = s.includes('M') ? v * 1000000 : s.includes('K') ? v * 1000 : v;
                         const barPct = Math.round((absVal / maxSavings) * 100);
                         return (
-                          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.5rem 0.75rem', background: '#0D0018', border: '1px solid #AC00EF15', borderRadius: '2px' }}>
+                          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.5rem 0.75rem', background: '#0A0A0A', border: '1px solid #AC00EF15', borderRadius: '2px' }}>
                             <span className="data-mono" style={{ fontSize: '0.625rem', fontWeight: 700, color: '#AC00EF', width: '1rem', flexShrink: 0 }}>{i + 1}</span>
                             <span style={{ fontSize: '0.8125rem', fontWeight: 500, color: '#fff', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{opp.initiative}</span>
                             <div style={{ width: '4rem', height: '2px', background: '#1E1E1E', borderRadius: '1px', flexShrink: 0 }}>
                               <div style={{ height: '100%', width: `${barPct}%`, background: '#AC00EF', borderRadius: '1px' }} />
                             </div>
                             <span className="data-mono" style={{ fontSize: '0.875rem', fontWeight: 700, color: '#FFFFFF', flexShrink: 0, maxWidth: '6rem', textAlign: 'right', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{opp.estimatedAnnualSavings}</span>
-                            <span className="data-mono" style={{ fontSize: '0.75rem', fontWeight: 600, color: '#F04FDB', flexShrink: 0, width: '3.5rem', textAlign: 'right' }}>{opp.irrImpact}</span>
+                            <span className="data-mono" style={{ fontSize: '0.75rem', fontWeight: 600, color: '#AC00EF', flexShrink: 0, width: '3.5rem', textAlign: 'right' }}>{opp.irrImpact}</span>
                           </div>
                         );
                       })}
@@ -671,7 +671,7 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
                       return (
                         <div style={{ background: '#1E1E1E', border: '1px solid #2E2E2E', borderRadius: '0.25rem', padding: '0.625rem 0.875rem', fontSize: '0.75rem' }}>
                           <div style={{ fontWeight: 600, color: '#fff', marginBottom: '0.25rem', maxWidth: '12rem' }}>{d?.name}</div>
-                          <div style={{ color: '#787878' }}>Payback: <span style={{ color: '#F04FDB' }}>{d?.x}mo</span></div>
+                          <div style={{ color: '#787878' }}>Payback: <span style={{ color: '#AC00EF' }}>{d?.x}mo</span></div>
                           <div style={{ color: '#787878' }}>Savings: <span style={{ color: '#fff' }}>${d?.y}M/yr</span></div>
                         </div>
                       );
@@ -697,7 +697,7 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
                         const heroNum = heroMatch ? heroMatch[1].trim() : raw.split(/[–—\-,(]/)[0].trim();
                         const detail = heroNum && raw.length > heroNum.length + 2 ? raw.slice(heroNum.length).replace(/^[\s–—\-]+/, '') : null;
                         return (
-                          <div key={i} style={{ background: '#0D0018', border: '1px solid #AC00EF20', borderRadius: '0.25rem', padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                          <div key={i} style={{ background: '#0A0A0A', border: '1px solid #AC00EF20', borderRadius: '0.25rem', padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                             <div>
                               <div style={{ fontSize: '0.5625rem', fontWeight: 700, color: '#AC00EF', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.3rem' }}>#{i + 1} · {opp.paybackMonths ? `${opp.paybackMonths}mo payback` : 'quickest payback'}</div>
                               <div style={{ fontSize: '0.8125rem', fontWeight: 600, color: '#fff', lineHeight: 1.35 }}>{opp.initiative}</div>
@@ -712,7 +712,7 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
                             <div style={{ display: 'flex', gap: '1.5rem', paddingTop: '0.25rem' }}>
                               <div>
                                 <div style={{ fontSize: '0.5625rem', color: '#787878', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.2rem' }}>IRR impact</div>
-                                <div className="data-mono" style={{ fontSize: '0.9375rem', fontWeight: 700, color: '#F04FDB' }}>{opp.irrImpact}</div>
+                                <div className="data-mono" style={{ fontSize: '0.9375rem', fontWeight: 700, color: '#AC00EF' }}>{opp.irrImpact}</div>
                               </div>
                               <div>
                                 <div style={{ fontSize: '0.5625rem', color: '#787878', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.2rem' }}>Payback</div>
@@ -733,7 +733,7 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
 
             <div className="fade-up fade-up-5">
             {/* Section: Recommendation */}
-            <Card style={{ background: openSections.recommendation ? '#0D0018' : '#111111', border: `1px solid ${openSections.recommendation ? '#AC00EF33' : '#2E2E2E'}`, transition: 'background 300ms, border-color 300ms' }}>
+            <Card style={{ background: openSections.recommendation ? '#0A0A0A' : '#111111', border: `1px solid ${openSections.recommendation ? '#AC00EF33' : '#2E2E2E'}`, transition: 'background 300ms, border-color 300ms' }}>
               <button onClick={() => toggleSection('recommendation')} style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'none', border: 'none', cursor: 'pointer', padding: 0, marginBottom: '0.875rem' }}>
                 <SectionLabel style={{ marginBottom: 0 }}>Recommendation</SectionLabel>
                 <span style={{ color: '#AC00EF', fontSize: '1rem', lineHeight: 1, flexShrink: 0, display: 'inline-block', transform: openSections.recommendation ? 'rotate(45deg)' : 'rotate(0deg)', transition: 'transform 220ms cubic-bezier(0.25,1,0.5,1)' }}>+</span>
@@ -808,10 +808,10 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
             <div style={{ display: 'flex', gap: '0', border: '1px solid #1E1E1E', borderRadius: '0.25rem', overflow: 'hidden' }}>
               {[
                 { source: 'SASB SICS',          detail: 'Industry classification & materiality weights', status: 'verified',  color: '#00C896' },
-                { source: 'Company Disclosure',  detail: 'ESG report, sustainability data, proxy statements', status: 'partial', color: '#F0A500' },
-                { source: 'CDP Climate DB',      detail: 'GHG emissions, energy, water — estimated where missing', status: 'estimated', color: '#F0A500' },
+                { source: 'Company Disclosure',  detail: 'ESG report, sustainability data, proxy statements', status: 'partial', color: '#888888' },
+                { source: 'CDP Climate DB',      detail: 'GHG emissions, energy, water — estimated where missing', status: 'estimated', color: '#888888' },
                 { source: 'MSCI ESG Research',   detail: 'Sector benchmarks, peer percentiles', status: 'reference', color: '#555' },
-                { source: 'Analyst Estimates',   detail: 'Financial exposure, IRR impact — CFO sign-off required', status: 'unverified', color: '#FF1F5A' },
+                { source: 'Analyst Estimates',   detail: 'Financial exposure, IRR impact — CFO sign-off required', status: 'unverified', color: '#FF4444' },
               ].map(({ source, detail, status, color }, i, arr) => (
                 <div key={source} style={{ flex: 1, padding: '0.5rem 0.75rem', borderRight: i < arr.length - 1 ? '1px solid #1E1E1E' : 'none', background: '#0A0A0A' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', marginBottom: '0.2rem' }}>

@@ -29,7 +29,7 @@ function x(n)   { return n != null ? `${Number(n).toFixed(2)}x` : '—'; }
 function Card({ children, style = {}, highlight = false, className = '' }) {
   return (
     <div className={`card-hover ${className}`} style={{
-      background: highlight ? '#130018' : '#111111',
+      background: highlight ? '#0A0A0A' : '#111111',
       border: `1px solid ${highlight ? '#AC00EF44' : '#2E2E2E'}`,
       borderRadius: '0.25rem',
       padding: '1.25rem',
@@ -98,7 +98,7 @@ export default function Screen2Predict({ companyId, companyOverride, screen1Resu
   const company = companyOverride ?? COMPANY_MAP[companyId];
 
   const scenarioMultipliers = {
-    bear: { irrMultiplier: 0.6, label: 'Bear', color: '#F0A500' },
+    bear: { irrMultiplier: 0.6, label: 'Bear', color: '#888888' },
     base: { irrMultiplier: 1.0, label: 'Base', color: '#AC00EF' },
     bull: { irrMultiplier: 1.4, label: 'Bull', color: '#00C896' },
   };
@@ -166,7 +166,7 @@ export default function Screen2Predict({ companyId, companyOverride, screen1Resu
 
       {meta && agentStatus === 'complete' && (
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.625rem', color: '#333', marginBottom: '1rem' }}>
-          <span style={{ width: 5, height: 5, borderRadius: '50%', background: meta.cached ? '#F0A500' : '#00C896', flexShrink: 0 }} />
+          <span style={{ width: 5, height: 5, borderRadius: '50%', background: meta.cached ? '#888888' : '#00C896', flexShrink: 0 }} />
           {meta.cached ? 'Cached result' : 'Live result'} · Generated {new Date(meta.generatedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
           {meta.cached && (
             <button onClick={run} style={{ background: 'none', border: 'none', color: '#555', fontSize: '0.625rem', cursor: 'pointer', textDecoration: 'underline', padding: 0, marginLeft: '0.25rem' }}>
@@ -184,7 +184,7 @@ export default function Screen2Predict({ companyId, companyOverride, screen1Resu
       )}
 
       {error && (
-        <div style={{ background: '#FF1F5A10', border: '1px solid #FF1F5A40', borderRadius: '0.25rem', padding: '1rem', color: '#FF1F5A', fontSize: '0.875rem', marginBottom: '1.5rem' }}>
+        <div style={{ background: '#FF444410', border: '1px solid #FF444440', borderRadius: '0.25rem', padding: '1rem', color: '#FF4444', fontSize: '0.875rem', marginBottom: '1.5rem' }}>
           {error}
         </div>
       )}
@@ -265,7 +265,7 @@ export default function Screen2Predict({ companyId, companyOverride, screen1Resu
                   ].map(({ label, val }) => (
                     <div key={label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <span style={{ fontSize: '0.75rem', color: '#AC00EF99' }}>{label}</span>
-                      <span className="data-mono" style={{ fontSize: '0.9375rem', fontWeight: 600, color: '#F04FDB' }}>{val}</span>
+                      <span className="data-mono" style={{ fontSize: '0.9375rem', fontWeight: 600, color: '#AC00EF' }}>{val}</span>
                     </div>
                   ))}
                 </div>
@@ -280,7 +280,7 @@ export default function Screen2Predict({ companyId, companyOverride, screen1Resu
 
           {/* Row 2: Value callouts */}
           <div className="fade-up fade-up-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
-            <div style={{ background: '#0D0018', border: '1px solid #AC00EF33', borderRadius: '0.25rem', padding: '1.25rem', textAlign: 'center' }}>
+            <div style={{ background: '#0A0A0A', border: '1px solid #AC00EF33', borderRadius: '0.25rem', padding: '1.25rem', textAlign: 'center' }}>
               <div style={{ fontSize: '0.6875rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#AC00EF', marginBottom: '0.5rem' }}>Additional Value Created</div>
               <div className="num-in stat-hero" style={{ fontSize: '2.75rem', color: scenarioMultipliers[scenario].color }}>
                 {fmt((data.withEsgInterventions?.additionalValueCreated ?? 0) * scenarioMultipliers[scenario].irrMultiplier)}
@@ -324,7 +324,7 @@ export default function Screen2Predict({ companyId, companyOverride, screen1Resu
             const netRoiRaw = parseFloat(String(data.netRoiOnEsgInvestment ?? '0').replace(/[^0-9.]/g, '')) || 0;
 
             const cols = [
-              { key: 'bear', label: 'Bear', sub: '30th pct · BCG lower bound',    color: '#F0A500', mult: 0.6 },
+              { key: 'bear', label: 'Bear', sub: '30th pct · BCG lower bound',    color: '#888888', mult: 0.6 },
               { key: 'base', label: 'Base', sub: 'Median · McKinsey / BCG',        color: '#AC00EF', mult: 1.0 },
               { key: 'bull', label: 'Bull', sub: '70th pct · Bain upper bound',    color: '#00C896', mult: 1.4 },
             ];
@@ -352,7 +352,7 @@ export default function Screen2Predict({ companyId, companyOverride, screen1Resu
               items.push(<div key={`r${ri}-l`} style={{ ...labelCell, borderTop: '1px solid #1A1A1A', background: '#0A0A0A' }}>{row.label}</div>);
               cols.forEach(col => items.push(
                 <div key={`r${ri}-${col.key}`} style={{ ...cellBase, borderTop: '1px solid #1A1A1A' }}>
-                  <span className="data-mono" style={{ fontSize: '0.9375rem', fontWeight: col.mult === 1.0 ? 700 : 500, color: col.mult === 1.0 ? '#F04FDB' : '#555' }}>
+                  <span className="data-mono" style={{ fontSize: '0.9375rem', fontWeight: col.mult === 1.0 ? 700 : 500, color: col.mult === 1.0 ? '#AC00EF' : '#555' }}>
                     {row.fn(col.mult)}
                   </span>
                 </div>
@@ -413,7 +413,7 @@ export default function Screen2Predict({ companyId, companyOverride, screen1Resu
                       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', borderTop: '1px solid #1E1E1E' }}>
                         <div style={{ padding: '0.625rem 1rem', borderRight: '1px solid #1E1E1E' }}>
                           <div style={{ fontSize: '0.5625rem', fontWeight: 700, color: '#444444', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.25rem' }}>IRR Contribution</div>
-                          <div className="data-mono" style={{ fontSize: '1rem', fontWeight: 700, color: '#F04FDB', marginBottom: irrDetail ? '0.25rem' : 0 }}>{irrHero}</div>
+                          <div className="data-mono" style={{ fontSize: '1rem', fontWeight: 700, color: '#AC00EF', marginBottom: irrDetail ? '0.25rem' : 0 }}>{irrHero}</div>
                           {irrDetail && (
                             <div style={{ fontSize: '0.6875rem', color: '#787878', lineHeight: 1.5, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: expanded ? 99 : 2, WebkitBoxOrient: 'vertical' }}>{irrDetail}</div>
                           )}
@@ -441,7 +441,7 @@ export default function Screen2Predict({ companyId, companyOverride, screen1Resu
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                   <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'flex-end' }}>
                     {[
-                      { label: 'Before ESG', val: `${data.riskMitigation.greenwashingRiskBefore}/10`, color: '#FF1F5A' },
+                      { label: 'Before ESG', val: `${data.riskMitigation.greenwashingRiskBefore}/10`, color: '#FF4444' },
                       { label: 'After ESG',  val: `${data.riskMitigation.greenwashingRiskAfter}/10`,  color: '#FFFFFF' }
                     ].map(({ label, val, color }) => (
                       <div key={label}>

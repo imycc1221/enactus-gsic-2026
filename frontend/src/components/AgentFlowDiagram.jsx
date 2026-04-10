@@ -54,8 +54,8 @@ export default function AgentFlowDiagram() {
         <div style={{ display: 'flex', gap: '1rem' }}>
           {[
             { dot: '#AC00EF', label: 'ESG Screen' },
-            { dot: '#F04FDB', label: 'Value Model' },
-            { dot: '#F0A500', label: 'SFDR Classify' },
+            { dot: '#AC00EF', label: 'Value Model' },
+            { dot: '#888888', label: 'SFDR Classify' },
             { dot: '#00C896', label: 'Portfolio' },
           ].map(({ dot, label }) => (
             <div key={label} style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
@@ -86,7 +86,7 @@ export default function AgentFlowDiagram() {
       <AgentBox
         num="1" label="ESG Screener" tool="analyze_esg_materiality"
         desc="SASB materiality filter · KPI scoring · risk flags · EBITDA value opportunities · framework compliance gaps"
-        color="#AC00EF" bg="#0D0018" border="#AC00EF33"
+        color="#AC00EF" bg="#0A0A0A" border="#AC00EF33"
         badge="claude-sonnet-4-6"
       />
 
@@ -97,12 +97,12 @@ export default function AgentFlowDiagram() {
         <AgentBox
           num="2" label="Value Predictor" tool="predict_irr_uplift"
           desc="BCG/EY-Parthenon IRR benchmarks · initiative-level costs · 3-scenario exit model · LP narrative"
-          color="#F04FDB" bg="#130010" border="#F04FDB33"
+          color="#AC00EF" bg="#0A0A0A" border="#AC00EF33"
         />
         <AgentBox
           num="3" label="SFDR Classifier" tool="classify_sfdr_article"
           desc="Art.6/8/9 determination · 14 PAI indicators · DNSH compliance · upgrade pathway · LP disclosure draft"
-          color="#F0A500" bg="#130800" border="#F0A50033"
+          color="#888888" bg="#0A0A0A" border="#88888833"
         />
       </div>
 

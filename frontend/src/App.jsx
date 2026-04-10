@@ -242,7 +242,7 @@ export default function App() {
       {/* ── Header ── */}
       <header style={{
         position: 'sticky', top: 0, zIndex: 20,
-        background: 'rgba(5,5,15,0.85)',
+        background: 'rgba(0,0,0,0.85)',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
         borderBottom: '1px solid rgba(255,255,255,0.06)',
@@ -317,7 +317,7 @@ export default function App() {
       {/* ── Nav ── */}
       <nav style={{
         position: 'sticky', top: '72px', zIndex: 10,
-        background: 'rgba(5,5,15,0.9)',
+        background: 'rgba(0,0,0,0.9)',
         backdropFilter: 'blur(16px)',
         WebkitBackdropFilter: 'blur(16px)',
         borderBottom: '1px solid rgba(255,255,255,0.06)',

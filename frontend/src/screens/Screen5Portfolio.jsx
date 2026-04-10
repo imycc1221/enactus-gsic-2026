@@ -10,12 +10,12 @@ import AgentFlowDiagram from '../components/AgentFlowDiagram.jsx';
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 const ARTICLE_COLOR = {
-  'Article 6': '#FF1F5A',
-  'Article 8': '#F0A500',
+  'Article 6': '#FF4444',
+  'Article 8': '#AC00EF',
   'Article 9': '#00C896',
 };
 
-const COMPANY_COLORS = ['#AC00EF', '#F04FDB', '#00C896'];
+const COMPANY_COLORS = ['#AC00EF', '#7B00AC', '#00C896'];
 
 function fmt(n) {
   if (!n && n !== 0) return '—';
@@ -27,8 +27,8 @@ function fmt(n) {
 
 function scoreColor(s) {
   if (s >= 75) return '#AC00EF';
-  if (s >= 50) return '#F04FDB';
-  return '#FF1F5A';
+  if (s >= 50) return '#AC00EF';
+  return '#FF4444';
 }
 
 function Card({ children, style = {} }) {
@@ -105,8 +105,8 @@ export default function Screen5Portfolio() {
   return (
     <div>
       {/* Header */}
-      <div style={{ position: 'relative', borderRadius: '0.25rem', overflow: 'hidden', marginBottom: '1.5rem', background: '#101010' }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, #0D0018 0%, #060606 100%)' }} />
+      <div style={{ position: 'relative', borderRadius: '0.25rem', overflow: 'hidden', marginBottom: '1.5rem', background: '#000000' }}>
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(172,0,239,0.05) 0%, #000000 100%)' }} />
         <div style={{ position: 'relative', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1.5rem', padding: '1.5rem' }}>
           <div>
             <h1 style={{ fontFamily: 'GT Sectra Fine, Palatino, serif', fontWeight: 300, fontSize: '1.75rem', color: '#fff', marginBottom: '0.25rem', letterSpacing: '-0.01em' }}>
@@ -123,7 +123,7 @@ export default function Screen5Portfolio() {
       </div>
 
       {status === 'running' && (
-        <div style={{ background: '#101010', border: '1px solid #AC00EF33', borderRadius: '0.25rem', padding: '1.25rem 1.5rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+        <div style={{ background: '#0A0A0A', border: '1px solid #AC00EF33', borderRadius: '0.25rem', padding: '1.25rem 1.5rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <div className="animate-pulse-dot" style={{ width: 7, height: 7, borderRadius: '50%', background: '#AC00EF', flexShrink: 0, boxShadow: '0 0 6px #AC00EF88' }} />
           <span style={{ fontSize: '0.6875rem', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#616160' }}>
             Running 9 parallel AI calls — ESG Screen + Value Model + SFDR Classifier for each company
@@ -133,7 +133,7 @@ export default function Screen5Portfolio() {
       )}
 
       {error && (
-        <div style={{ background: '#FF1F5A10', border: '1px solid #FF1F5A40', borderRadius: '0.25rem', padding: '1rem', color: '#FF1F5A', fontSize: '0.875rem', marginBottom: '1.5rem' }}>{error}</div>
+        <div style={{ background: '#FF444410', border: '1px solid #FF444440', borderRadius: '0.25rem', padding: '1rem', color: '#FF4444', fontSize: '0.875rem', marginBottom: '1.5rem' }}>{error}</div>
       )}
 
       {/* Agent architecture diagram — always visible */}
@@ -151,13 +151,13 @@ export default function Screen5Portfolio() {
               const artScore = d.sfdr.recommendedArticle === 'Article 9' ? 100 : d.sfdr.recommendedArticle === 'Article 8' ? 60 : 20;
               const composite = Math.round(esg * 0.35 + conf * 0.15 + uplift * 8 + artScore * 0.1);
               const verdict   = esg >= 65 ? 'PROCEED' : esg >= 45 ? 'MONITOR' : 'CAUTION';
-              const vColor    = verdict === 'PROCEED' ? '#00C896' : verdict === 'MONITOR' ? '#F0A500' : '#FF1F5A';
+              const vColor    = verdict === 'PROCEED' ? '#00C896' : verdict === 'MONITOR' ? '#888888' : '#FF4444';
               const driver    = uplift > 3 ? `+${uplift.toFixed(1)}pp IRR uplift` : esg >= 65 ? `ESG score ${esg}/100` : `${d.sfdr.recommendedArticle} LP-ready`;
               return { ...d, composite, verdict, vColor, driver, origIdx: i };
             }).sort((a, b) => b.composite - a.composite);
 
             return (
-              <div className="fade-up fade-up-1" style={{ background: '#0D0018', border: '1px solid #AC00EF33', borderRadius: '0.25rem', padding: '1.25rem' }}>
+              <div className="fade-up fade-up-1" style={{ background: '#0A0A0A', border: '1px solid #AC00EF33', borderRadius: '0.25rem', padding: '1.25rem' }}>
                 <div style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#AC00EF', marginBottom: '1rem' }}>
                   Investment Priority Ranking
                 </div>
@@ -202,7 +202,7 @@ export default function Screen5Portfolio() {
               { stat: `${avgConfidence}%`, label: 'Avg data confidence', sub: 'analyst review required below 70%' },
               { stat: '3× Art. 8',         label: 'SFDR classification', sub: 'all companies LP-ready today' },
             ].map(({ stat, label, sub }, i) => (
-              <div key={i} style={{ padding: '0.875rem 1.125rem', borderRight: i < 3 ? '1px solid #AC00EF22' : 'none', background: '#0D0018' }}>
+              <div key={i} style={{ padding: '0.875rem 1.125rem', borderRight: i < 3 ? '1px solid #AC00EF22' : 'none', background: '#0A0A0A' }}>
                 <div className="data-mono" style={{ fontSize: '1.375rem', fontWeight: 700, color: '#AC00EF', lineHeight: 1, marginBottom: '0.3rem' }}>{stat}</div>
                 <div style={{ fontSize: '0.6875rem', fontWeight: 600, color: '#fff', marginBottom: '0.2rem' }}>{label}</div>
                 <div style={{ fontSize: '0.5625rem', color: '#444' }}>{sub}</div>
@@ -213,7 +213,7 @@ export default function Screen5Portfolio() {
           {/* Company scorecards */}
           <div className="fade-up fade-up-1" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
             {data.map((d, i) => {
-              const artCfg = ARTICLE_COLOR[d.sfdr.recommendedArticle] ?? '#F0A500';
+              const artCfg = ARTICLE_COLOR[d.sfdr.recommendedArticle] ?? '#AC00EF';
               const highRisks = (d.analyze.riskFlags ?? []).filter(r => r.severity === 'high');
               return (
                 <Card key={d.company.id} style={{ borderTop: `2px solid ${COMPANY_COLORS[i]}` }}>
@@ -229,8 +229,8 @@ export default function Screen5Portfolio() {
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
                     {[
                       { label: 'ESG Score',   val: `${d.analyze.overallScore}/100`,                                          color: scoreColor(d.analyze.overallScore) },
-                      { label: 'Confidence',  val: `${Math.round((d.analyze.dataConfidenceScore ?? 0) * 100)}%`,             color: (d.analyze.dataConfidenceScore ?? 0) > 0.7 ? '#00C896' : '#F0A500' },
-                      { label: 'IRR Uplift',  val: `+${Number(d.predict.withEsgInterventions?.irrUplift ?? 0).toFixed(1)}pp`, color: '#F04FDB' },
+                      { label: 'Confidence',  val: `${Math.round((d.analyze.dataConfidenceScore ?? 0) * 100)}%`,             color: (d.analyze.dataConfidenceScore ?? 0) > 0.7 ? '#00C896' : '#888888' },
+                      { label: 'IRR Uplift',  val: `+${Number(d.predict.withEsgInterventions?.irrUplift ?? 0).toFixed(1)}pp`, color: '#AC00EF' },
                       { label: 'Value Added', val: fmt(d.predict.withEsgInterventions?.additionalValueCreated),              color: '#FFFFFF' },
                     ].map(({ label, val, color }) => (
                       <div key={label}>
@@ -243,7 +243,7 @@ export default function Screen5Portfolio() {
                     <div style={{ marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: '1px solid #1E1E1E' }}>
                       <div style={{ fontSize: '0.5rem', fontWeight: 700, color: '#444', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.375rem' }}>High-Severity Risks</div>
                       {highRisks.slice(0, 2).map((r, j) => (
-                        <div key={j} style={{ fontSize: '0.6875rem', color: '#FF1F5A', marginBottom: '0.15rem' }}>· {r.area}</div>
+                        <div key={j} style={{ fontSize: '0.6875rem', color: '#FF4444', marginBottom: '0.15rem' }}>· {r.area}</div>
                       ))}
                     </div>
                   )}
@@ -309,8 +309,8 @@ export default function Screen5Portfolio() {
                     const allAreas = [...new Set(data.flatMap(d => (d.analyze.riskFlags ?? []).map(r => r.area)))];
                     const SEV = { high: 3, medium: 2, low: 1 };
                     const SEV_STYLE = {
-                      high:   { bg: '#FF1F5A15', color: '#FF1F5A', label: 'HIGH' },
-                      medium: { bg: '#F04FDB10', color: '#F04FDB', label: 'MED'  },
+                      high:   { bg: '#FF444415', color: '#FF4444', label: 'HIGH' },
+                      medium: { bg: '#AC00EF10', color: '#AC00EF', label: 'MED'  },
                       low:    { bg: '#AC00EF10', color: '#AC00EF', label: 'LOW'  },
                     };
                     return allAreas.slice(0, 8).map((area, i) => (
@@ -338,12 +338,12 @@ export default function Screen5Portfolio() {
           </Card>
 
           {/* Investment committee summary */}
-          <Card className="fade-up fade-up-4" style={{ background: '#0D0018', border: '1px solid #AC00EF33' }}>
+          <Card className="fade-up fade-up-4" style={{ background: '#0A0A0A', border: '1px solid #AC00EF33' }}>
             <Label color="#AC00EF">Investment Committee Summary</Label>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
               {data.map((d, i) => {
                 const verdict = d.analyze.overallScore >= 65 ? 'PROCEED' : d.analyze.overallScore >= 45 ? 'MONITOR' : 'CAUTION';
-                const vColor  = verdict === 'PROCEED' ? '#00C896' : verdict === 'MONITOR' ? '#F0A500' : '#FF1F5A';
+                const vColor  = verdict === 'PROCEED' ? '#00C896' : verdict === 'MONITOR' ? '#888888' : '#FF4444';
                 return (
                   <div key={d.company.id} style={{ borderLeft: `3px solid ${COMPANY_COLORS[i]}`, paddingLeft: '1rem' }}>
                     <div style={{ fontSize: '0.6875rem', color: '#555', marginBottom: '0.375rem' }}>{d.company.shortName}</div>

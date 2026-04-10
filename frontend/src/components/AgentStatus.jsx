@@ -30,7 +30,7 @@ export default function AgentStatus({ steps, status, stepFindings }) {
   return (
     <div
       style={{
-        background: '#101010',
+        background: '#000000',
         border: `1px solid ${status === 'complete' ? '#2b2b2b' : '#a100ff33'}`,
         borderRadius: '0.25rem',
         padding: '1.25rem 1.5rem',

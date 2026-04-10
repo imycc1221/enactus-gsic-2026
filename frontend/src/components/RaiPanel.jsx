@@ -14,7 +14,7 @@ const PILLARS = [
   {
     name: 'Transparency',
     icon: '◎',
-    color: '#F04FDB',
+    color: '#AC00EF',
     desc: 'Full prompt chain exposed. Data confidence score displayed. Source attribution on every metric.',
     status: 'active',
   },
@@ -28,14 +28,14 @@ const PILLARS = [
   {
     name: 'Reliability',
     icon: '◉',
-    color: '#F0A500',
+    color: '#888888',
     desc: 'Forced tool_use schema — structured JSON guaranteed. Zero hallucination in schema fields.',
     status: 'active',
   },
   {
     name: 'Responsibility',
     icon: '▲',
-    color: '#FF1F5A',
+    color: '#FF4444',
     desc: 'Analyst review flagged on every output. Human-in-the-loop required before LP use.',
     status: 'review',
   },
@@ -61,8 +61,8 @@ export default function RaiPanel() {
         background: '#111',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#F0A500', boxShadow: '0 0 6px #F0A50080', flexShrink: 0 }} />
-          <span style={{ fontSize: '0.625rem', fontWeight: 700, color: '#F0A500', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+          <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#888888', boxShadow: '0 0 6px #88888880', flexShrink: 0 }} />
+          <span style={{ fontSize: '0.625rem', fontWeight: 700, color: '#888888', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
             Responsible AI Review Required
           </span>
         </div>
@@ -91,8 +91,8 @@ export default function RaiPanel() {
               <span style={{
                 marginLeft: 'auto',
                 width: 6, height: 6, borderRadius: '50%', flexShrink: 0,
-                background: p.status === 'active' ? '#00C896' : '#F0A500',
-                boxShadow: p.status === 'active' ? '0 0 5px #00C89660' : '0 0 5px #F0A50060',
+                background: p.status === 'active' ? '#00C896' : '#888888',
+                boxShadow: p.status === 'active' ? '0 0 5px #00C89660' : '0 0 5px #88888860',
               }} />
             </div>
             <div style={{ fontSize: '0.625rem', color: '#666', lineHeight: 1.5 }}>{p.desc}</div>
