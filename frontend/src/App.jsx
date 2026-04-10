@@ -339,7 +339,9 @@ export default function App() {
                   fontWeight: isActive ? 600 : 400,
                   color: isActive ? '#fff' : 'rgba(255,255,255,0.4)',
                   background: 'none', border: 'none',
-                  borderBottom: isActive ? '2px solid #AC00EF' : '2px solid transparent',
+                  borderBottom: isActive
+                    ? `2px solid ${hasResult ? '#00C896' : '#AC00EF'}`
+                    : '2px solid transparent',
                   cursor: 'pointer',
                   transition: 'color 250ms var(--ease-out), border-color 250ms var(--ease-out)',
                   display: 'flex', alignItems: 'center', gap: '0.5rem',

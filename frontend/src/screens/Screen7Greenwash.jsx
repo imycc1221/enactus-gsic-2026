@@ -90,7 +90,12 @@ export default function Screen7Greenwash({ companyId, companyOverride, screen1Re
     <div>
       {/* Banner */}
       <div style={{ position: 'relative', borderRadius: '0.25rem', overflow: 'hidden', marginBottom: '1.5rem', background: '#000000', backgroundImage: `url(/images/${companyId}-banner.jpg)`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(0,0,0,0.95) 50%, rgba(0,0,0,0.6))' }} />
+        <div style={{ position: 'absolute', inset: 0, background: data
+          ? 'linear-gradient(120deg, rgba(0,0,0,0.95) 45%, rgba(0,20,12,0.75))'
+          : 'linear-gradient(to right, rgba(0,0,0,0.95) 50%, rgba(0,0,0,0.6))',
+          transition: 'background 600ms ease'
+        }} />
+        {data && <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 60% 80% at 80% 50%, rgba(0,200,150,0.08) 0%, transparent 70%)', pointerEvents: 'none' }} />}
         <div style={{ position: 'relative', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1.5rem', padding: '1.5rem' }}>
           <div>
             <h1 style={{ fontFamily: 'GT Sectra Fine, Palatino, serif', fontWeight: 300, fontSize: '1.75rem', color: '#fff', marginBottom: '0.25rem', letterSpacing: '-0.01em' }}>
