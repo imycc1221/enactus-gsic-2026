@@ -38,3 +38,13 @@ skills-lock.json
 skills/
 .orchestra-skills.json
 .impeccable.md
+
+# Competition documents and research files
+*.pdf
+*.docx
+*.doc
+deep_research_findings.md
+research_findings.md
+system_enhancements.md
+SLIDE_DECK_BLUEPRINT.md
+SYSTEM_OVERVIEW.md
