@@ -11,14 +11,17 @@ import Screen8Eudr      from './screens/Screen8Eudr.jsx';
 import OnboardingTour   from './components/OnboardingTour.jsx';
 
 const SCREENS = [
+  // ── Analysis pipeline (matches stepper sequence) ──
   { id: 'analyze',   label: 'ESG Screener',       desc: 'SASB-filtered materiality analysis' },
   { id: 'predict',   label: 'Value Predictor',     desc: 'IRR uplift financial model' },
   { id: 'sfdr',      label: 'SFDR Classifier',     desc: 'Article 6 / 8 / 9 classification' },
-  { id: 'map',       label: 'Framework Mapper',    desc: '1 input — 8 regulatory outputs' },
-  { id: 'portfolio',  label: 'Portfolio Dashboard', desc: 'All companies — parallel AI analysis' },
-  { id: 'ic-memo',    label: 'IC Memo',             desc: 'Investment committee memorandum' },
-  { id: 'greenwash',  label: 'Greenwash Detector',  desc: 'Claims vs evidence forensics' },
-  { id: 'eudr',       label: 'EUDR Readiness',      desc: 'Supply chain deforestation compliance' },
+  { id: 'map',       label: 'Framework Mapper',    desc: '1 input — 7 regulatory outputs' },
+  { id: 'greenwash', label: 'Greenwash Detector',  desc: 'Claims vs evidence forensics' },
+  // ── Outputs & reporting ──
+  { id: 'divider',   label: null, desc: null },
+  { id: 'portfolio', label: 'Portfolio Dashboard', desc: 'All companies — parallel AI analysis' },
+  { id: 'ic-memo',   label: 'IC Memo',             desc: 'Investment committee memorandum' },
+  { id: 'eudr',      label: 'EUDR Readiness',      desc: 'Supply chain deforestation compliance' },
 ];
 
 function AccentureLogo() {
@@ -322,14 +325,17 @@ export default function App() {
         WebkitBackdropFilter: 'blur(16px)',
         borderBottom: '1px solid rgba(255,255,255,0.06)',
       }}>
-        <div style={{ padding: '0 2rem', display: 'flex', overflowX: 'auto' }}>
+        <div style={{ padding: '0 2rem', display: 'flex', alignItems: 'center', overflowX: 'auto' }}>
           {SCREENS.map(s => {
+            if (s.id === 'divider') return (
+              <div key="divider" style={{ width: '1px', height: '20px', background: 'rgba(255,255,255,0.1)', margin: '0 0.5rem', flexShrink: 0 }} />
+            );
             const hasResult = BADGE_SCREENS[s.id] ? !!results[BADGE_SCREENS[s.id]] : false;
             const isActive  = screen === s.id;
             return (
               <button key={s.id} onClick={() => setScreen(s.id)}
                 style={{
-                  padding: '0 1.25rem', height: '52px', fontSize: '0.9375rem',
+                  padding: '0 1rem', height: '52px', fontSize: '0.9375rem',
                   fontWeight: isActive ? 600 : 400,
                   color: isActive ? '#fff' : 'rgba(255,255,255,0.4)',
                   background: 'none', border: 'none',
