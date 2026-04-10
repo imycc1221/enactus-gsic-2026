@@ -84,23 +84,41 @@ The AI engine uses structured `tool_use` calls so every output is deterministic 
 
 **Prerequisites:** Node.js 18+, an Anthropic API key
 
+**1. Clone the repo**
 ```bash
-# 1. Install dependencies
-cd backend && npm install
-cd ../frontend && npm install
-
-# 2. Set your API key
-cp .env.example .env
-# Edit .env and add your ANTHROPIC_API_KEY
-
-# 3. Start backend (port 3001)
-cd backend && node server.js
-
-# 4. Start frontend (port 5173)
-cd frontend && npm run dev
+git clone https://github.com/imycc1221/enactus-gsic-2026.git
+cd enactus-gsic-2026
 ```
 
-Open `http://localhost:5173` — select a company from the header, then run any of the three tools.
+**2. Set up environment variables**
+
+Create a `.env` file inside the `backend/` folder:
+```
+ANTHROPIC_API_KEY=your_api_key_here
+```
+> Ask a teammate for the API key — it is never committed to the repository.
+
+**3. Install dependencies & start**
+
+Open two separate terminals:
+
+Terminal 1 — Backend:
+```bash
+cd backend
+npm install
+npm start
+```
+
+Terminal 2 — Frontend:
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+**4. Open the app**
+
+Go to `http://localhost:5173` in your browser. Select a company from the header, then click **Run All** to run all analyses at once, or navigate to any tab and run individually.
 
 ---
 
