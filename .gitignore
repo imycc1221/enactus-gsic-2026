@@ -28,4 +28,13 @@ Thumbs.db
 
 # Misc
 www.accenture.com/
+www.harness.io/
 skills-lock.json
+
+# AI tool skill libraries (not part of this project)
+.agents/
+.claude/
+.gemini/
+skills/
+.orchestra-skills.json
+.impeccable.md
