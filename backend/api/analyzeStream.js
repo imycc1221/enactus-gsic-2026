@@ -45,7 +45,7 @@ export default async function handler(req, res) {
   const baseMeta = {
     model: 'claude-sonnet-4-6',
     tool:  analyzeToolSchema.name,
-    timestamp: new Date().toISOString(),
+    generatedAt: new Date().toISOString(),
     systemPrompt,
     userPrompt,
   };
@@ -55,7 +55,8 @@ export default async function handler(req, res) {
   if (cached) {
     await simulateThinking();
     await chunkSimulate(res, JSON.stringify(cached));
-    send(res, { type: 'done', result: cached, _meta: { ...baseMeta, cached: true } });
+    const cachedGeneratedAt = cached._meta?.generatedAt ?? baseMeta.generatedAt;
+    send(res, { type: 'done', result: cached, _meta: { ...baseMeta, generatedAt: cachedGeneratedAt, cached: true } });
     res.end();
     return;
   }

@@ -13,6 +13,7 @@ export const COMPANIES = [
     sasbSector: 'Industrial Machinery & Goods (IF-MS)',
     geography: 'Germany + Vietnam',
     countryCode: 'DE',
+    currency: '€',
     revenue: 85_000_000,
     ebitda: 12_750_000,
     employees: 420,
@@ -37,6 +38,7 @@ export const COMPANIES = [
     sasbSector: 'Software & IT Services (TC-SI)',
     geography: 'UK + Nordics',
     countryCode: 'GB',
+    currency: '£',
     revenue: 22_000_000,
     ebitda: 5_500_000,
     employees: 95,
@@ -61,6 +63,7 @@ export const COMPANIES = [
     sasbSector: 'Food & Beverage Retailers / Apparel (CG-AA)',
     geography: 'France + SE Asia',
     countryCode: 'FR',
+    currency: '€',
     revenue: 150_000_000,
     ebitda: 18_000_000,
     employees: 1200,
@@ -98,10 +101,11 @@ export function getRegScoping(company) {
   const isEudrSme     = employees < 250 && revenue < 50_000_000;
   const hasHighRiskGeo = ['asia','vietnam','indonesia','malaysia','thailand','myanmar',
                            'brazil','africa','colombia','peru'].some(r => geo.includes(r));
-  const eudrExemptSectors = ['industrial machinery','industrial components','metal','electronics',
-                              'semiconductor','software','saas','technology','financial','insurance',
-                              'pharma','chemical'];
-  const hasForestRiskSector = !eudrExemptSectors.some(s => (company.sector ?? '').toLowerCase().includes(s));
+  const eudrExemptSectors = ['industrial machinery','industrial manufacturing','industrial components',
+                              'metal','electronics','semiconductor','software','saas','technology',
+                              'financial','insurance','pharma','chemical'];
+  const sectorStr = `${company.sector ?? ''} ${company.sasbSector ?? ''}`.toLowerCase();
+  const hasForestRiskSector = !eudrExemptSectors.some(s => sectorStr.includes(s));
 
   if (hasHighRiskGeo && hasForestRiskSector) {
     mandatory.push({

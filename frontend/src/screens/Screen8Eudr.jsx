@@ -2,13 +2,13 @@ import { COMPANY_MAP } from '../data/companies.js';
 
 // Forest-risk commodities under EUDR (Regulation EU 2023/1115)
 const COMMODITIES = [
-  { id: 'palm_oil',  label: 'Palm Oil',    icon: '🌴', triggers: ['asia', 'indonesia', 'malaysia', 'thailand'] },
-  { id: 'timber',    label: 'Timber / Wood', icon: '🪵', triggers: ['asia', 'vietnam', 'indonesia', 'brazil', 'africa'] },
-  { id: 'rubber',    label: 'Rubber',      icon: '⚫', triggers: ['asia', 'vietnam', 'indonesia', 'malaysia', 'thailand'] },
-  { id: 'soy',       label: 'Soy',         icon: '🌿', triggers: ['brazil', 'latin', 'argentina', 'us', 'usa'] },
-  { id: 'cocoa',     label: 'Cocoa',       icon: '🍫', triggers: ['africa', 'ivory', 'ghana', 'nigeria', 'ecuador'] },
-  { id: 'coffee',    label: 'Coffee',      icon: '☕', triggers: ['ethiopia', 'brazil', 'vietnam', 'colombia', 'indonesia'] },
-  { id: 'cattle',    label: 'Cattle / Beef', icon: '🐄', triggers: ['brazil', 'latin', 'argentina'] },
+  { id: 'palm_oil',  label: 'Palm Oil',      img: '/images/commodities/palm_oil.jpg.png',  triggers: ['asia', 'indonesia', 'malaysia', 'thailand'] },
+  { id: 'timber',    label: 'Timber / Wood', img: '/images/commodities/timber.jpg.png',    triggers: ['asia', 'vietnam', 'indonesia', 'brazil', 'africa'] },
+  { id: 'rubber',    label: 'Rubber',        img: '/images/commodities/rubber.jpg.png',    triggers: ['asia', 'vietnam', 'indonesia', 'malaysia', 'thailand'] },
+  { id: 'soy',       label: 'Soy',           img: '/images/commodities/soy.jpg.png',       triggers: ['brazil', 'latin', 'argentina', 'us', 'usa'] },
+  { id: 'cocoa',     label: 'Cocoa',         img: '/images/commodities/cocoa.jpg.png',     triggers: ['africa', 'ivory', 'ghana', 'nigeria', 'ecuador'] },
+  { id: 'coffee',    label: 'Coffee',        img: '/images/commodities/coffee.jpg.png',    triggers: ['ethiopia', 'brazil', 'vietnam', 'colombia', 'indonesia'] },
+  { id: 'cattle',    label: 'Cattle / Beef', img: '/images/commodities/cattle.jpg.png',    triggers: ['brazil', 'latin', 'argentina'] },
 ];
 
 const DUE_DILIGENCE_REQUIREMENTS = [
@@ -84,15 +84,39 @@ export default function Screen8Eudr({ companyId, companyOverride }) {
   const auditPct    = parseFloat(auditData?.auditCoverage ?? '0') || 0;
   const auditGap    = 100 - auditPct;
 
+  // Shared glass card style matching app design language
+  const glassCard = {
+    background: 'rgba(255,255,255,0.03)',
+    backdropFilter: 'blur(16px)',
+    WebkitBackdropFilter: 'blur(16px)',
+    border: '1px solid rgba(255,255,255,0.08)',
+    borderRadius: '0.5rem',
+    position: 'relative',
+  };
+
+  // Gradient top shimmer line (mirrors glass-card::before in CSS)
+  const shimmerLine = (
+    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: 'linear-gradient(90deg, transparent, rgba(172,0,239,0.6), rgba(255,255,255,0.2), transparent)', opacity: 0.7, pointerEvents: 'none', borderRadius: '0.5rem 0.5rem 0 0' }} />
+  );
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
 
       {/* Header banner */}
-      <div style={{ position: 'relative', background: '#111111', border: `1px solid ${cfg.border}`, borderRadius: '0.25rem', overflow: 'hidden', padding: '1.5rem' }}>
-        <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(135deg, ${cfg.color}08 0%, transparent 60%)`, pointerEvents: 'none' }} />
+      <div style={{
+        ...glassCard,
+        overflow: 'hidden',
+        padding: '1.5rem',
+        boxShadow: `0 0 40px rgba(172,0,239,0.12), 0 0 80px rgba(172,0,239,0.05)`,
+      }}>
+        {shimmerLine}
+        {/* Purple top accent stripe */}
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'linear-gradient(90deg, #7B00AC, #AC00EF, #C020FF)', opacity: 0.9 }} />
+        {/* Radial purple glow behind content */}
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 60% 80% at 85% 50%, rgba(172,0,239,0.08) 0%, transparent 70%)', pointerEvents: 'none' }} />
         <div style={{ position: 'relative', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1.5rem' }}>
           <div>
-            <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: cfg.color, marginBottom: '0.375rem' }}>
+            <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: '#AC00EF', marginBottom: '0.375rem' }}>
               EU Deforestation Regulation (EUDR) — Regulation EU 2023/1115
             </div>
             <h1 style={{ fontFamily: "'Georgia', serif", fontWeight: 300, fontSize: 'var(--fs-h1)', color: '#fff', marginBottom: '0.25rem' }}>
@@ -114,23 +138,38 @@ export default function Screen8Eudr({ companyId, companyOverride }) {
         </div>
       </div>
 
-      {/* Countdown + Operator Classification */}
+      {/* Countdown + Operator Classification + Supply Chain */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
 
         {/* Countdown */}
-        <div style={{ background: daysLeft < 200 ? '#0A0A0A' : '#0A0A0A', border: `1px solid ${daysLeft < 200 ? '#FF444430' : '#2E2E2E'}`, borderRadius: '0.25rem', padding: '1.25rem', textAlign: 'center' }}>
-          <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: daysLeft < 200 ? '#FF4444' : '#444', marginBottom: '0.5rem' }}>Days to Deadline</div>
-          <div className="data-mono" style={{ fontSize: '3.5rem', fontWeight: 700, color: daysLeft < 200 ? '#FF4444' : '#fff', lineHeight: 1 }}>{daysLeft}</div>
-          <div style={{ fontSize: 'var(--fs-label)', color: '#444', marginTop: '0.5rem' }}>{largeOp ? '30 Dec 2026' : '30 Jun 2027'} (second delay — Reg EU 2024/3234)</div>
-          <div style={{ height: '3px', background: '#1E1E1E', borderRadius: '2px', marginTop: '0.75rem', overflow: 'hidden' }}>
-            <div style={{ height: '100%', width: `${Math.min(100, ((270 - daysLeft) / 270) * 100)}%`, background: daysLeft < 200 ? 'linear-gradient(90deg, #FF4444, #FF4444)' : 'linear-gradient(90deg, #00C896, #AC00EF)', borderRadius: '2px', transition: 'width 0.5s' }} />
+        <div style={{
+          ...glassCard,
+          padding: '1.25rem',
+          textAlign: 'center',
+          boxShadow: daysLeft < 200 ? '0 0 32px rgba(255,68,68,0.12)' : '0 0 32px rgba(0,200,150,0.08)',
+          borderColor: daysLeft < 200 ? 'rgba(255,68,68,0.2)' : 'rgba(0,200,150,0.15)',
+        }}>
+          {shimmerLine}
+          <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: daysLeft < 200 ? '#FF4444' : '#00C896', marginBottom: '0.5rem' }}>Days to Deadline</div>
+          <div className="data-mono" style={{ fontSize: '3.5rem', fontWeight: 700, color: daysLeft < 200 ? '#FF4444' : '#00C896', lineHeight: 1 }}>{daysLeft}</div>
+          <div style={{ fontSize: 'var(--fs-label)', color: '#555', marginTop: '0.5rem' }}>{largeOp ? '30 Dec 2026' : '30 Jun 2027'} (second delay — Reg EU 2024/3234)</div>
+          <div style={{ height: 4, background: 'rgba(255,255,255,0.06)', borderRadius: '2px', marginTop: '0.75rem', overflow: 'hidden' }}>
+            <div style={{ height: '100%', width: `${Math.min(100, ((270 - daysLeft) / 270) * 100)}%`, background: daysLeft < 200 ? 'linear-gradient(90deg, #FF4444, #FF7777)' : 'linear-gradient(90deg, #7B00AC, #AC00EF)', borderRadius: '2px', transition: 'width 0.5s', boxShadow: daysLeft < 200 ? '0 0 8px #FF444480' : '0 0 8px #AC00EF60' }} />
           </div>
-          <div style={{ fontSize: 'var(--fs-label)', color: '#2E2E2E', marginTop: '0.25rem' }}>Compliance window consumed</div>
+          <div style={{ fontSize: 'var(--fs-label)', color: '#444', marginTop: '0.25rem' }}>Compliance window consumed</div>
         </div>
 
         {/* Operator classification */}
-        <div style={{ background: '#111111', border: '1px solid #2E2E2E', borderRadius: '0.25rem', padding: '1.25rem' }}>
-          <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#fff', marginBottom: '0.75rem' }}>Operator Classification</div>
+        <div style={{
+          ...glassCard,
+          padding: '1.25rem',
+          boxShadow: '0 0 32px rgba(172,0,239,0.08)',
+        }}>
+          {shimmerLine}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
+            <div style={{ width: 3, height: 14, borderRadius: 2, background: 'linear-gradient(180deg, #AC00EF, #7B00AC)', flexShrink: 0 }} />
+            <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#AC00EF' }}>Operator Classification</div>
+          </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             {[
               { label: 'Operator type', val: largeOp ? 'Large Operator' : 'SME (Simplified)', color: largeOp ? '#FF4444' : '#00C896' },
@@ -138,7 +177,7 @@ export default function Screen8Eudr({ companyId, companyOverride }) {
               { label: 'Revenue', val: company.revenue >= 1_000_000 ? `€${(company.revenue/1_000_000).toFixed(0)}M` : '—', color: '#fff' },
               { label: 'Due diligence', val: largeOp ? 'Full (Art. 4)' : 'Simplified (Art. 13)', color: largeOp ? '#FF4444' : '#00C896' },
             ].map(({ label, val, color }) => (
-              <div key={label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div key={label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.3rem 0', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
                 <span style={{ fontSize: 'var(--fs-micro)', color: '#555' }}>{label}</span>
                 <span className="data-mono" style={{ fontSize: 'var(--fs-sm)', fontWeight: 600, color }}>{val}</span>
               </div>
@@ -147,8 +186,17 @@ export default function Screen8Eudr({ companyId, companyOverride }) {
         </div>
 
         {/* Supply chain audit coverage */}
-        <div style={{ background: '#111111', border: '1px solid #2E2E2E', borderRadius: '0.25rem', padding: '1.25rem' }}>
-          <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#fff', marginBottom: '0.75rem' }}>Supply Chain Traceability</div>
+        <div style={{
+          ...glassCard,
+          padding: '1.25rem',
+          boxShadow: auditPct >= 60 ? '0 0 32px rgba(0,200,150,0.08)' : '0 0 32px rgba(255,68,68,0.10)',
+          borderColor: auditPct >= 60 ? 'rgba(0,200,150,0.15)' : 'rgba(255,68,68,0.18)',
+        }}>
+          {shimmerLine}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
+            <div style={{ width: 3, height: 14, borderRadius: 2, background: auditPct >= 60 ? '#00C896' : '#FF4444', flexShrink: 0 }} />
+            <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: auditPct >= 60 ? '#00C896' : '#FF4444' }}>Supply Chain Traceability</div>
+          </div>
           {auditData?.available ? (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -159,8 +207,8 @@ export default function Screen8Eudr({ companyId, companyOverride }) {
                 <span style={{ fontSize: 'var(--fs-micro)', color: '#555' }}>Audit coverage</span>
                 <span className="data-mono" style={{ fontSize: 'var(--fs-sm)', fontWeight: 600, color: auditPct >= 60 ? '#00C896' : '#FF4444' }}>{auditPct.toFixed(0)}%</span>
               </div>
-              <div style={{ height: '3px', background: '#1E1E1E', borderRadius: '2px' }}>
-                <div style={{ height: '100%', width: `${auditPct}%`, background: auditPct >= 60 ? '#00C896' : '#FF4444', borderRadius: '2px' }} />
+              <div style={{ height: 4, background: 'rgba(255,255,255,0.06)', borderRadius: '2px' }}>
+                <div style={{ height: '100%', width: `${auditPct}%`, background: auditPct >= 60 ? '#00C896' : '#FF4444', borderRadius: '2px', boxShadow: auditPct >= 60 ? '0 0 6px #00C89660' : '0 0 6px #FF444460' }} />
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span style={{ fontSize: 'var(--fs-micro)', color: '#555' }}>EUDR gap (untraced)</span>
@@ -177,24 +225,38 @@ export default function Screen8Eudr({ companyId, companyOverride }) {
       </div>
 
       {/* Forest-risk Commodity Exposure */}
-      <div style={{ background: '#111111', border: '1px solid #2E2E2E', borderRadius: '0.25rem', padding: '1.25rem' }}>
-        <div style={{ fontSize: 'var(--fs-label)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#fff', marginBottom: '0.75rem' }}>
-          Forest-Risk Commodity Exposure
+      <div style={{
+        ...glassCard,
+        padding: '1.25rem',
+        boxShadow: '0 0 32px rgba(172,0,239,0.08)',
+      }}>
+        {shimmerLine}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.875rem' }}>
+          <div style={{ width: 3, height: 14, borderRadius: 2, background: 'linear-gradient(180deg, #AC00EF, #7B00AC)', flexShrink: 0 }} />
+          <div style={{ fontSize: 'var(--fs-label)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#AC00EF' }}>
+            Forest-Risk Commodity Exposure
+          </div>
         </div>
         {commodities.length === 0 ? (
           <div style={{ padding: '0.75rem', background: '#00C8960D', border: '1px solid #00C89630', borderRadius: '2px', fontSize: 'var(--fs-sm)', color: '#00C896', fontWeight: 500 }}>
             No forest-risk commodity exposure detected based on geography and sector — EUDR obligation low. Confirm with procurement team.
           </div>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(9rem, 1fr))', gap: '0.625rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '0.625rem' }}>
             {COMMODITIES.map(c => {
               const hit = commodities.some(a => a.id === c.id);
               return (
-                <div key={c.id} style={{ background: hit ? '#FF44440D' : '#0A0A0A', border: `1px solid ${hit ? '#FF444430' : '#1A1A1A'}`, borderRadius: '0.25rem', padding: '0.625rem 0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem', opacity: hit ? 1 : 0.35 }}>
-                  <span style={{ fontSize: 'var(--fs-h2)' }}>{c.icon}</span>
-                  <div>
-                    <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 600, color: hit ? '#FF4444' : '#444' }}>{c.label}</div>
-                    <div style={{ fontSize: 'var(--fs-label)', color: hit ? '#FF444480' : '#2E2E2E', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{hit ? 'At risk' : 'Not detected'}</div>
+                <div key={c.id} style={{ border: `1px solid ${hit ? 'rgba(172,0,239,0.35)' : 'rgba(255,255,255,0.06)'}`, borderRadius: '0.375rem', overflow: 'hidden', opacity: hit ? 1 : 0.4, position: 'relative', boxShadow: hit ? '0 0 12px rgba(172,0,239,0.15)' : 'none' }}>
+                  <div style={{ width: '100%', aspectRatio: '16/9', overflow: 'hidden', position: 'relative', background: '#060606' }}>
+                    <img src={c.img} alt={c.label} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', filter: hit ? 'brightness(0.92) saturate(1.1)' : 'grayscale(90%) brightness(0.35)' }} />
+                    {/* gradient overlay — dark at bottom only, no colour tint */}
+                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 45%, rgba(0,0,0,0.82) 100%)' }} />
+                    {/* shimmer top for hit cards */}
+                    {hit && <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: 'linear-gradient(90deg, transparent, rgba(172,0,239,0.7), transparent)' }} />}
+                    <div style={{ position: 'absolute', bottom: '0.35rem', left: '0.4rem', right: '0.4rem' }}>
+                      <div style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: hit ? '#fff' : '#555', lineHeight: 1.2, textShadow: '0 1px 4px rgba(0,0,0,0.9)' }}>{c.label}</div>
+                      <div style={{ fontSize: 'var(--fs-label)', color: hit ? '#CC88FF' : '#333', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{hit ? 'At risk' : 'Not detected'}</div>
+                    </div>
                   </div>
                 </div>
               );
@@ -204,10 +266,18 @@ export default function Screen8Eudr({ companyId, companyOverride }) {
       </div>
 
       {/* Due Diligence Checklist */}
-      <div style={{ background: '#111111', border: '1px solid #2E2E2E', borderRadius: '0.25rem', overflow: 'hidden' }}>
-        <div style={{ padding: '0.875rem 1.25rem', borderBottom: '1px solid #1E1E1E', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ fontSize: 'var(--fs-label)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#fff' }}>EUDR Due Diligence Checklist</div>
-          <div style={{ fontSize: 'var(--fs-micro)', color: '#444' }}>Article 8 — Regulation EU 2023/1115</div>
+      <div style={{
+        ...glassCard,
+        overflow: 'hidden',
+        boxShadow: '0 0 32px rgba(172,0,239,0.07)',
+      }}>
+        {shimmerLine}
+        <div style={{ padding: '0.875rem 1.25rem', borderBottom: '1px solid rgba(255,255,255,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <div style={{ width: 3, height: 14, borderRadius: 2, background: 'linear-gradient(180deg, #AC00EF, #7B00AC)', flexShrink: 0 }} />
+            <div style={{ fontSize: 'var(--fs-label)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#AC00EF' }}>EUDR Due Diligence Checklist</div>
+          </div>
+          <div style={{ fontSize: 'var(--fs-micro)', color: '#555' }}>Article 8 — Regulation EU 2023/1115</div>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           {DUE_DILIGENCE_REQUIREMENTS.map((req, i) => {
@@ -225,7 +295,7 @@ export default function Screen8Eudr({ companyId, companyOverride }) {
             const statusLabel = isDone ? 'Complete' : 'Gap';
 
             return (
-              <div key={req.id} style={{ display: 'grid', gridTemplateColumns: '3rem 1fr auto', gap: '0.75rem', padding: '0.75rem 1.25rem', borderTop: i > 0 ? '1px solid #1A1A1A' : 'none', alignItems: 'flex-start' }}>
+              <div key={req.id} style={{ display: 'grid', gridTemplateColumns: '3rem 1fr auto', gap: '0.75rem', padding: '0.75rem 1.25rem', borderTop: i > 0 ? '1px solid rgba(255,255,255,0.04)' : 'none', alignItems: 'flex-start' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <span style={{ fontSize: '1rem', color: statusColor, fontWeight: 700 }}>{isDone ? '✓' : '✗'}</span>
                 </div>
@@ -245,15 +315,24 @@ export default function Screen8Eudr({ companyId, companyOverride }) {
       </div>
 
       {/* Recommended 9-Month Sprint */}
-      <div style={{ background: '#0A0A0A', border: '1px solid #AC00EF25', borderRadius: '0.25rem', overflow: 'hidden' }}>
-        <div style={{ padding: '0.875rem 1.25rem', borderBottom: '1px solid #AC00EF20' }}>
-          <div style={{ fontSize: 'var(--fs-label)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#AC00EF' }}>Recommended Compliance Sprint — 9 Months to Dec 2026</div>
+      <div style={{
+        ...glassCard,
+        overflow: 'hidden',
+        boxShadow: '0 0 32px rgba(172,0,239,0.07)',
+      }}>
+        {shimmerLine}
+        <div style={{ padding: '0.875rem 1.25rem', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <div style={{ width: 3, height: 14, borderRadius: 2, background: 'linear-gradient(180deg, #AC00EF, #7B00AC)', flexShrink: 0 }} />
+            <div style={{ fontSize: 'var(--fs-label)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#AC00EF' }}>Recommended Compliance Sprint — 9 Months to Dec 2026</div>
+          </div>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 0 }}>
           {[
             {
               phase: 'Phase 1 — Now → Month 3',
               color: '#FF4444',
+              gradStart: 'rgba(255,68,68,0.08)',
               items: [
                 'Engage EUDR specialist (Sourcemap, Proforest, Rainforest Alliance)',
                 'Map all forest-risk commodities in supply chain by product category',
@@ -262,7 +341,8 @@ export default function Screen8Eudr({ companyId, companyOverride }) {
             },
             {
               phase: 'Phase 2 — Month 3 → Month 6',
-              color: '#888888',
+              color: '#AC00EF',
+              gradStart: 'rgba(172,0,239,0.08)',
               items: [
                 'Collect geographic coordinates (GPS / plot-level) from all Tier 1 suppliers',
                 'Conduct risk assessment per commodity per country using EC benchmark list',
@@ -272,6 +352,7 @@ export default function Screen8Eudr({ companyId, companyOverride }) {
             {
               phase: 'Phase 3 — Month 6 → Dec 2026',
               color: '#00C896',
+              gradStart: 'rgba(0,200,150,0.08)',
               items: [
                 'Submit due diligence statements via EUDR Information System',
                 'Implement annual review protocol and 5-year record keeping',
@@ -279,8 +360,11 @@ export default function Screen8Eudr({ companyId, companyOverride }) {
               ]
             },
           ].map((phase, i) => (
-            <div key={phase.phase} style={{ padding: '1rem 1.25rem', borderRight: i < 2 ? '1px solid #AC00EF15' : 'none' }}>
-              <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: phase.color, marginBottom: '0.625rem' }}>{phase.phase}</div>
+            <div key={phase.phase} style={{ padding: '1rem 1.25rem', borderRight: i < 2 ? '1px solid rgba(255,255,255,0.05)' : 'none', background: `linear-gradient(180deg, ${phase.gradStart} 0%, transparent 60%)` }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', marginBottom: '0.625rem' }}>
+                <div style={{ width: 2, height: 12, borderRadius: 2, background: phase.color, flexShrink: 0 }} />
+                <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: phase.color }}>{phase.phase}</div>
+              </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                 {phase.items.map((item, j) => (
                   <div key={j} style={{ display: 'flex', gap: '0.5rem', alignItems: 'flex-start' }}>
@@ -292,7 +376,7 @@ export default function Screen8Eudr({ companyId, companyOverride }) {
             </div>
           ))}
         </div>
-        <div style={{ padding: '0.625rem 1.25rem', borderTop: '1px solid #AC00EF15', fontSize: 'var(--fs-micro)', color: '#444444' }}>
+        <div style={{ padding: '0.625rem 1.25rem', borderTop: '1px solid rgba(255,255,255,0.05)', fontSize: 'var(--fs-micro)', color: '#555' }}>
           Penalty: up to 4% EU-wide annual turnover + product confiscation + temporary market access ban (Article 25, Regulation EU 2023/1115)
         </div>
       </div>

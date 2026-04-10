@@ -147,10 +147,12 @@ export default function App() {
   const [greenwashResults, setGreenwashResults] = useState(() => { try { return JSON.parse(localStorage.getItem('esg-greenwash') ?? '{}'); } catch { return {}; } });
   const [customCompany,    setCustomCompany]    = useState(null);
   const [showForm,         setShowForm]         = useState(false);
-  const [runTriggers,      setRunTriggers]      = useState({ analyze: 0, predict: 0, sfdr: 0, map: 0, greenwash: 0 });
+  const [runTriggers,      setRunTriggers]      = useState(() => { try { const s = JSON.parse(localStorage.getItem('esg-run-triggers') ?? '{}'); return { analyze: s.analyze ?? 0, predict: s.predict ?? 0, sfdr: s.sfdr ?? 0, map: s.map ?? 0, greenwash: s.greenwash ?? 0 }; } catch { return { analyze: 0, predict: 0, sfdr: 0, map: 0, greenwash: 0 }; } });
   const [runAllActive,     setRunAllActive]     = useState(false);
-  const runAllRef = useRef(false);
+  const runAllRef     = useRef(false);
+  const runAllStepRef = useRef(null); // which step RunAll is currently waiting on
 
+  useEffect(() => { try { localStorage.setItem('esg-run-triggers', JSON.stringify(runTriggers)); } catch {} }, [runTriggers]);
   useEffect(() => { try { localStorage.setItem('esg-analyze',   JSON.stringify(analyzeResults));   } catch {} }, [analyzeResults]);
   useEffect(() => { try { localStorage.setItem('esg-predict',   JSON.stringify(predictResults));   } catch {} }, [predictResults]);
   useEffect(() => { try { localStorage.setItem('esg-sfdr',      JSON.stringify(sfdrResults));      } catch {} }, [sfdrResults]);
@@ -161,47 +163,57 @@ export default function App() {
   const activeKey     = companyId === CUSTOM_ID ? `custom-${customCompany?.name ?? ''}` : companyId;
 
   // ── Run All Analyses ──────────────────────────────────────────────────────
+  // runAllStepRef tracks which step we're *currently waiting on*.
+  // Each handler only advances RunAll once — if it fires again (stale async
+  // closure, duplicate SSE event, etc.) the step guard prevents re-advancing.
   function startRunAll() {
-    runAllRef.current = true;
+    runAllRef.current     = true;
+    runAllStepRef.current = 'analyze';
     setRunAllActive(true);
     setScreen('analyze');
     setRunTriggers(t => ({ ...t, analyze: t.analyze + 1 }));
   }
 
   function handleAnalyzeResult(r) {
-    setAnalyzeResults(p => ({ ...p, [activeKey]: r }));
-    if (!runAllRef.current) return;
+    setAnalyzeResults(p => ({ ...p, [activeKey]: { ...r, _runTrigger: runTriggers.analyze } }));
+    if (!runAllRef.current || runAllStepRef.current !== 'analyze') return;
+    runAllStepRef.current = 'predict';
     setScreen('predict');
     setRunTriggers(t => ({ ...t, predict: t.predict + 1 }));
   }
   function handlePredictResult(r) {
-    setPredictResults(p => ({ ...p, [activeKey]: r }));
-    if (!runAllRef.current) return;
+    setPredictResults(p => ({ ...p, [activeKey]: { ...r, _runTrigger: runTriggers.predict } }));
+    if (!runAllRef.current || runAllStepRef.current !== 'predict') return;
+    runAllStepRef.current = 'sfdr';
     setScreen('sfdr');
     setRunTriggers(t => ({ ...t, sfdr: t.sfdr + 1 }));
   }
   function handleSfdrResult(r) {
-    setSfdrResults(p => ({ ...p, [activeKey]: r }));
-    if (!runAllRef.current) return;
+    setSfdrResults(p => ({ ...p, [activeKey]: { ...r, _runTrigger: runTriggers.sfdr } }));
+    if (!runAllRef.current || runAllStepRef.current !== 'sfdr') return;
+    runAllStepRef.current = 'map';
     setScreen('map');
     setRunTriggers(t => ({ ...t, map: t.map + 1 }));
   }
   function handleMapResult(r) {
-    setMapResults(p => ({ ...p, [activeKey]: r }));
-    if (!runAllRef.current) return;
+    setMapResults(p => ({ ...p, [activeKey]: { ...r, _runTrigger: runTriggers.map } }));
+    if (!runAllRef.current || runAllStepRef.current !== 'map') return;
+    runAllStepRef.current = 'greenwash';
     setScreen('greenwash');
     setRunTriggers(t => ({ ...t, greenwash: t.greenwash + 1 }));
   }
   function handleGreenwashResult(r) {
-    setGreenwashResults(p => ({ ...p, [activeKey]: r }));
-    if (!runAllRef.current) return;
-    runAllRef.current = false;
+    setGreenwashResults(p => ({ ...p, [activeKey]: { ...r, _runTrigger: runTriggers.greenwash } }));
+    if (!runAllRef.current || runAllStepRef.current !== 'greenwash') return;
+    runAllRef.current     = false;
+    runAllStepRef.current = null;
     setRunAllActive(false);
     setScreen('ic-memo');
   }
 
   function resetResults() {
-    runAllRef.current = false;
+    runAllRef.current     = false;
+    runAllStepRef.current = null;
     setRunAllActive(false);
     setAnalyzeResults(p   => { const n = { ...p }; delete n[activeKey]; return n; });
     setPredictResults(p   => { const n = { ...p }; delete n[activeKey]; return n; });
@@ -284,7 +296,7 @@ export default function App() {
                   <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#AC00EF', display: 'inline-block', animation: 'pulse-dot 1.4s ease-in-out infinite' }} />
                   Running…
                 </>
-              ) : <>⚡ Run All</>}
+              ) : <> Run All</>}
             </button>
 
             {doneCount > 0 && !runAllActive && (
@@ -438,13 +450,13 @@ export default function App() {
       {/* ── Content ── */}
       <main style={{ maxWidth: '1440px', margin: '0 auto', padding: '2rem' }}>
         <div key={`${screen}-${activeKey}`} className="screen-enter">
-          {screen === 'analyze'   && <Screen1Analyze   key={`analyze-${activeKey}`}   companyId={companyId} companyOverride={activeCompany} runTrigger={runTriggers.analyze}   onResult={handleAnalyzeResult} />}
-          {screen === 'predict'   && <Screen2Predict   key={`predict-${activeKey}`}   companyId={companyId} companyOverride={activeCompany} runTrigger={runTriggers.predict}   screen1Result={analyzeResults[activeKey]} onResult={handlePredictResult} />}
-          {screen === 'map'       && <Screen3Map       key={`map-${activeKey}`}       companyId={companyId} companyOverride={activeCompany} runTrigger={runTriggers.map}       screen1Result={analyzeResults[activeKey]} onResult={handleMapResult} />}
-          {screen === 'sfdr'      && <Screen4Sfdr      key={`sfdr-${activeKey}`}      companyId={companyId} companyOverride={activeCompany} runTrigger={runTriggers.sfdr}      screen1Result={analyzeResults[activeKey]} onResult={handleSfdrResult} />}
+          {screen === 'analyze'   && <Screen1Analyze   key={`analyze-${activeKey}`}   companyId={companyId} companyOverride={activeCompany} runTrigger={runTriggers.analyze}   onResult={handleAnalyzeResult}   cachedResult={analyzeResults[activeKey]} />}
+          {screen === 'predict'   && <Screen2Predict   key={`predict-${activeKey}`}   companyId={companyId} companyOverride={activeCompany} runTrigger={runTriggers.predict}   screen1Result={analyzeResults[activeKey]} onResult={handlePredictResult}   cachedResult={predictResults[activeKey]} />}
+          {screen === 'map'       && <Screen3Map       key={`map-${activeKey}`}       companyId={companyId} companyOverride={activeCompany} runTrigger={runTriggers.map}       screen1Result={analyzeResults[activeKey]} onResult={handleMapResult}       cachedResult={mapResults[activeKey]} />}
+          {screen === 'sfdr'      && <Screen4Sfdr      key={`sfdr-${activeKey}`}      companyId={companyId} companyOverride={activeCompany} runTrigger={runTriggers.sfdr}      screen1Result={analyzeResults[activeKey]} onResult={handleSfdrResult}      cachedResult={sfdrResults[activeKey]} />}
           {screen === 'portfolio' && <Screen5Portfolio key="portfolio" />}
           {screen === 'ic-memo'   && <Screen6IcMemo   key={`ic-${activeKey}`}        companyId={companyId} companyOverride={activeCompany} analyzeResult={analyzeResults[activeKey]} predictResult={predictResults[activeKey]} sfdrResult={sfdrResults[activeKey]} />}
-          {screen === 'greenwash' && <Screen7Greenwash key={`gw-${activeKey}`}        companyId={companyId} companyOverride={activeCompany} runTrigger={runTriggers.greenwash} screen1Result={analyzeResults[activeKey]} onResult={handleGreenwashResult} />}
+          {screen === 'greenwash' && <Screen7Greenwash key={`gw-${activeKey}`}        companyId={companyId} companyOverride={activeCompany} runTrigger={runTriggers.greenwash} screen1Result={analyzeResults[activeKey]} onResult={handleGreenwashResult} cachedResult={greenwashResults[activeKey]} />}
           {screen === 'eudr'      && <Screen8Eudr      key={`eudr-${activeKey}`}       companyId={companyId} companyOverride={activeCompany} />}
         </div>
       </main>

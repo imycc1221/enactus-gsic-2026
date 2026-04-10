@@ -17,7 +17,7 @@ export default async function handler(req, res) {
   const baseMeta = {
     model: 'claude-sonnet-4-6',
     tool: predictToolSchema.name,
-    timestamp: new Date().toISOString(),
+    generatedAt: new Date().toISOString(),
     systemPrompt,
     userPrompt,
     screen1ContextInjected: !!_screen1Result,
@@ -27,7 +27,8 @@ export default async function handler(req, res) {
   const cached = getCachedResponse(company.id, 'predict');
   if (cached) {
     await simulateThinking();
-    return res.json({ ...cached, _source: 'cached', _meta: { ...baseMeta, cached: true } });
+    const cachedGeneratedAt = cached._meta?.generatedAt ?? baseMeta.generatedAt;
+    return res.json({ ...cached, _source: 'cached', _meta: { ...baseMeta, generatedAt: cachedGeneratedAt, cached: true } });
   }
 
   // ── Live fallback ──────────────────────────────────────────────────────────

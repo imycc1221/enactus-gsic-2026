@@ -3,6 +3,7 @@ import AgentStatus from '../components/AgentStatus.jsx';
 import ReasoningDrawer from '../components/ReasoningDrawer.jsx';
 import RaiPanel from '../components/RaiPanel.jsx';
 import { COMPANY_MAP } from '../data/companies.js';
+import { richText } from '../utils/richText.js';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
@@ -17,13 +18,13 @@ const STEPS = [
 
 const ARTICLE_CONFIG = {
   'Article 6': { color: '#FF4444', bg: '#FF444412', border: '#FF444440', label: 'No ESG Claim',         short: '6' },
-  'Article 8': { color: '#AC00EF', bg: '#AC00EF12', border: '#AC00EF40', label: 'Promotes E/S Chars',   short: '8' },
+  'Article 8': { color: '#01c9cc', bg: '#01c9cc12', border: '#01c9cc40', label: 'Promotes E/S Chars',   short: '8' },
   'Article 9': { color: '#00C896', bg: '#00C89612', border: '#00C89640', label: 'Sustainable Objective', short: '9' },
 };
 
 const SFDR2_CONFIG = {
   'Sustainable':      { color: '#00C896', bg: '#00C89612', border: '#00C89640', icon: '●●●', desc: 'Full sustainable objective'   },
-  'Transition':       { color: '#AC00EF', bg: '#AC00EF12', border: '#AC00EF40', icon: '●●○', desc: '1.5°C transition pathway'     },
+  'Transition':       { color: '#01c9cc', bg: '#01c9cc12', border: '#01c9cc40', icon: '●●○', desc: '1.5°C transition pathway'     },
   'ESG Basics':       { color: '#888888', bg: '#88888812', border: '#88888840', icon: '●○○', desc: 'Baseline exclusions floor'    },
   'Non-categorised':  { color: '#FF4444', bg: '#FF444412', border: '#FF444440', icon: '○○○', desc: 'No ESG claims permitted'      },
 };
@@ -61,16 +62,20 @@ const CONF_CONFIG = {
 
 function Card({ children, style = {}, className = '' }) {
   return (
-    <div className={`card-hover ${className}`} style={{ background: '#111111', border: '1px solid #2E2E2E', borderRadius: '0.25rem', padding: '1.25rem', ...style }}>
+    <div className={`card-hover ${className}`} style={{ background: '#0d0d0d', border: '1px solid #1a1a2e', borderRadius: '0.5rem', padding: '1.25rem', ...style }}>
       {children}
     </div>
   );
 }
 
-function SectionLabel({ children, style = {} }) {
+function SectionLabel({ children, color, style = {} }) {
+  const c = color ?? '#01c9cc';
   return (
-    <div style={{ fontSize: 'var(--fs-label)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#fff', marginBottom: '0.75rem', ...style }}>
-      {children}
+    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem', ...style }}>
+      <div style={{ width: 3, height: 14, borderRadius: 2, background: `linear-gradient(180deg, ${c}, #9764ff)`, flexShrink: 0 }} />
+      <div style={{ fontSize: 'var(--fs-label)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: c }}>
+        {children}
+      </div>
     </div>
   );
 }
@@ -84,19 +89,19 @@ function CopyButton({ text }) {
     });
   }
   return (
-    <button onClick={copy} style={{ background: 'none', border: '1px solid #2E2E2E', borderRadius: '0.25rem', color: copied ? '#00C896' : '#555', fontSize: 'var(--fs-micro)', padding: '0.25rem 0.625rem', cursor: 'pointer', transition: 'color 200ms' }}>
+    <button onClick={copy} style={{ background: 'none', border: '1px solid #1a1a2e', borderRadius: '0.5rem', color: copied ? '#00C896' : '#555', fontSize: 'var(--fs-micro)', padding: '0.25rem 0.625rem', cursor: 'pointer', transition: 'color 200ms' }}>
       {copied ? '✓ Copied' : 'Copy'}
     </button>
   );
 }
 
-export default function Screen4Sfdr({ companyId, companyOverride, screen1Result, onResult, runTrigger = 0 }) {
-  const [agentStatus, setAgentStatus] = useState('idle');
-  const [data,        setData]        = useState(null);
+export default function Screen4Sfdr({ companyId, companyOverride, screen1Result, onResult, runTrigger = 0, cachedResult }) {
+  const [agentStatus, setAgentStatus] = useState(() => cachedResult ? 'complete' : 'idle');
+  const [data,        setData]        = useState(() => cachedResult ?? null);
   const [error,       setError]       = useState(null);
   const [meta,        setMeta]        = useState(null);
 
-  const prevTrigger = useRef(0);
+  const prevTrigger = useRef(cachedResult?._runTrigger ?? 0);
   useEffect(() => {
     if (runTrigger > prevTrigger.current) {
       prevTrigger.current = runTrigger;
@@ -134,15 +139,20 @@ export default function Screen4Sfdr({ companyId, companyOverride, screen1Result,
   return (
     <div>
       {/* Banner */}
-      <div style={{ position: 'relative', borderRadius: '0.25rem', overflow: 'hidden', marginBottom: '1.5rem', background: '#000000', backgroundImage: `url(/images/${companyId}-banner.jpg)`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+      <div style={{ position: 'relative', borderRadius: '0.5rem', overflow: 'hidden', marginBottom: '1.5rem', background: '#000000', backgroundImage: `url(/images/${companyId}-banner.jpg)`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'linear-gradient(90deg, #FF99C9, #926EF7 50%, #6EEEF7)', zIndex: 1 }} />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(0,0,0,0.95) 50%, rgba(0,0,0,0.6))' }} />
+        {data && <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 60% 80% at 80% 50%, rgba(1,201,204,0.06) 0%, transparent 70%)', pointerEvents: 'none' }} />}
         <div style={{ position: 'relative', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1.5rem', padding: '1.5rem' }}>
           <div>
+            <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: '#01c9cc', marginBottom: '0.375rem' }}>
+              SFDR Article Classification · Regulation (EU) 2019/2088
+            </div>
             <h1 style={{ fontFamily: "'Georgia', serif", fontWeight: 300, fontSize: 'var(--fs-h1)', color: '#fff', marginBottom: '0.25rem', letterSpacing: '-0.01em' }}>
               {company.name}
             </h1>
             <p style={{ fontSize: 'var(--fs-sm)', color: '#787878' }}>
-              {company.geography} · SFDR Article Classification · Regulation (EU) 2019/2088
+              {company.geography} · Sustainable Finance Disclosure Regulation · Article 6 / 8 / 9
             </p>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexShrink: 0 }}>
@@ -193,7 +203,7 @@ export default function Screen4Sfdr({ companyId, companyOverride, screen1Result,
       )}
 
       {error && (
-        <div style={{ background: '#FF444410', border: '1px solid #FF444440', borderRadius: '0.25rem', padding: '1rem', color: '#FF4444', fontSize: 'var(--fs-sm)', marginBottom: '1.5rem' }}>
+        <div style={{ background: '#FF444410', border: '1px solid #FF444440', borderRadius: '0.5rem', padding: '1rem', color: '#FF4444', fontSize: 'var(--fs-sm)', marginBottom: '1.5rem' }}>
           {error}
         </div>
       )}
@@ -245,11 +255,11 @@ export default function Screen4Sfdr({ companyId, companyOverride, screen1Result,
                 {data.qualifyingFactors?.map((f, i) => {
                   const s = STATUS_CONFIG[f.status] ?? STATUS_CONFIG.partial;
                   return (
-                    <div key={i} style={{ display: 'grid', gridTemplateColumns: '1.5rem 1fr', gap: '0.75rem', alignItems: 'start', padding: '0.625rem 0.75rem', background: `${s.color}08`, border: `1px solid ${s.color}25`, borderRadius: '0.25rem' }}>
+                    <div key={i} style={{ display: 'grid', gridTemplateColumns: '1.5rem 1fr', gap: '0.75rem', alignItems: 'start', padding: '0.625rem 0.75rem', background: `${s.color}08`, border: `1px solid ${s.color}25`, borderRadius: '0.5rem' }}>
                       <span style={{ fontSize: 'var(--fs-sm)', color: s.color, fontWeight: 700, textAlign: 'center', paddingTop: '0.1rem' }}>{s.icon}</span>
                       <div>
-                        <div style={{ fontSize: 'var(--fs-sm)', fontWeight: 600, color: '#fff', marginBottom: '0.2rem' }}>{f.factor}</div>
-                        <div style={{ fontSize: 'var(--fs-micro)', color: '#787878', lineHeight: 1.4 }}>{f.assessment}</div>
+                        <div style={{ fontSize: 'var(--fs-sm)', fontWeight: 600, color: '#fff', marginBottom: '0.2rem' }} dangerouslySetInnerHTML={{ __html: richText(f.factor) }} />
+                        <div style={{ fontSize: 'var(--fs-micro)', color: '#787878', lineHeight: 1.4 }} dangerouslySetInnerHTML={{ __html: richText(f.assessment) }} />
                       </div>
                     </div>
                   );
@@ -283,7 +293,7 @@ export default function Screen4Sfdr({ companyId, companyOverride, screen1Result,
           <div className="fade-up fade-up-3" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
 
             {/* Upgrade path */}
-            <Card style={{ borderLeft: '3px solid #AC00EF' }}>
+            <Card style={{ borderLeft: '3px solid #01c9cc' }}>
               <SectionLabel>Upgrade Pathway</SectionLabel>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
                 <div style={{ fontSize: 'var(--fs-sm)', fontWeight: 700, color: ARTICLE_CONFIG[data.upgradePath?.currentArticle]?.color ?? '#888888', background: `${ARTICLE_CONFIG[data.upgradePath?.currentArticle]?.color ?? '#888888'}15`, border: `1px solid ${ARTICLE_CONFIG[data.upgradePath?.currentArticle]?.color ?? '#888888'}40`, borderRadius: '999px', padding: '0.25rem 0.75rem' }}>
@@ -298,7 +308,7 @@ export default function Screen4Sfdr({ companyId, companyOverride, screen1Result,
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.375rem' }}>
                 {data.upgradePath?.requiredActions?.map((action, i) => (
                   <div key={i} style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start', fontSize: 'var(--fs-sm)', color: '#c8c8c4', lineHeight: 1.5 }}>
-                    <span style={{ color: '#AC00EF', fontWeight: 700, flexShrink: 0, fontSize: 'var(--fs-label)', marginTop: '0.15rem' }}>{i + 1}</span>
+                    <span style={{ color: '#01c9cc', fontWeight: 700, flexShrink: 0, fontSize: 'var(--fs-label)', marginTop: '0.15rem' }}>{i + 1}</span>
                     <span>{action}</span>
                   </div>
                 ))}
@@ -312,7 +322,7 @@ export default function Screen4Sfdr({ companyId, companyOverride, screen1Result,
                 {data.disclosureRequirements?.map((r, i) => {
                   const d = DISC_CONFIG[r.status] ?? DISC_CONFIG.missing;
                   return (
-                    <div key={i} style={{ background: '#0D0D0D', border: `1px solid ${d.color}25`, borderRadius: '0.25rem', padding: '0.625rem 0.875rem' }}>
+                    <div key={i} style={{ background: '#0D0D0D', border: `1px solid ${d.color}25`, borderRadius: '0.5rem', padding: '0.625rem 0.875rem' }}>
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.3rem' }}>
                         <div style={{ fontSize: 'var(--fs-sm)', fontWeight: 600, color: '#fff', flex: 1, marginRight: '0.75rem' }}>{r.requirement}</div>
                         <span style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, color: d.color, background: `${d.color}15`, border: `1px solid ${d.color}30`, borderRadius: '2px', padding: '0.15rem 0.375rem', textTransform: 'uppercase', letterSpacing: '0.06em', flexShrink: 0 }}>{d.label}</span>
@@ -327,7 +337,7 @@ export default function Screen4Sfdr({ companyId, companyOverride, screen1Result,
 
           {/* Row 4: LP narrative + Regulatory risk */}
           <div className="fade-up fade-up-4" style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1rem' }}>
-            <Card style={{ background: '#0A0A0A', border: `1px solid ${articleCfg.border}` }}>
+            <Card style={{ background: '#0a0a0f', border: `1px solid ${articleCfg.border}` }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
                 <SectionLabel style={{ color: articleCfg.color, marginBottom: 0 }}>LP-Ready Narrative</SectionLabel>
                 <CopyButton text={data.lpNarrative ?? ''} />
@@ -336,17 +346,17 @@ export default function Screen4Sfdr({ companyId, companyOverride, screen1Result,
                 {(data.lpNarrative ?? '').split(/(?<=[.!?])\s+/).filter(s => s.trim().length > 20).map((s, i) => (
                   <div key={i} style={{ display: 'flex', gap: '0.875rem', alignItems: 'flex-start' }}>
                     <span style={{ width: 4, height: 4, borderRadius: '50%', background: articleCfg.color, flexShrink: 0, marginTop: '0.55rem' }} />
-                    <span style={{ fontSize: 'var(--fs-sm)', color: '#c8c8c4', lineHeight: 1.7 }}>{s.trim()}</span>
+                    <span style={{ fontSize: 'var(--fs-sm)', color: '#c8c8c4', lineHeight: 1.7 }} dangerouslySetInnerHTML={{ __html: richText(s.trim()) }} />
                   </div>
                 ))}
               </div>
             </Card>
 
-            <Card style={{ background: '#0A0A0A', border: '1px solid #FF444433' }}>
+            <Card style={{ background: '#0a0a0f', border: '1px solid #FF444433' }}>
               <SectionLabel style={{ color: '#FF4444' }}>Regulatory Risk</SectionLabel>
-              <div style={{ fontSize: 'var(--fs-sm)', color: '#c8c8c4', lineHeight: 1.7 }}>
-                {data.regulatoryRisk}
-              </div>
+              <div style={{ fontSize: 'var(--fs-sm)', color: '#c8c8c4', lineHeight: 1.7 }}
+                dangerouslySetInnerHTML={{ __html: richText(data.regulatoryRisk) }}
+              />
             </Card>
           </div>
 
@@ -359,25 +369,25 @@ export default function Screen4Sfdr({ companyId, companyOverride, screen1Result,
             const thr    = s2.threshold70pct ?? {};
             const tax    = s2.taxonomyShortcut ?? {};
             return (
-              <div className="fade-up fade-up-5" style={{ border: '1px solid #AC00EF30', borderRadius: '0.25rem', overflow: 'hidden' }}>
+              <div className="fade-up fade-up-5" style={{ border: '1px solid #01c9cc30', borderRadius: '0.5rem', overflow: 'hidden' }}>
                 {/* Header bar */}
-                <div style={{ background: '#0A0A0A', borderBottom: '1px solid #AC00EF30', padding: '0.875rem 1.25rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                  <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#AC00EF', flexShrink: 0 }} />
-                  <span style={{ fontSize: 'var(--fs-label)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#AC00EF' }}>
+                <div style={{ background: '#0a0a0f', borderBottom: '1px solid #01c9cc30', padding: '0.875rem 1.25rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                  <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#01c9cc', flexShrink: 0 }} />
+                  <span style={{ fontSize: 'var(--fs-label)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#01c9cc' }}>
                     SFDR 2.0 Dual-Readiness
                   </span>
                   <span style={{ fontSize: 'var(--fs-micro)', color: '#444', marginLeft: '0.25rem' }}>EC Proposal Nov 2025 · Expected 2028–2029</span>
-                  <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '0.375rem', background: '#AC00EF10', border: '1px solid #AC00EF30', borderRadius: '999px', padding: '0.2rem 0.625rem' }}>
-                    <span style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, color: '#AC00EF', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Future-Proof Analysis</span>
+                  <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '0.375rem', background: '#01c9cc10', border: '1px solid #01c9cc30', borderRadius: '999px', padding: '0.2rem 0.625rem' }}>
+                    <span style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, color: '#01c9cc', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Future-Proof Analysis</span>
                   </div>
                 </div>
 
-                <div style={{ padding: '1.25rem', background: '#0A0A0A', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <div style={{ padding: '1.25rem', background: '#0a0a0f', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
 
                   {/* 1.0 → 2.0 comparison hero */}
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr', gap: '1rem', alignItems: 'center' }}>
                     {/* SFDR 1.0 */}
-                    <div style={{ background: articleCfg.bg, border: `1px solid ${articleCfg.border}`, borderRadius: '0.25rem', padding: '1rem', textAlign: 'center' }}>
+                    <div style={{ background: articleCfg.bg, border: `1px solid ${articleCfg.border}`, borderRadius: '0.5rem', padding: '1rem', textAlign: 'center' }}>
                       <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#555', marginBottom: '0.5rem' }}>SFDR 1.0 (Current)</div>
                       <div style={{ fontSize: '2.5rem', fontWeight: 700, color: articleCfg.color, lineHeight: 1, letterSpacing: '-0.03em', fontFamily: "'Georgia', serif" }}>
                         {data.recommendedArticle}
@@ -388,12 +398,12 @@ export default function Screen4Sfdr({ companyId, companyOverride, screen1Result,
 
                     {/* Arrow */}
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.375rem' }}>
-                      <div style={{ fontSize: 'var(--fs-h1)', color: '#AC00EF' }}>→</div>
+                      <div style={{ fontSize: 'var(--fs-h1)', color: '#01c9cc' }}>→</div>
                       <div style={{ fontSize: 'var(--fs-micro)', color: '#444', textAlign: 'center', textTransform: 'uppercase', letterSpacing: '0.06em' }}>No grandfathering</div>
                     </div>
 
                     {/* SFDR 2.0 */}
-                    <div style={{ background: s2cfg.bg, border: `1px solid ${s2cfg.border}`, borderRadius: '0.25rem', padding: '1rem', textAlign: 'center' }}>
+                    <div style={{ background: s2cfg.bg, border: `1px solid ${s2cfg.border}`, borderRadius: '0.5rem', padding: '1rem', textAlign: 'center' }}>
                       <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#555', marginBottom: '0.5rem' }}>SFDR 2.0 (Shadow)</div>
                       <div style={{ fontSize: '2.5rem', fontWeight: 700, color: s2cfg.color, lineHeight: 1, letterSpacing: '-0.03em', fontFamily: "'Georgia', serif" }}>
                         {s2.category}
@@ -404,8 +414,8 @@ export default function Screen4Sfdr({ companyId, companyOverride, screen1Result,
                   </div>
 
                   {/* Rationale */}
-                  <div style={{ background: '#0D0D0D', border: '1px solid #1E1E1E', borderRadius: '0.25rem', padding: '0.875rem' }}>
-                    <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#AC00EF', marginBottom: '0.5rem' }}>Classification Rationale</div>
+                  <div style={{ background: '#0D0D0D', border: '1px solid #1a1a2e', borderRadius: '0.5rem', padding: '0.875rem' }}>
+                    <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#01c9cc', marginBottom: '0.5rem' }}>Classification Rationale</div>
                     <div style={{ fontSize: 'var(--fs-sm)', color: '#c8c8c4', lineHeight: 1.65 }}>{s2.rationale}</div>
                   </div>
 
@@ -413,7 +423,7 @@ export default function Screen4Sfdr({ companyId, companyOverride, screen1Result,
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.75rem' }}>
 
                     {/* Mandatory Exclusions */}
-                    <div style={{ background: '#0D0D0D', border: '1px solid #1E1E1E', borderRadius: '0.25rem', padding: '0.875rem' }}>
+                    <div style={{ background: '#0D0D0D', border: '1px solid #1a1a2e', borderRadius: '0.5rem', padding: '0.875rem' }}>
                       <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#fff', marginBottom: '0.625rem' }}>Mandatory Exclusions</div>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
                         {[
@@ -434,7 +444,7 @@ export default function Screen4Sfdr({ companyId, companyOverride, screen1Result,
                     </div>
 
                     {/* 70% Threshold */}
-                    <div style={{ background: '#0D0D0D', border: `1px solid ${thr.met ? '#00C89630' : '#88888830'}`, borderRadius: '0.25rem', padding: '0.875rem' }}>
+                    <div style={{ background: '#0D0D0D', border: `1px solid ${thr.met ? '#00C89630' : '#88888830'}`, borderRadius: '0.5rem', padding: '0.875rem' }}>
                       <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#fff', marginBottom: '0.375rem' }}>70% Threshold</div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
                         <span style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, color: thr.met ? '#00C896' : '#FF4444', background: thr.met ? '#00C89615' : '#FF444415', border: `1px solid ${thr.met ? '#00C89640' : '#FF444440'}`, borderRadius: '2px', padding: '0.15rem 0.375rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
@@ -446,10 +456,10 @@ export default function Screen4Sfdr({ companyId, companyOverride, screen1Result,
                     </div>
 
                     {/* Taxonomy Shortcut */}
-                    <div style={{ background: '#0D0D0D', border: `1px solid ${tax.applicable ? '#00C89630' : '#2E2E2E'}`, borderRadius: '0.25rem', padding: '0.875rem' }}>
+                    <div style={{ background: '#0D0D0D', border: `1px solid ${tax.applicable ? '#00C89630' : '#1a1a2e'}`, borderRadius: '0.5rem', padding: '0.875rem' }}>
                       <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#fff', marginBottom: '0.375rem' }}>Taxonomy Shortcut</div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
-                        <span style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, color: tax.applicable ? '#00C896' : '#555', background: tax.applicable ? '#00C89615' : '#1A1A1A', border: `1px solid ${tax.applicable ? '#00C89640' : '#2E2E2E'}`, borderRadius: '2px', padding: '0.15rem 0.375rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                        <span style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, color: tax.applicable ? '#00C896' : '#555', background: tax.applicable ? '#00C89615' : '#1a1a2e', border: `1px solid ${tax.applicable ? '#00C89640' : '#1a1a2e'}`, borderRadius: '2px', padding: '0.15rem 0.375rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                           {tax.applicable ? 'Unlocked' : 'Not Available'}
                         </span>
                         <span style={{ fontSize: 'var(--fs-micro)', color: '#444' }}>≥15% aligned</span>
@@ -460,19 +470,19 @@ export default function Screen4Sfdr({ companyId, companyOverride, screen1Result,
 
                   {/* Key Changes + Gaps + Timeline */}
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
-                    <div style={{ background: '#0D0D0D', border: '1px solid #1E1E1E', borderRadius: '0.25rem', padding: '0.875rem' }}>
-                      <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#AC00EF', marginBottom: '0.5rem' }}>Key Classification Changes</div>
+                    <div style={{ background: '#0D0D0D', border: '1px solid #1a1a2e', borderRadius: '0.5rem', padding: '0.875rem' }}>
+                      <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#01c9cc', marginBottom: '0.5rem' }}>Key Classification Changes</div>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.375rem' }}>
                         {(s2.keyChanges ?? []).map((c, i) => (
                           <div key={i} style={{ display: 'flex', gap: '0.625rem', alignItems: 'flex-start', fontSize: 'var(--fs-micro)', color: '#c8c8c4', lineHeight: 1.5 }}>
-                            <span style={{ color: '#AC00EF', fontWeight: 700, flexShrink: 0, marginTop: '0.05rem' }}>→</span>
+                            <span style={{ color: '#01c9cc', fontWeight: 700, flexShrink: 0, marginTop: '0.05rem' }}>→</span>
                             <span>{c}</span>
                           </div>
                         ))}
                       </div>
                     </div>
 
-                    <div style={{ background: '#0D0D0D', border: '1px solid #1E1E1E', borderRadius: '0.25rem', padding: '0.875rem' }}>
+                    <div style={{ background: '#0D0D0D', border: '1px solid #1a1a2e', borderRadius: '0.5rem', padding: '0.875rem' }}>
                       <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#888888', marginBottom: '0.5rem' }}>Gaps to Close</div>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.375rem' }}>
                         {(s2.gaps ?? []).map((g, i) => (
@@ -494,7 +504,7 @@ export default function Screen4Sfdr({ companyId, companyOverride, screen1Result,
                       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
 
                         {/* Marketing & Naming Risk */}
-                        <div style={{ background: mktgCfg.bg, border: `1px solid ${mktgCfg.border}`, borderRadius: '0.25rem', padding: '0.875rem' }}>
+                        <div style={{ background: mktgCfg.bg, border: `1px solid ${mktgCfg.border}`, borderRadius: '0.5rem', padding: '0.875rem' }}>
                           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.625rem' }}>
                             <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#fff' }}>Marketing & Naming Rights</div>
                             <span style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, color: mktgCfg.color, background: `${mktgCfg.color}20`, border: `1px solid ${mktgCfg.color}50`, borderRadius: '2px', padding: '0.15rem 0.4rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
@@ -539,7 +549,7 @@ export default function Screen4Sfdr({ companyId, companyOverride, screen1Result,
                         </div>
 
                         {/* PAI Obligations */}
-                        <div style={{ background: '#0D0D0D', border: '1px solid #1E1E1E', borderRadius: '0.25rem', padding: '0.875rem' }}>
+                        <div style={{ background: '#0D0D0D', border: '1px solid #1a1a2e', borderRadius: '0.5rem', padding: '0.875rem' }}>
                           <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#fff', marginBottom: '0.625rem' }}>PAI Obligations (2.0)</div>
                           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.375rem', marginBottom: '0.625rem' }}>
                             {[
@@ -555,7 +565,7 @@ export default function Screen4Sfdr({ companyId, companyOverride, screen1Result,
                           </div>
                           {pai.flexibility && (
                             <div style={{ background: '#00000030', borderRadius: '2px', padding: '0.5rem 0.625rem', fontSize: 'var(--fs-micro)', color: '#c8c8c4', lineHeight: 1.5, marginBottom: '0.375rem' }}>
-                              <span style={{ fontWeight: 700, color: '#AC00EF' }}>Indicator flexibility: </span>{pai.flexibility}
+                              <span style={{ fontWeight: 700, color: '#01c9cc' }}>Indicator flexibility: </span>{pai.flexibility}
                             </div>
                           )}
                           {pai.complianceCostImpact && (
@@ -567,10 +577,10 @@ export default function Screen4Sfdr({ companyId, companyOverride, screen1Result,
                   })()}
 
                   {/* Migration timeline */}
-                  <div style={{ background: '#0A0A0A', border: '1px solid #AC00EF30', borderRadius: '0.25rem', padding: '0.875rem', display: 'flex', gap: '0.75rem', alignItems: 'flex-start' }}>
+                  <div style={{ background: '#0a0a0f', border: '1px solid #01c9cc30', borderRadius: '0.5rem', padding: '0.875rem', display: 'flex', gap: '0.75rem', alignItems: 'flex-start' }}>
                     <span style={{ fontSize: 'var(--fs-sm)', flexShrink: 0, marginTop: '0.05rem' }}>🗓</span>
                     <div>
-                      <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#AC00EF', marginBottom: '0.3rem' }}>Migration Timeline</div>
+                      <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#01c9cc', marginBottom: '0.3rem' }}>Migration Timeline</div>
                       <div style={{ fontSize: 'var(--fs-sm)', color: '#c8c8c4', lineHeight: 1.6 }}>{s2.migrationTimeline}</div>
                     </div>
                   </div>
@@ -584,7 +594,7 @@ export default function Screen4Sfdr({ companyId, companyOverride, screen1Result,
       )}
 
       {agentStatus === 'idle' && !data && (
-        <div style={{ border: '1px dashed #2E2E2E', borderRadius: '0.25rem', padding: '4rem 2rem', textAlign: 'center' }}>
+        <div style={{ border: '1px dashed #01c9cc28', borderRadius: '0.5rem', padding: '4rem 2rem', textAlign: 'center', background: 'linear-gradient(135deg, #001018 0%, #080808 100%)' }}>
           <div style={{ fontFamily: "'Georgia', serif", fontSize: 'var(--fs-h2)', fontWeight: 300, color: '#fff', marginBottom: '0.75rem', letterSpacing: '-0.01em' }}>
             Ready to classify {company.shortName}
           </div>
@@ -599,7 +609,7 @@ export default function Screen4Sfdr({ companyId, companyOverride, screen1Result,
               { label: 'LP Narrative',         desc: 'Ready-to-send LP disclosure'     },
             ].map(({ label, desc }) => (
               <div key={label} style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, color: '#AC00EF', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.25rem' }}>{label}</div>
+                <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, color: '#01c9cc', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.25rem' }}>{label}</div>
                 <div style={{ fontSize: 'var(--fs-micro)', color: '#333333' }}>{desc}</div>
               </div>
             ))}

@@ -87,14 +87,14 @@ function Label({ children }) {
   return <div style={{ fontSize: 'var(--fs-label)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#fff', marginBottom: '0.75rem' }}>{children}</div>;
 }
 
-export default function Screen3Map({ companyId, companyOverride, screen1Result, onResult, runTrigger = 0 }) {
-  const [agentStatus, setAgentStatus] = useState('idle');
-  const [data,        setData]        = useState(null);
+export default function Screen3Map({ companyId, companyOverride, screen1Result, onResult, runTrigger = 0, cachedResult }) {
+  const [agentStatus, setAgentStatus] = useState(() => cachedResult ? 'complete' : 'idle');
+  const [data,        setData]        = useState(() => cachedResult ?? null);
   const [error,       setError]       = useState(null);
   const [meta,        setMeta]        = useState(null);
   const [expanded,    setExpanded]    = useState(false);
 
-  const prevTrigger = useRef(0);
+  const prevTrigger = useRef(cachedResult?._runTrigger ?? 0);
   useEffect(() => {
     if (runTrigger > prevTrigger.current) {
       prevTrigger.current = runTrigger;
@@ -271,7 +271,16 @@ export default function Screen3Map({ companyId, companyOverride, screen1Result, 
                     Legally Mandatory
                   </div>
                   {scoping.mandatory.length === 0 ? (
-                    <div style={{ fontSize: 'var(--fs-micro)', color: '#444', fontStyle: 'italic' }}>No mandatory obligations at current company size (post-Omnibus I)</div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.625rem', padding: '0.5rem 0.75rem', background: '#00C89608', border: '1px solid #00C89625', borderRadius: '0.25rem' }}>
+                        <span style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: '#00C896', textTransform: 'uppercase', letterSpacing: '0.08em', background: '#00C89615', border: '1px solid #00C89635', borderRadius: '2px', padding: '0.15rem 0.4rem', flexShrink: 0, marginTop: '0.05rem' }}>Below Threshold</span>
+                        <span style={{ fontSize: 'var(--fs-micro)', color: '#555', lineHeight: 1.55 }}>Omnibus I raises mandatory CSRD reporting threshold to 1,000+ employees. No CSRD/ESRS/CSDDD obligations apply at current company size.</span>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', fontSize: 'var(--fs-micro)', color: '#333', fontStyle: 'italic', paddingLeft: '0.25rem' }}>
+                        <span style={{ color: '#444' }}>→</span>
+                        <span>De facto LP/SFDR 2.0 obligations still apply — see column right</span>
+                      </div>
+                    </div>
                   ) : scoping.mandatory.map((item, i) => (
                     <div key={i} style={{ display: 'flex', gap: '0.5rem', alignItems: 'flex-start', padding: '0.375rem 0', borderTop: i > 0 ? '1px solid #1A1A1A' : 'none' }}>
                       <span style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: urgencyColor[item.urgency] ?? '#888888', background: `${urgencyColor[item.urgency] ?? '#888888'}20`, border: `1px solid ${urgencyColor[item.urgency] ?? '#888888'}40`, borderRadius: '2px', padding: '0.1rem 0.3rem', textTransform: 'uppercase', letterSpacing: '0.06em', flexShrink: 0, marginTop: '0.15rem' }}>{item.urgency}</span>
@@ -407,7 +416,7 @@ export default function Screen3Map({ companyId, companyOverride, screen1Result, 
           </div>
 
           {/* Automation + Missing data */}
-          <div className="fade-up fade-up-4" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <div className="fade-up fade-up-4" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', alignItems: 'start' }}>
             <Card>
               <Label>Automation Potential</Label>
               <p style={{ fontSize: 'var(--fs-sm)', color: '#c8c8c4', lineHeight: 1.65, marginBottom: '1rem', ...clamp(3, expanded) }}>{data.automationPotential}</p>
@@ -422,6 +431,24 @@ export default function Screen3Map({ companyId, companyOverride, screen1Result, 
               <div style={{ fontSize: 'var(--fs-micro)', color: '#444444', marginTop: '0.375rem' }}>
                 {automatable} of {total} mappings fully automatable by AI
               </div>
+
+              {/* Per-framework automatable breakdown */}
+              {total > 0 && (
+                <div style={{ marginTop: '1rem', borderTop: '1px solid #1A1A1A', paddingTop: '0.875rem' }}>
+                  <div style={{ fontSize: 'var(--fs-label)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#444', marginBottom: '0.5rem' }}>Per-Framework Status</div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+                    {data.mappings.map((m, i) => (
+                      <div key={i} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.3rem 0.625rem', background: m.automatable ? '#AC00EF08' : '#0D0D0D', borderRadius: '2px', borderLeft: `2px solid ${m.automatable ? '#AC00EF55' : '#2E2E2E'}` }}>
+                        <span style={{ fontSize: 'var(--fs-label)', color: '#c8c8c4', fontWeight: 600, letterSpacing: '0.03em' }}>{m.framework.split(' ')[0]}</span>
+                        {m.automatable
+                          ? <span style={{ fontSize: 'var(--fs-label)', color: '#AC00EF', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em' }}>AI Auto</span>
+                          : <span style={{ fontSize: 'var(--fs-label)', color: '#444' }}>Manual</span>
+                        }
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </Card>
 
             <Card>

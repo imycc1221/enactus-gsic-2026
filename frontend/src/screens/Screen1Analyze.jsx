@@ -18,27 +18,27 @@ const STEPS = [
 
 const SEVERITY = {
   high:   { border: '#FF444444', bg: '#FF44440A', accent: '#FF4444' },
-  medium: { border: '#AC00EF44', bg: '#AC00EF0A', accent: '#AC00EF' },
-  low:    { border: '#AC00EF22', bg: '#AC00EF05', accent: '#888888' }
+  medium: { border: '#9764ff44', bg: '#9764ff0A', accent: '#9764ff' },
+  low:    { border: '#9764ff22', bg: '#9764ff05', accent: '#888888' }
 };
 
 const DATA_STATUS = {
-  available: { bg: '#AC00EF12', text: '#FFFFFF',  border: '#AC00EF40' },
-  partial:   { bg: '#AC00EF0A', text: '#AC00EF',  border: '#AC00EF30' },
+  available: { bg: '#9764ff12', text: '#FFFFFF',  border: '#9764ff40' },
+  partial:   { bg: '#9764ff0A', text: '#9764ff',  border: '#9764ff30' },
   missing:   { bg: '#FF444412', text: '#FF4444',  border: '#FF444440' }
 };
 
-const FRAMEWORK_COLOR = { csrd: '#AC00EF', sfdr: '#AC00EF', tcfd: '#FFFFFF', edci: '#AC00EF', sasb: '#AC00EF' };
+const FRAMEWORK_COLOR = { csrd: '#9764ff', sfdr: '#9764ff', tcfd: '#FFFFFF', edci: '#9764ff', sasb: '#9764ff' };
 
-function fmt(n) {
-  if (n >= 1_000_000) return `$${(n / 1_000_000).toFixed(0)}M`;
-  if (n >= 1_000)     return `$${(n / 1_000).toFixed(0)}K`;
-  return `$${n}`;
+function fmt(n, currency = '€') {
+  if (n >= 1_000_000) return `${currency}${(n / 1_000_000).toFixed(0)}M`;
+  if (n >= 1_000)     return `${currency}${(n / 1_000).toFixed(0)}K`;
+  return `${currency}${n}`;
 }
 
 function scoreColor(s) {
-  if (s >= 75) return '#AC00EF';
-  if (s >= 50) return '#AC00EF';
+  if (s >= 75) return '#9764ff';
+  if (s >= 50) return '#9764ff';
   return '#FF4444';
 }
 
@@ -91,16 +91,16 @@ function getSectorPercentile(score, bm) {
   return Math.round(75 + ((score - bm.p75) / (100 - bm.p75)) * 25);
 }
 
-export default function Screen1Analyze({ companyId, companyOverride, onResult, runTrigger = 0 }) {
-  const [agentStatus,   setAgentStatus]   = useState('idle');
-  const [data,          setData]          = useState(null);
+export default function Screen1Analyze({ companyId, companyOverride, onResult, runTrigger = 0, cachedResult }) {
+  const [agentStatus,   setAgentStatus]   = useState(() => cachedResult ? 'complete' : 'idle');
+  const [data,          setData]          = useState(() => cachedResult ?? null);
   const [error,         setError]         = useState(null);
   const [meta,          setMeta]          = useState(null);
   const [streamText,    setStreamText]    = useState('');
   const [isStreaming,   setIsStreaming]   = useState(false);
   const [openSections,  setOpenSections]  = useState(Object.fromEntries(SECTIONS.map(k => [k, false])));
 
-  const prevTrigger = useRef(0);
+  const prevTrigger = useRef(cachedResult?._runTrigger ?? 0);
   useEffect(() => {
     if (runTrigger > prevTrigger.current) {
       prevTrigger.current = runTrigger;
@@ -177,20 +177,25 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
   return (
     <div>
       {/* Company banner */}
-      <div className="glass-card" style={{ position: 'relative', overflow: 'hidden', marginBottom: '2rem', backgroundImage: `url(/images/${companyId}-banner.jpg)`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+      <div style={{ position: 'relative', borderRadius: '0.5rem', overflow: 'hidden', marginBottom: '2rem', backgroundImage: `url(/images/${companyId}-banner.jpg)`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'linear-gradient(90deg, #FF99C9, #926EF7 50%, #6EEEF7)', zIndex: 1 }} />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(120deg, rgba(0,0,0,0.97) 45%, rgba(0,0,0,0.7))' }} />
+        {data && <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 60% 80% at 80% 50%, rgba(151,100,255,0.06) 0%, transparent 70%)', pointerEvents: 'none' }} />}
         <div style={{ position: 'relative', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1.5rem', padding: '2rem' }}>
           <div>
+            <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: '#9764ff', marginBottom: '0.375rem' }}>
+              ESG Materiality Screen · SASB Standards
+            </div>
             <h1 style={{ fontFamily: "'Georgia', serif", fontWeight: 300, fontSize: 'var(--fs-h1)', color: '#fff', marginBottom: '0.5rem', letterSpacing: '-0.02em' }}>
               {company.name}
             </h1>
             <p style={{ fontSize: 'var(--fs-body)', color: 'var(--text-muted)', letterSpacing: '-0.01em' }}>
-              {company.sasbSector} · {company.geography} · {fmt(company.revenue)} revenue · {company.employees.toLocaleString()} employees
+              {company.sasbSector} · {company.geography} · {fmt(company.revenue, company.currency)} revenue · {company.employees.toLocaleString()} employees
             </p>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexShrink: 0 }}>
             {data && (
-              <button onClick={allOpen ? closeAll : openAll} style={{ background: 'none', border: 'none', color: '#AC00EF', fontSize: 'var(--fs-sm)', fontWeight: 500, cursor: 'pointer', letterSpacing: '0.04em', textTransform: 'uppercase', padding: 0 }}>
+              <button onClick={allOpen ? closeAll : openAll} style={{ background: 'none', border: 'none', color: '#9764ff', fontSize: 'var(--fs-sm)', fontWeight: 500, cursor: 'pointer', letterSpacing: '0.04em', textTransform: 'uppercase', padding: 0 }}>
                 {allOpen ? '− Close all' : '+ Open all'}
               </button>
             )}
@@ -223,9 +228,9 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
       )}
 
       {(isStreaming || streamText) && (
-        <div style={{ background: '#0A0A0A', border: '1px solid #1E1E1E', borderRadius: '0.25rem', padding: '0.875rem 1rem', marginBottom: '1rem' }}>
+        <div style={{ background: '#0a0a0f', border: '1px solid #1a1a2e', borderRadius: '0.5rem', padding: '0.875rem 1rem', marginBottom: '1rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
-            <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#AC00EF', flexShrink: 0, boxShadow: isStreaming ? '0 0 8px #AC00EF' : 'none' }} />
+            <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#9764ff', flexShrink: 0, boxShadow: isStreaming ? '0 0 8px #9764ff' : 'none' }} />
             <span style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: '#333', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
               Live Claude Output — tool_use: input_json_delta stream
             </span>
@@ -234,7 +239,7 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
             </span>
           </div>
           <pre style={{ fontSize: 'var(--fs-micro)', color: '#3a3a3a', lineHeight: 1.55, maxHeight: '140px', overflowY: 'auto', margin: 0, fontFamily: 'ui-monospace, monospace', whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
-            {streamText}{isStreaming && <span style={{ color: '#AC00EF' }}>▋</span>}
+            {streamText}{isStreaming && <span style={{ color: '#9764ff' }}>▋</span>}
           </pre>
         </div>
       )}
@@ -247,7 +252,7 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
       )}
 
       {error && (
-        <div style={{ background: '#FF444410', border: '1px solid #FF444440', borderRadius: '0.25rem', padding: '1rem', color: '#FF4444', fontSize: 'var(--fs-sm)', marginBottom: '1.5rem' }}>
+        <div style={{ background: '#FF444410', border: '1px solid #FF444440', borderRadius: '0.5rem', padding: '1rem', color: '#FF4444', fontSize: 'var(--fs-sm)', marginBottom: '1.5rem' }}>
           {error}
         </div>
       )}
@@ -257,17 +262,28 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
 
             {/* Row 1: Score + Radar + SASB */}
-            <div className="fade-up fade-up-1" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
+            <div className="fade-up fade-up-1" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem', alignItems: 'stretch' }}>
 
-              <Card className="card-hover">
+              <Card className="card-hover" style={{ display: 'flex', flexDirection: 'column' }}>
                 <SectionLabel>ESG Materiality Score</SectionLabel>
-                <div style={{ display: 'flex', alignItems: 'flex-end', gap: '0.625rem', marginBottom: '0.5rem' }}>
-                  <div className="num-in stat-hero" style={{ fontSize: '6rem', color: scoreColor(data.overallScore), letterSpacing: '-0.04em' }}>
-                    {data.overallScore}
+                {/* Score hero with ring */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', marginBottom: '1.5rem' }}>
+                  <div style={{ position: 'relative', flexShrink: 0, width: 88, height: 88 }}>
+                    {/* Conic ring */}
+                    <div style={{
+                      position: 'absolute', inset: 0, borderRadius: '50%',
+                      background: `conic-gradient(${scoreColor(data.overallScore)} ${data.overallScore * 3.6}deg, #1a1a2e ${data.overallScore * 3.6}deg)`,
+                      boxShadow: `0 0 24px ${scoreColor(data.overallScore)}44`,
+                    }} />
+                    <div style={{ position: 'absolute', inset: 7, borderRadius: '50%', background: '#0d0d0d', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <span className="num-in" style={{ fontSize: '2rem', fontWeight: 700, color: scoreColor(data.overallScore), letterSpacing: '-0.04em', lineHeight: 1 }}>
+                        {data.overallScore}
+                      </span>
+                    </div>
                   </div>
-                  <div style={{ paddingBottom: '1rem' }}>
-                    <div style={{ fontSize: 'var(--fs-micro)', color: '#333333', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '0.25rem' }}>/100</div>
-                    <div style={{ fontSize: 'var(--fs-label)', color: scoreColor(data.overallScore), fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', background: `${scoreColor(data.overallScore)}15`, border: `1px solid ${scoreColor(data.overallScore)}33`, borderRadius: '2px', padding: '0.15rem 0.375rem' }}>
+                  <div>
+                    <div style={{ fontSize: 'var(--fs-micro)', color: '#444', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.375rem' }}>out of 100</div>
+                    <div style={{ fontSize: 'var(--fs-sm)', color: scoreColor(data.overallScore), fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', background: `${scoreColor(data.overallScore)}15`, border: `1px solid ${scoreColor(data.overallScore)}40`, borderRadius: '4px', padding: '0.25rem 0.625rem', display: 'inline-block' }}>
                       {data.overallScore >= 75 ? 'Strong' : data.overallScore >= 50 ? 'Moderate' : 'Critical'}
                     </div>
                   </div>
@@ -276,71 +292,90 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
                 {confidencePct !== null && (
                   <div style={{
                     display: 'inline-flex', alignItems: 'center', gap: '0.375rem',
-                    background: '#AC00EF15', border: '1px solid #AC00EF40',
-                    borderRadius: '999px', padding: '0.25rem 0.75rem',
-                    fontSize: 'var(--fs-label)', color: '#c8c8c4', marginBottom: '0.75rem'
+                    background: '#9764ff15', border: '1px solid #9764ff40',
+                    borderRadius: '999px', padding: '0.3rem 0.875rem',
+                    fontSize: 'var(--fs-label)', color: '#c8c8c4', marginBottom: '1.5rem', alignSelf: 'flex-start'
                   }}>
                     <span style={{
                       width: 6, height: 6, borderRadius: '50%', flexShrink: 0,
-                      background: confidencePct > 70 ? '#00C896' : confidencePct > 50 ? '#888888' : '#FF4444'
+                      background: confidencePct > 70 ? '#00C896' : confidencePct > 50 ? '#888888' : '#FF4444',
+                      boxShadow: `0 0 5px ${confidencePct > 70 ? '#00C896' : confidencePct > 50 ? '#888888' : '#FF4444'}`
                     }} />
                     Data confidence: {confidencePct}% · Requires analyst review
                   </div>
                 )}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
-                  {['environmental', 'social', 'governance'].map(p => (
-                    <div key={p}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.3rem' }}>
-                        <span style={{ fontSize: 'var(--fs-label)', color: '#787878', textTransform: 'capitalize' }}>{p}</span>
-                        <span style={{ fontSize: 'var(--fs-label)', fontWeight: 600, color: scoreColor(data.pillarScores?.[p] ?? 0) }}>{data.pillarScores?.[p] ?? '—'}</span>
+                {/* Pillar bars */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                  {['environmental', 'social', 'governance'].map(p => {
+                    const v = data.pillarScores?.[p] ?? 0;
+                    const c = scoreColor(v);
+                    return (
+                      <div key={p}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
+                          <span style={{ fontSize: 'var(--fs-label)', color: '#787878', textTransform: 'capitalize' }}>{p}</span>
+                          <span style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: c }}>{v || '—'}</span>
+                        </div>
+                        <div style={{ height: '4px', background: '#1a1a2e', borderRadius: '2px', overflow: 'hidden' }}>
+                          <div style={{ height: '100%', width: `${v}%`, background: `linear-gradient(90deg, ${c}88, ${c})`, borderRadius: '2px', transition: 'width 1s cubic-bezier(0.25,1,0.5,1)', boxShadow: `0 0 8px ${c}66` }} />
+                        </div>
                       </div>
-                      <div style={{ height: '2px', background: '#1E1E1E', borderRadius: '1px' }}>
-                        <div style={{ height: '100%', width: `${data.pillarScores?.[p] ?? 0}%`, background: scoreColor(data.pillarScores?.[p] ?? 0), borderRadius: '1px', transition: 'width 900ms cubic-bezier(0.25,1,0.5,1)' }} />
-                      </div>
+                    );
+                  })}
+                </div>
+              </Card>
+
+              <Card style={{ display: 'flex', flexDirection: 'column' }}>
+                <SectionLabel>ESG Profile</SectionLabel>
+                <div style={{ flex: 1, minHeight: 0 }}>
+                  <ResponsiveContainer width="100%" height="100%" minHeight={200}>
+                    <RadarChart data={radarData} margin={{ top: 12, right: 28, bottom: 12, left: 28 }}>
+                      <PolarGrid stroke="#1a1a2e" />
+                      <PolarAngleAxis dataKey="subject" tick={{ fill: '#555', fontSize: 10, fontFamily: "'Inter', -apple-system, sans-serif" }} />
+                      <Radar dataKey="score" stroke="#9764ff" fill="#9764ff" fillOpacity={0.15} strokeWidth={2} dot={{ fill: '#9764ff', r: 3 }} />
+                    </RadarChart>
+                  </ResponsiveContainer>
+                </div>
+                {/* Mini legend */}
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '1.5rem', marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: '1px solid #1a1a2e' }}>
+                  {radarData.map(d => (
+                    <div key={d.subject} style={{ textAlign: 'center' }}>
+                      <div style={{ fontSize: 'var(--fs-micro)', color: '#9764ff', fontWeight: 700 }}>{d.score}</div>
+                      <div style={{ fontSize: 9, color: '#444', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{d.subject.split(' ')[0]}</div>
                     </div>
                   ))}
                 </div>
               </Card>
 
-              <Card>
-                <SectionLabel>ESG Profile</SectionLabel>
-                <ResponsiveContainer width="100%" height={190}>
-                  <RadarChart data={radarData} margin={{ top: 10, right: 25, bottom: 10, left: 25 }}>
-                    <PolarGrid stroke="#1E1E1E" />
-                    <PolarAngleAxis dataKey="subject" tick={{ fill: '#787878', fontSize: 10, fontFamily: "'Inter', -apple-system, sans-serif" }} />
-                    <Radar dataKey="score" stroke="#AC00EF" fill="#AC00EF" fillOpacity={0.12} strokeWidth={1.5} />
-                  </RadarChart>
-                </ResponsiveContainer>
-              </Card>
-
-              <Card style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+              <Card style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                 <div>
                   <SectionLabel>SASB Classification</SectionLabel>
-                  <div style={{ fontSize: 'var(--fs-sm)', fontWeight: 500, color: '#AC00EF' }}>
+                  <div style={{ fontSize: 'var(--fs-sm)', fontWeight: 500, color: '#9764ff', lineHeight: 1.5 }}>
                     {data.sasbClassification}
                   </div>
                 </div>
                 <div>
                   <SectionLabel>Data Confidence</SectionLabel>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                    <div style={{ flex: 1, height: '2px', background: '#1E1E1E', borderRadius: '1px' }}>
-                      <div style={{ height: '100%', width: `${confidencePct ?? 0}%`, background: '#AC00EF', borderRadius: '1px', transition: 'width 900ms cubic-bezier(0.25,1,0.5,1)' }} />
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
+                    <div style={{ flex: 1, height: '4px', background: '#1a1a2e', borderRadius: '2px', overflow: 'hidden' }}>
+                      <div style={{ height: '100%', width: `${confidencePct ?? 0}%`, background: 'linear-gradient(90deg, #9764ff88, #9764ff)', borderRadius: '2px', transition: 'width 1s cubic-bezier(0.25,1,0.5,1)', boxShadow: '0 0 8px #9764ff66' }} />
                     </div>
-                    <span style={{ fontSize: 'var(--fs-body)', fontWeight: 600, color: '#AC00EF', minWidth: '2.5rem', textAlign: 'right' }}>
+                    <span style={{ fontSize: 'var(--fs-body)', fontWeight: 700, color: '#9764ff', minWidth: '2.75rem', textAlign: 'right' }}>
                       {confidencePct != null ? `${confidencePct}%` : '—'}
                     </span>
                   </div>
                 </div>
-                <div>
+                <div style={{ flex: 1 }}>
                   <SectionLabel>Framework Compliance</SectionLabel>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                    {Object.entries(data.frameworkGaps ?? {}).map(([fw, d]) => d ? (
-                      <div key={fw} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <span style={{ fontSize: 'var(--fs-label)', fontWeight: 600, color: '#787878', textTransform: 'uppercase', letterSpacing: '0.05em', width: '2.5rem' }}>{fw}</span>
-                        <div style={{ flex: 1, height: '2px', background: '#1E1E1E', borderRadius: '1px' }}>
-                          <div style={{ height: '100%', width: `${d.percentage ?? 0}%`, background: FRAMEWORK_COLOR[fw] ?? '#AC00EF', borderRadius: '1px', transition: 'width 900ms cubic-bezier(0.25,1,0.5,1)' }} />
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
+                    {Object.entries(data.frameworkGaps ?? {}).sort(([,a],[,b]) => (b?.percentage ?? 0) - (a?.percentage ?? 0)).map(([fw, d]) => d ? (
+                      <div key={fw}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.3rem' }}>
+                          <span style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: '#555', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{fw}</span>
+                          <span style={{ fontSize: 'var(--fs-label)', fontWeight: 600, color: FRAMEWORK_COLOR[fw] ?? '#9764ff' }}>{d.percentage}%</span>
                         </div>
-                        <span style={{ fontSize: 'var(--fs-micro)', fontWeight: 500, color: '#787878', width: '2.25rem', textAlign: 'right' }}>{d.percentage}%</span>
+                        <div style={{ height: '3px', background: '#1a1a2e', borderRadius: '2px', overflow: 'hidden' }}>
+                          <div style={{ height: '100%', width: `${d.percentage ?? 0}%`, background: FRAMEWORK_COLOR[fw] ?? '#9764ff', borderRadius: '2px', transition: 'width 1s cubic-bezier(0.25,1,0.5,1)' }} />
+                        </div>
                       </div>
                     ) : null)}
                   </div>
@@ -348,28 +383,42 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
               </Card>
             </div>
 
-            {/* Investment Verdict Card */}
+            {/* Investment Verdict Row */}
             <div className="fade-up fade-up-1" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
-              <div style={{ background: '#111111', border: '1px solid #2E2E2E', borderRadius: '0.25rem', padding: '1.25rem' }}>
-                <div style={{ fontSize: 'var(--fs-micro)', color: '#555', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.08em', marginBottom: '0.5rem' }}>ESG Verdict</div>
-                <div style={{ fontSize: 'var(--fs-h2)', fontWeight: 700, color: data.overallScore >= 65 ? '#00C896' : data.overallScore >= 45 ? '#888888' : '#FF4444' }}>
-                  {data.overallScore >= 65 ? 'PROCEED' : data.overallScore >= 45 ? 'MONITOR' : 'CAUTION'}
-                </div>
-                <div style={{ fontSize: 'var(--fs-micro)', color: '#444', marginTop: '0.25rem' }}>based on SASB materiality score</div>
-              </div>
-              <div style={{ background: '#111111', border: '1px solid #2E2E2E', borderRadius: '0.25rem', padding: '1.25rem' }}>
-                <div style={{ fontSize: 'var(--fs-micro)', color: '#555', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.08em', marginBottom: '0.5rem' }}>AI Confidence</div>
-                <div className="num-in" style={{ fontSize: 'var(--fs-h2)', fontWeight: 700, color: confidencePct != null && confidencePct > 70 ? '#00C896' : confidencePct != null && confidencePct > 50 ? '#888888' : '#FF4444' }}>
-                  {confidencePct != null ? `${confidencePct}%` : '—'}
-                </div>
-                <div style={{ fontSize: 'var(--fs-micro)', color: '#444', marginTop: '0.25rem' }}>analyst review required below 70%</div>
-              </div>
-              <div style={{ background: '#111111', border: '1px solid #2E2E2E', borderRadius: '0.25rem', padding: '1.25rem' }}>
-                <div style={{ fontSize: 'var(--fs-micro)', color: '#555', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.08em', marginBottom: '0.5rem' }}>Priority Risk</div>
-                <div style={{ fontSize: 'var(--fs-body)', fontWeight: 600, color: '#FF4444', lineHeight: 1.3, marginTop: '0.125rem' }}>
+              {(() => {
+                const verdict = data.overallScore >= 65 ? 'PROCEED' : data.overallScore >= 45 ? 'MONITOR' : 'CAUTION';
+                const vColor  = data.overallScore >= 65 ? '#00C896' : data.overallScore >= 45 ? '#f59e0b' : '#FF4444';
+                return (
+                  <div style={{ background: '#0d0d0d', border: `1px solid ${vColor}28`, borderRadius: '0.5rem', padding: '1.25rem 1.5rem', position: 'relative', overflow: 'hidden' }}>
+                    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: vColor }} />
+                    <div style={{ fontSize: 'var(--fs-micro)', color: '#555', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.1em', marginBottom: '0.625rem' }}>ESG Verdict</div>
+                    <div style={{ fontSize: 'var(--fs-h1)', fontWeight: 800, color: vColor, letterSpacing: '-0.02em', lineHeight: 1, marginBottom: '0.5rem', textShadow: `0 0 20px ${vColor}66` }}>
+                      {verdict}
+                    </div>
+                    <div style={{ fontSize: 'var(--fs-micro)', color: '#444' }}>based on SASB materiality score</div>
+                  </div>
+                );
+              })()}
+              {(() => {
+                const cColor = confidencePct != null && confidencePct > 70 ? '#00C896' : confidencePct != null && confidencePct > 50 ? '#888888' : '#FF4444';
+                return (
+                  <div style={{ background: '#0d0d0d', border: `1px solid ${cColor}28`, borderRadius: '0.5rem', padding: '1.25rem 1.5rem', position: 'relative', overflow: 'hidden' }}>
+                    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: cColor }} />
+                    <div style={{ fontSize: 'var(--fs-micro)', color: '#555', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.1em', marginBottom: '0.625rem' }}>AI Confidence</div>
+                    <div className="num-in" style={{ fontSize: 'var(--fs-h1)', fontWeight: 800, color: cColor, letterSpacing: '-0.02em', lineHeight: 1, marginBottom: '0.5rem', textShadow: `0 0 20px ${cColor}66` }}>
+                      {confidencePct != null ? `${confidencePct}%` : '—'}
+                    </div>
+                    <div style={{ fontSize: 'var(--fs-micro)', color: '#444' }}>analyst review required below 70%</div>
+                  </div>
+                );
+              })()}
+              <div style={{ background: '#0d0d0d', border: '1px solid #FF444428', borderRadius: '0.5rem', padding: '1.25rem 1.5rem', position: 'relative', overflow: 'hidden' }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: '#FF4444' }} />
+                <div style={{ fontSize: 'var(--fs-micro)', color: '#555', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.1em', marginBottom: '0.625rem' }}>Priority Risk</div>
+                <div style={{ fontSize: 'var(--fs-sm)', fontWeight: 600, color: '#FF4444', lineHeight: 1.4, marginBottom: '0.5rem' }}>
                   {data.riskFlags?.find(r => r.severity === 'high')?.area ?? data.riskFlags?.[0]?.area ?? '—'}
                 </div>
-                <div style={{ fontSize: 'var(--fs-micro)', color: '#444', marginTop: '0.25rem' }}>
+                <div style={{ fontSize: 'var(--fs-micro)', color: '#444' }}>
                   {data.riskFlags?.filter(r => r.severity === 'high').length ?? 0} high-severity flags identified
                 </div>
               </div>
@@ -382,7 +431,7 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
               const beatMedian = data.overallScore >= bm.median;
               const pos = Math.max(2, Math.min(96, data.overallScore));
               return (
-                <div className="fade-up fade-up-1" style={{ background: '#111', border: '1px solid #2E2E2E', borderRadius: '0.25rem', padding: '1.25rem' }}>
+                <div className="fade-up fade-up-1" style={{ background: '#0d0d0d', border: '1px solid #1a1a2e', borderRadius: '0.5rem', padding: '1.25rem' }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
                     <div style={{ fontSize: 'var(--fs-label)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#fff' }}>
                       Sector Benchmarking
@@ -407,24 +456,26 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
                   </div>
                   {/* Distribution bar */}
                   <div>
-                    <div style={{ position: 'relative', height: 8, background: '#1E1E1E', borderRadius: 4, marginBottom: '0.4rem' }}>
-                      {/* P25 marker */}
-                      <div style={{ position: 'absolute', left: `${bm.p25}%`, top: 0, bottom: 0, width: 1, background: '#2E2E2E' }} />
-                      {/* Median marker */}
-                      <div style={{ position: 'absolute', left: `${bm.median}%`, top: 0, bottom: 0, width: 1, background: '#444' }} />
-                      {/* P75 marker */}
-                      <div style={{ position: 'absolute', left: `${bm.p75}%`, top: 0, bottom: 0, width: 1, background: '#2E2E2E' }} />
-                      {/* IQR fill */}
-                      <div style={{ position: 'absolute', left: `${bm.p25}%`, width: `${bm.p75 - bm.p25}%`, top: 0, bottom: 0, background: '#ffffff08', borderRadius: 2 }} />
+                    <div style={{ position: 'relative', height: 8, background: '#1a1a2e', borderRadius: 4, marginBottom: '0.625rem' }}>
+                      {/* Gradient fill left→median */}
+                      <div style={{ position: 'absolute', left: 0, width: `${bm.median}%`, top: 0, bottom: 0, background: 'linear-gradient(90deg, #ffffff04, #ffffff0c)', borderRadius: '4px 0 0 4px' }} />
+                      {/* IQR highlight */}
+                      <div style={{ position: 'absolute', left: `${bm.p25}%`, width: `${bm.p75 - bm.p25}%`, top: 0, bottom: 0, background: '#ffffff14', borderRadius: 2 }} />
+                      {/* P25 tick */}
+                      <div style={{ position: 'absolute', left: `${bm.p25}%`, top: 1, bottom: 1, width: 1, background: '#333' }} />
+                      {/* Median tick */}
+                      <div style={{ position: 'absolute', left: `${bm.median}%`, top: 0, bottom: 0, width: 1, background: '#555' }} />
+                      {/* P75 tick */}
+                      <div style={{ position: 'absolute', left: `${bm.p75}%`, top: 1, bottom: 1, width: 1, background: '#333' }} />
                       {/* Company marker */}
-                      <div style={{ position: 'absolute', left: `${pos}%`, top: -3, width: 3, height: 14, background: scoreColor(data.overallScore), borderRadius: 2, transform: 'translateX(-50%)', boxShadow: `0 0 6px ${scoreColor(data.overallScore)}88` }} />
+                      <div style={{ position: 'absolute', left: `${pos}%`, top: -4, width: 4, height: 16, background: scoreColor(data.overallScore), borderRadius: 2, transform: 'translateX(-50%)', boxShadow: `0 0 10px ${scoreColor(data.overallScore)}99`, transition: 'left 0.8s cubic-bezier(0.25,1,0.5,1)' }} />
                     </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 'var(--fs-label)', color: '#222' }}>
-                      <span>0</span>
-                      <span style={{ position: 'relative', left: `${bm.p25 - 4}%` }}>P25 ({bm.p25})</span>
-                      <span style={{ position: 'relative', left: `${bm.median - 47}%` }}>Median ({bm.median})</span>
-                      <span style={{ position: 'relative', right: `${100 - bm.p75 - 2}%` }}>P75 ({bm.p75})</span>
-                      <span>100</span>
+                    <div style={{ position: 'relative', height: '1.25rem', fontSize: 'var(--fs-label)', color: '#333', userSelect: 'none' }}>
+                      <span style={{ position: 'absolute', left: 0 }}>0</span>
+                      <span style={{ position: 'absolute', left: `${bm.p25}%`, transform: 'translateX(-50%)', whiteSpace: 'nowrap' }}>P25 ({bm.p25})</span>
+                      <span style={{ position: 'absolute', left: `${bm.median}%`, transform: 'translateX(-50%)', whiteSpace: 'nowrap', color: '#555' }}>Median ({bm.median})</span>
+                      <span style={{ position: 'absolute', left: `${bm.p75}%`, transform: 'translateX(-50%)', whiteSpace: 'nowrap' }}>P75 ({bm.p75})</span>
+                      <span style={{ position: 'absolute', right: 0 }}>100</span>
                     </div>
                   </div>
                 </div>
@@ -432,15 +483,15 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
             })()}
 
             {/* Value proposition callout */}
-            <div className="fade-up fade-up-1" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '0', border: '1px solid #AC00EF22', borderRadius: '0.25rem', overflow: 'hidden' }}>
+            <div className="fade-up fade-up-1" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '0', border: '1px solid #9764ff22', borderRadius: '0.5rem', overflow: 'hidden' }}>
               {[
                 { stat: '2,240 hrs', label: 'analyst hours replaced per year', sub: '280 hrs × 8 frameworks (Verdantix 2024)' },
                 { stat: '~$280K',    label: 'in ESG advisory fees per company', sub: 'vs $35K/framework from Big-4 providers' },
                 { stat: '50×',       label: 'cheaper than manual due diligence', sub: 'at $15K–25K/yr SaaS vs consultant model' },
                 { stat: '< 90 sec',  label: 'full ESG screen end-to-end', sub: 'vs 6–8 weeks manual analyst workflow' },
               ].map(({ stat, label, sub }, i) => (
-                <div key={i} style={{ padding: '0.875rem 1.125rem', borderRight: i < 3 ? '1px solid #AC00EF22' : 'none', background: '#0A0A0A' }}>
-                  <div className="data-mono" style={{ fontSize: 'var(--fs-h2)', fontWeight: 700, color: '#AC00EF', lineHeight: 1, marginBottom: '0.3rem' }}>{stat}</div>
+                <div key={i} style={{ padding: '0.875rem 1.125rem', borderRight: i < 3 ? '1px solid #9764ff22' : 'none', background: '#0a0a0f' }}>
+                  <div className="data-mono" style={{ fontSize: 'var(--fs-h2)', fontWeight: 700, color: '#9764ff', lineHeight: 1, marginBottom: '0.3rem' }}>{stat}</div>
                   <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 600, color: '#fff', marginBottom: '0.2rem', lineHeight: 1.3 }}>{label}</div>
                   <div style={{ fontSize: 'var(--fs-micro)', color: '#444', lineHeight: 1.4 }}>{sub}</div>
                 </div>
@@ -465,12 +516,12 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                       <SectionLabel style={{ marginBottom: 0 }}>Material KPIs — SASB Filtered</SectionLabel>
                       <div style={{ display: 'flex', gap: '0.5rem' }}>
-                        {[['available','#FFFFFF'],['partial','#AC00EF'],['missing','#FF4444']].map(([k,c]) => counts[k] > 0 && (
+                        {[['available','#FFFFFF'],['partial','#9764ff'],['missing','#FF4444']].map(([k,c]) => counts[k] > 0 && (
                           <span key={k} style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: c, background: `${c}15`, border: `1px solid ${c}30`, borderRadius: '2px', padding: '0.15rem 0.4rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{counts[k]} {k}</span>
                         ))}
                       </div>
                     </div>
-                    <span style={{ color: '#AC00EF', fontSize: '1rem', lineHeight: 1, flexShrink: 0, display: 'inline-block', transform: isOpen ? 'rotate(45deg)' : 'rotate(0deg)', transition: 'transform 220ms cubic-bezier(0.25,1,0.5,1)' }}>+</span>
+                    <span style={{ color: '#9764ff', fontSize: '1rem', lineHeight: 1, flexShrink: 0, display: 'inline-block', transform: isOpen ? 'rotate(45deg)' : 'rotate(0deg)', transition: 'transform 220ms cubic-bezier(0.25,1,0.5,1)' }}>+</span>
                   </button>
 
                   {/* Preview — visible when collapsed */}
@@ -502,9 +553,9 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
                               {items.map((kpi, i) => (
                                 <div key={i} style={{ borderLeft: `3px solid ${s.text}`, background: '#0D0D0D', borderRadius: '0 0.25rem 0.25rem 0', padding: '0.75rem 1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                                   <div style={{ fontSize: 'var(--fs-sm)', fontWeight: 600, color: '#fff', lineHeight: 1.3 }}>{kpi.kpi}</div>
-                                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                    <span style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, color: '#AC00EF', textTransform: 'uppercase', letterSpacing: '0.08em', flexShrink: 0 }}>EBITDA</span>
-                                    <span style={{ fontSize: 'var(--fs-label)', fontWeight: 500, color: '#fff', overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 1, WebkitBoxOrient: 'vertical' }}>{kpi.ebitdaLink}</span>
+                                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
+                                    <span style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, color: '#9764ff', textTransform: 'uppercase', letterSpacing: '0.08em', flexShrink: 0, paddingTop: '0.1rem' }}>EBITDA</span>
+                                    <span style={{ fontSize: 'var(--fs-label)', fontWeight: 500, color: '#fff', lineHeight: 1.5 }}>{kpi.ebitdaLink}</span>
                                   </div>
                                 </div>
                               ))}
@@ -538,7 +589,7 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                       <SectionLabel style={{ marginBottom: 0 }}>Risk Flags</SectionLabel>
                       <div style={{ display: 'flex', gap: '0.5rem' }}>
-                        {[['high','#FF4444'],['medium','#AC00EF'],['low','#888888']].map(([k,c]) => counts[k] > 0 && (
+                        {[['high','#FF4444'],['medium','#9764ff'],['low','#888888']].map(([k,c]) => counts[k] > 0 && (
                           <span key={k} style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: c, background: `${c}15`, border: `1px solid ${c}30`, borderRadius: '2px', padding: '0.15rem 0.4rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{counts[k]} {k}</span>
                         ))}
                       </div>
@@ -548,10 +599,10 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
                         const tot = flags.length;
                         const hDeg = (counts.high   / tot) * 360;
                         const mDeg = (counts.medium / tot) * 360;
-                        const grad = `conic-gradient(#FF4444 0deg ${hDeg}deg, #AC00EF ${hDeg}deg ${hDeg + mDeg}deg, #888888 ${hDeg + mDeg}deg 360deg)`;
+                        const grad = `conic-gradient(#FF4444 0deg ${hDeg}deg, #9764ff ${hDeg}deg ${hDeg + mDeg}deg, #888888 ${hDeg + mDeg}deg 360deg)`;
                         return (
                           <div style={{ width: 36, height: 36, borderRadius: '50%', background: grad, flexShrink: 0, position: 'relative' }}>
-                            <div style={{ position: 'absolute', inset: 9, borderRadius: '50%', background: '#111111' }} />
+                            <div style={{ position: 'absolute', inset: 9, borderRadius: '50%', background: '#0d0d0d' }} />
                           </div>
                         );
                       })()}
@@ -560,7 +611,7 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
                           {highCount} HIGH
                         </div>
                       )}
-                      <span style={{ color: '#AC00EF', fontSize: '1rem', lineHeight: 1, display: 'inline-block', transform: isOpen ? 'rotate(45deg)' : 'rotate(0deg)', transition: 'transform 220ms cubic-bezier(0.25,1,0.5,1)' }}>+</span>
+                      <span style={{ color: '#9764ff', fontSize: '1rem', lineHeight: 1, display: 'inline-block', transform: isOpen ? 'rotate(45deg)' : 'rotate(0deg)', transition: 'transform 220ms cubic-bezier(0.25,1,0.5,1)' }}>+</span>
                     </div>
                   </button>
 
@@ -592,7 +643,7 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
                             <div style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: s.accent, textTransform: 'uppercase', letterSpacing: '0.1em', borderBottom: `1px solid ${s.border}`, paddingBottom: '0.375rem', marginBottom: '0.625rem' }}>{sev} severity — {items.length} flag{items.length > 1 ? 's' : ''}</div>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                               {items.map((flag, i) => (
-                                <div key={i} style={{ display: 'grid', gridTemplateColumns: '3.5rem 1fr', gap: '0 1rem', alignItems: 'start', border: `1px solid ${s.border}`, background: s.bg, borderRadius: '0.25rem', padding: '0.75rem 1rem' }}>
+                                <div key={i} style={{ display: 'grid', gridTemplateColumns: '3.5rem 1fr', gap: '0 1rem', alignItems: 'start', border: `1px solid ${s.border}`, background: s.bg, borderRadius: '0.5rem', padding: '0.75rem 1rem' }}>
                                   <span style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, color: s.accent, letterSpacing: '0.1em', textTransform: 'uppercase', textAlign: 'center', background: `${s.accent}15`, border: `1px solid ${s.accent}30`, borderRadius: '2px', padding: '0.2rem 0', marginTop: '0.15rem' }}>{sev}</span>
                                   <div>
                                     <div style={{ fontSize: 'var(--fs-sm)', fontWeight: 700, color: '#fff', lineHeight: 1.3, marginBottom: '0.375rem' }}>{flag.area}</div>
@@ -629,7 +680,7 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
                       <SectionLabel style={{ marginBottom: 0 }}>Value Opportunities</SectionLabel>
                       <span style={{ fontSize: 'var(--fs-micro)', color: '#444444' }}>{opps.length} initiatives · sorted by payback</span>
                     </div>
-                    <span style={{ color: '#AC00EF', fontSize: '1rem', lineHeight: 1, flexShrink: 0, display: 'inline-block', transform: isOpen ? 'rotate(45deg)' : 'rotate(0deg)', transition: 'transform 220ms cubic-bezier(0.25,1,0.5,1)' }}>+</span>
+                    <span style={{ color: '#9764ff', fontSize: '1rem', lineHeight: 1, flexShrink: 0, display: 'inline-block', transform: isOpen ? 'rotate(45deg)' : 'rotate(0deg)', transition: 'transform 220ms cubic-bezier(0.25,1,0.5,1)' }}>+</span>
                   </button>
 
                   {/* Preview */}
@@ -642,15 +693,21 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
                         const s = raw.toUpperCase();
                         const absVal = s.includes('M') ? v * 1000000 : s.includes('K') ? v * 1000 : v;
                         const barPct = Math.round((absVal / maxSavings) * 100);
+                        const savingsHeadline = raw.match(/^[~$€£]?[\d.,]+[KMBkmb]?(?:\/\w+)?/)?.[0] ?? raw.split(' ')[0];
                         return (
-                          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.5rem 0.75rem', background: '#0A0A0A', border: '1px solid #AC00EF15', borderRadius: '2px' }}>
-                            <span className="data-mono" style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: '#AC00EF', width: '1rem', flexShrink: 0 }}>{i + 1}</span>
-                            <span style={{ fontSize: 'var(--fs-sm)', fontWeight: 500, color: '#fff', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{opp.initiative}</span>
-                            <div style={{ width: '4rem', height: '2px', background: '#1E1E1E', borderRadius: '1px', flexShrink: 0 }}>
-                              <div style={{ height: '100%', width: `${barPct}%`, background: '#AC00EF', borderRadius: '1px' }} />
+                          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.625rem 0.875rem', background: '#0a0a0f', border: '1px solid #9764ff18', borderRadius: '4px' }}>
+                            <span className="data-mono" style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: '#9764ff', width: '1rem', flexShrink: 0, opacity: 0.7 }}>{i + 1}</span>
+                            <span style={{ fontSize: 'var(--fs-sm)', fontWeight: 500, color: '#ccc', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{opp.initiative}</span>
+                            <div style={{ width: '4rem', height: '3px', background: '#1a1a2e', borderRadius: '2px', overflow: 'hidden', flexShrink: 0 }}>
+                              <div style={{ height: '100%', width: `${barPct}%`, background: 'linear-gradient(90deg, #9764ff66, #9764ff)', borderRadius: '2px' }} />
                             </div>
-                            <span className="data-mono" style={{ fontSize: 'var(--fs-sm)', fontWeight: 700, color: '#FFFFFF', flexShrink: 0, maxWidth: '6rem', textAlign: 'right', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{opp.estimatedAnnualSavings}</span>
-                            <span className="data-mono" style={{ fontSize: 'var(--fs-label)', fontWeight: 600, color: '#AC00EF', flexShrink: 0, width: '3.5rem', textAlign: 'right' }}>{opp.irrImpact}</span>
+                            <span className="data-mono" style={{ fontSize: 'var(--fs-sm)', fontWeight: 700, color: '#fff', flexShrink: 0, width: '5.5rem', textAlign: 'right', whiteSpace: 'nowrap', overflow: 'hidden' }}>{savingsHeadline}</span>
+                            {opp.paybackMonths && (
+                              <span style={{ fontSize: 'var(--fs-label)', fontWeight: 600, color: '#555', background: '#161622', border: '1px solid #2a2a3e', borderRadius: '999px', padding: '0.15rem 0.5rem', flexShrink: 0, whiteSpace: 'nowrap' }}>
+                                {opp.paybackMonths}mo
+                              </span>
+                            )}
+                            <span className="data-mono" style={{ fontSize: 'var(--fs-sm)', fontWeight: 700, color: '#9764ff', flexShrink: 0, whiteSpace: 'nowrap' }}>{opp.irrImpact}</span>
                           </div>
                         );
                       })}
@@ -672,9 +729,9 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
                       if (!active || !payload?.length) return null;
                       const d = payload[0]?.payload;
                       return (
-                        <div style={{ background: '#1E1E1E', border: '1px solid #2E2E2E', borderRadius: '0.25rem', padding: '0.625rem 0.875rem', fontSize: 'var(--fs-label)' }}>
+                        <div style={{ background: '#1a1a2e', border: '1px solid #1a1a2e', borderRadius: '0.5rem', padding: '0.625rem 0.875rem', fontSize: 'var(--fs-label)' }}>
                           <div style={{ fontWeight: 600, color: '#fff', marginBottom: '0.25rem', maxWidth: '12rem' }}>{d?.name}</div>
-                          <div style={{ color: '#787878' }}>Payback: <span style={{ color: '#AC00EF' }}>{d?.x}mo</span></div>
+                          <div style={{ color: '#787878' }}>Payback: <span style={{ color: '#9764ff' }}>{d?.x}mo</span></div>
                           <div style={{ color: '#787878' }}>Savings: <span style={{ color: '#fff' }}>${d?.y}M/yr</span></div>
                         </div>
                       );
@@ -688,8 +745,8 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
                               <XAxis dataKey="x" type="number" name="Payback" unit="mo" tick={{ fill: '#444444', fontSize: 10 }} axisLine={false} tickLine={false} />
                               <YAxis dataKey="y" type="number" name="Savings" unit="M" tick={{ fill: '#444444', fontSize: 10 }} axisLine={false} tickLine={false} />
                               <ZAxis dataKey="z" range={[40, 200]} />
-                              <Tooltip content={<ScatterTip />} cursor={{ stroke: '#2E2E2E' }} />
-                              <Scatter data={scatterData} fill="#AC00EF" fillOpacity={0.8} />
+                              <Tooltip content={<ScatterTip />} cursor={{ stroke: '#1a1a2e' }} />
+                              <Scatter data={scatterData} fill="#9764ff" fillOpacity={0.8} />
                             </ScatterChart>
                           </ResponsiveContainer>
                         </div>
@@ -700,12 +757,12 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
                         const heroNum = heroMatch ? heroMatch[1].trim() : raw.split(/[–—\-,(]/)[0].trim();
                         const detail = heroNum && raw.length > heroNum.length + 2 ? raw.slice(heroNum.length).replace(/^[\s–—\-]+/, '') : null;
                         return (
-                          <div key={i} style={{ background: '#0A0A0A', border: '1px solid #AC00EF20', borderRadius: '0.25rem', padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                          <div key={i} style={{ background: '#0a0a0f', border: '1px solid #9764ff20', borderRadius: '0.5rem', padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                             <div>
-                              <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, color: '#AC00EF', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.3rem' }}>#{i + 1} · {opp.paybackMonths ? `${opp.paybackMonths}mo payback` : 'quickest payback'}</div>
+                              <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, color: '#9764ff', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.3rem' }}>#{i + 1} · {opp.paybackMonths ? `${opp.paybackMonths}mo payback` : 'quickest payback'}</div>
                               <div style={{ fontSize: 'var(--fs-sm)', fontWeight: 600, color: '#fff', lineHeight: 1.35 }}>{opp.initiative}</div>
                             </div>
-                            <div style={{ borderTop: '1px solid #1E1E1E', paddingTop: '0.625rem' }}>
+                            <div style={{ borderTop: '1px solid #1a1a2e', paddingTop: '0.625rem' }}>
                               <div style={{ fontSize: 'var(--fs-micro)', color: '#787878', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.25rem' }}>Annual savings</div>
                               <div className="data-mono" style={{ fontSize: 'var(--fs-h2)', fontWeight: 700, color: '#FFFFFF', lineHeight: 1.1 }}>{heroNum}</div>
                               {detail && (
@@ -715,7 +772,7 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
                             <div style={{ display: 'flex', gap: '1.5rem', paddingTop: '0.25rem' }}>
                               <div>
                                 <div style={{ fontSize: 'var(--fs-micro)', color: '#787878', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.2rem' }}>IRR impact</div>
-                                <div className="data-mono" style={{ fontSize: 'var(--fs-body)', fontWeight: 700, color: '#AC00EF' }}>{opp.irrImpact}</div>
+                                <div className="data-mono" style={{ fontSize: 'var(--fs-body)', fontWeight: 700, color: '#9764ff' }}>{opp.irrImpact}</div>
                               </div>
                               <div>
                                 <div style={{ fontSize: 'var(--fs-micro)', color: '#787878', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.2rem' }}>Payback</div>
@@ -736,10 +793,10 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
 
             <div className="fade-up fade-up-5">
             {/* Section: Recommendation */}
-            <Card style={{ background: openSections.recommendation ? '#0A0A0A' : '#111111', border: `1px solid ${openSections.recommendation ? '#AC00EF33' : '#2E2E2E'}`, transition: 'background 300ms, border-color 300ms' }}>
+            <Card style={{ background: openSections.recommendation ? '#0a0a0f' : '#0d0d0d', border: `1px solid ${openSections.recommendation ? '#9764ff33' : '#1a1a2e'}`, transition: 'background 300ms, border-color 300ms' }}>
               <button onClick={() => toggleSection('recommendation')} style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'none', border: 'none', cursor: 'pointer', padding: 0, marginBottom: '0.875rem' }}>
                 <SectionLabel style={{ marginBottom: 0 }}>Recommendation</SectionLabel>
-                <span style={{ color: '#AC00EF', fontSize: '1rem', lineHeight: 1, flexShrink: 0, display: 'inline-block', transform: openSections.recommendation ? 'rotate(45deg)' : 'rotate(0deg)', transition: 'transform 220ms cubic-bezier(0.25,1,0.5,1)' }}>+</span>
+                <span style={{ color: '#9764ff', fontSize: '1rem', lineHeight: 1, flexShrink: 0, display: 'inline-block', transform: openSections.recommendation ? 'rotate(45deg)' : 'rotate(0deg)', transition: 'transform 220ms cubic-bezier(0.25,1,0.5,1)' }}>+</span>
               </button>
               {/* Preview */}
               {!openSections.recommendation && (() => {
@@ -748,7 +805,7 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
                   <div className="section-body-enter" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                     {sentences.map((s, i) => (
                       <div key={i} style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start' }}>
-                        <span style={{ color: '#AC00EF', fontWeight: 700, flexShrink: 0, fontSize: 'var(--fs-label)', marginTop: '0.2rem' }}>{i + 1}</span>
+                        <span style={{ color: '#9764ff', fontWeight: 700, flexShrink: 0, fontSize: 'var(--fs-label)', marginTop: '0.2rem' }}>{i + 1}</span>
                         <span style={{ fontSize: 'var(--fs-sm)', color: '#c8c8c4', lineHeight: 1.6 }}>{s.trim()}</span>
                       </div>
                     ))}
@@ -763,7 +820,7 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
                   <div className="section-body-enter" style={{ display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
                     {sentences.map((s, i) => (
                       <div key={i} style={{ display: 'flex', gap: '0.875rem', alignItems: 'flex-start', paddingLeft: '0.25rem' }}>
-                        <span style={{ color: '#AC00EF', fontWeight: 700, flexShrink: 0, fontSize: 'var(--fs-label)', marginTop: '0.2rem', width: '1rem', textAlign: 'right' }}>{i + 1}</span>
+                        <span style={{ color: '#9764ff', fontWeight: 700, flexShrink: 0, fontSize: 'var(--fs-label)', marginTop: '0.2rem', width: '1rem', textAlign: 'right' }}>{i + 1}</span>
                         <span style={{ fontSize: 'var(--fs-sm)', color: '#c8c8c4', lineHeight: 1.7 }}>{s.trim()}</span>
                       </div>
                     ))}
@@ -779,14 +836,14 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
                   <SectionLabel style={{ marginBottom: 0 }}>100-Day Quick Wins</SectionLabel>
                   <span style={{ fontSize: 'var(--fs-micro)', color: '#444444' }}>{data.quickWins?.length ?? 0} actions · Day 1 → Day 100</span>
                 </div>
-                <span style={{ color: '#AC00EF', fontSize: '1rem', lineHeight: 1, flexShrink: 0, display: 'inline-block', transform: openSections.quickwins ? 'rotate(45deg)' : 'rotate(0deg)', transition: 'transform 220ms cubic-bezier(0.25,1,0.5,1)' }}>+</span>
+                <span style={{ color: '#9764ff', fontSize: '1rem', lineHeight: 1, flexShrink: 0, display: 'inline-block', transform: openSections.quickwins ? 'rotate(45deg)' : 'rotate(0deg)', transition: 'transform 220ms cubic-bezier(0.25,1,0.5,1)' }}>+</span>
               </button>
               {/* Preview */}
               {!openSections.quickwins && (
                 <div className="section-body-enter" style={{ display: 'flex', flexDirection: 'column', gap: '0.375rem' }}>
                   {data.quickWins?.map((win, i) => (
                     <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', padding: '0.5rem 0.75rem', background: '#0D0D0D', borderRadius: '2px' }}>
-                      <span style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: '#AC00EF', flexShrink: 0, width: '1rem' }}>{i + 1}</span>
+                      <span style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: '#9764ff', flexShrink: 0, width: '1rem' }}>{i + 1}</span>
                       <span style={{ fontSize: 'var(--fs-sm)', color: '#c8c8c4', lineHeight: 1.5, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 1, WebkitBoxOrient: 'vertical' }}>{win}</span>
                     </div>
                   ))}
@@ -797,8 +854,8 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
               {openSections.quickwins && (
                 <div className="section-body-enter" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.75rem' }}>
                   {data.quickWins?.map((win, i) => (
-                    <div key={i} style={{ background: '#0D0D0D', borderLeft: '3px solid #AC00EF44', borderRadius: '0 0.25rem 0.25rem 0', padding: '0.875rem' }}>
-                      <div className="data-mono" style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: '#AC00EF', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.375rem' }}>Action {i + 1}</div>
+                    <div key={i} style={{ background: '#0D0D0D', borderLeft: '3px solid #9764ff44', borderRadius: '0 0.25rem 0.25rem 0', padding: '0.875rem' }}>
+                      <div className="data-mono" style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: '#9764ff', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.375rem' }}>Action {i + 1}</div>
                       <span style={{ fontSize: 'var(--fs-sm)', color: '#fff', lineHeight: 1.6 }}>{win}</span>
                     </div>
                   ))}
@@ -808,21 +865,21 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
             </div>
 
             {/* Data Attribution */}
-            <div style={{ display: 'flex', gap: '0', border: '1px solid #1E1E1E', borderRadius: '0.25rem', overflow: 'hidden' }}>
+            <div style={{ display: 'flex', gap: '0', border: '1px solid #1a1a2e', borderRadius: '0.5rem', overflow: 'hidden' }}>
               {[
-                { source: 'SASB SICS',          detail: 'Industry classification & materiality weights', status: 'verified',  color: '#00C896' },
-                { source: 'Company Disclosure',  detail: 'ESG report, sustainability data, proxy statements', status: 'partial', color: '#888888' },
-                { source: 'CDP Climate DB',      detail: 'GHG emissions, energy, water — estimated where missing', status: 'estimated', color: '#888888' },
-                { source: 'MSCI ESG Research',   detail: 'Sector benchmarks, peer percentiles', status: 'reference', color: '#555' },
+                { source: 'SASB SICS',          detail: 'Industry classification & materiality weights', status: 'verified',   color: '#00C896' },
+                { source: 'Company Disclosure',  detail: 'ESG report, sustainability data, proxy statements', status: 'partial',    color: '#9764ff' },
+                { source: 'CDP Climate DB',      detail: 'GHG emissions, energy, water — estimated where missing', status: 'estimated',  color: '#9764ff' },
+                { source: 'MSCI ESG Research',   detail: 'Sector benchmarks, peer percentiles', status: 'reference',  color: '#555' },
                 { source: 'Analyst Estimates',   detail: 'Financial exposure, IRR impact — CFO sign-off required', status: 'unverified', color: '#FF4444' },
               ].map(({ source, detail, status, color }, i, arr) => (
-                <div key={source} style={{ flex: 1, padding: '0.5rem 0.75rem', borderRight: i < arr.length - 1 ? '1px solid #1E1E1E' : 'none', background: '#0A0A0A' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', marginBottom: '0.2rem' }}>
+                <div key={source} style={{ flex: 1, padding: '0.625rem 0.875rem', borderRight: i < arr.length - 1 ? '1px solid #1a1a2e' : 'none', background: '#0a0a0f' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', marginBottom: '0.3rem' }}>
                     <div style={{ width: 5, height: 5, borderRadius: '50%', background: color, flexShrink: 0 }} />
-                    <span style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{source}</span>
+                    <span style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: '#fff', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{source}</span>
                   </div>
-                  <div style={{ fontSize: 'var(--fs-label)', color: '#2E2E2E', lineHeight: 1.4 }}>{detail}</div>
-                  <div style={{ fontSize: 'var(--fs-label)', color: color, textTransform: 'uppercase', letterSpacing: '0.06em', marginTop: '0.2rem' }}>{status}</div>
+                  <div style={{ fontSize: 'var(--fs-label)', color: '#555', lineHeight: 1.4, marginBottom: '0.3rem' }}>{detail}</div>
+                  <div style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color, textTransform: 'uppercase', letterSpacing: '0.08em' }}>{status}</div>
                 </div>
               ))}
             </div>
@@ -831,7 +888,7 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
       )}
 
       {agentStatus === 'idle' && !data && (
-        <div style={{ border: '1px dashed #2E2E2E', borderRadius: '0.25rem', padding: '4rem 2rem', textAlign: 'center' }}>
+        <div style={{ border: '1px dashed #1a1a2e', borderRadius: '0.5rem', padding: '4rem 2rem', textAlign: 'center' }}>
           <div style={{ fontFamily: "'Georgia', serif", fontSize: 'var(--fs-h2)', fontWeight: 300, color: '#fff', marginBottom: '0.75rem', letterSpacing: '-0.01em' }}>
             Ready to screen {company.shortName}
           </div>
@@ -846,7 +903,7 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
               { label: 'Quick Wins',   desc: '100-day action plan' },
             ].map(({ label, desc }) => (
               <div key={label} style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, color: '#AC00EF', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.25rem' }}>{label}</div>
+                <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, color: '#9764ff', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.25rem' }}>{label}</div>
                 <div style={{ fontSize: 'var(--fs-micro)', color: '#333333' }}>{desc}</div>
               </div>
             ))}

@@ -10,6 +10,7 @@ import AgentStatus from '../components/AgentStatus.jsx';
 import ReasoningDrawer from '../components/ReasoningDrawer.jsx';
 import RaiPanel from '../components/RaiPanel.jsx';
 import { COMPANY_MAP } from '../data/companies.js';
+import { richText } from '../utils/richText.js';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
@@ -30,7 +31,7 @@ const RISK_CONFIG = {
 };
 
 const SEV_CONFIG = {
-  minor:    { color: '#AC00EF', label: 'MINOR' },
+  minor:    { color: '#9764ff', label: 'MINOR' },
   moderate: { color: '#888888', label: 'MODERATE' },
   material: { color: '#FF4444', label: 'MATERIAL' },
   critical: { color: '#FF4444', label: 'CRITICAL' },
@@ -38,27 +39,31 @@ const SEV_CONFIG = {
 
 function Card({ children, style = {} }) {
   return (
-    <div className="card-hover" style={{ background: '#111111', border: '1px solid #2E2E2E', borderRadius: '0.25rem', padding: '1.25rem', ...style }}>
+    <div className="card-hover" style={{ background: '#0d0d0d', border: '1px solid #1a1a2e', borderRadius: '0.5rem', padding: '1.25rem', ...style }}>
       {children}
     </div>
   );
 }
 
 function Label({ children, color }) {
+  const c = color ?? '#f59e0b';
   return (
-    <div style={{ fontSize: 'var(--fs-label)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: color ?? '#fff', marginBottom: '0.75rem' }}>
-      {children}
+    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
+      <div style={{ width: 3, height: 14, borderRadius: 2, background: `linear-gradient(180deg, ${c}, #9764ff)`, flexShrink: 0 }} />
+      <div style={{ fontSize: 'var(--fs-label)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: c }}>
+        {children}
+      </div>
     </div>
   );
 }
 
-export default function Screen7Greenwash({ companyId, companyOverride, screen1Result, onResult, runTrigger = 0 }) {
-  const [agentStatus, setAgentStatus] = useState('idle');
-  const [data,        setData]        = useState(null);
+export default function Screen7Greenwash({ companyId, companyOverride, screen1Result, onResult, runTrigger = 0, cachedResult }) {
+  const [agentStatus, setAgentStatus] = useState(() => cachedResult ? 'complete' : 'idle');
+  const [data,        setData]        = useState(() => cachedResult ?? null);
   const [error,       setError]       = useState(null);
   const [meta,        setMeta]        = useState(null);
 
-  const prevTrigger = useRef(0);
+  const prevTrigger = useRef(cachedResult?._runTrigger ?? 0);
   useEffect(() => {
     if (runTrigger > prevTrigger.current) {
       prevTrigger.current = runTrigger;
@@ -89,20 +94,24 @@ export default function Screen7Greenwash({ companyId, companyOverride, screen1Re
   return (
     <div>
       {/* Banner */}
-      <div style={{ position: 'relative', borderRadius: '0.25rem', overflow: 'hidden', marginBottom: '1.5rem', background: '#000000', backgroundImage: `url(/images/${companyId}-banner.jpg)`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+      <div style={{ position: 'relative', borderRadius: '0.5rem', overflow: 'hidden', marginBottom: '1.5rem', background: '#000000', backgroundImage: `url(/images/${companyId}-banner.jpg)`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'linear-gradient(90deg, #FF99C9, #926EF7 50%, #6EEEF7)', zIndex: 1 }} />
         <div style={{ position: 'absolute', inset: 0, background: data
-          ? 'linear-gradient(120deg, rgba(0,0,0,0.95) 45%, rgba(0,20,12,0.75))'
+          ? 'linear-gradient(120deg, rgba(0,0,0,0.95) 45%, rgba(10,8,0,0.80))'
           : 'linear-gradient(to right, rgba(0,0,0,0.95) 50%, rgba(0,0,0,0.6))',
           transition: 'background 600ms ease'
         }} />
-        {data && <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 60% 80% at 80% 50%, rgba(0,200,150,0.08) 0%, transparent 70%)', pointerEvents: 'none' }} />}
+        {data && <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 60% 80% at 80% 50%, rgba(245,158,11,0.06) 0%, transparent 70%)', pointerEvents: 'none' }} />}
         <div style={{ position: 'relative', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1.5rem', padding: '1.5rem' }}>
           <div>
+            <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: '#f59e0b', marginBottom: '0.375rem' }}>
+              Greenwashing Forensics · Claims vs Evidence
+            </div>
             <h1 style={{ fontFamily: "'Georgia', serif", fontWeight: 300, fontSize: 'var(--fs-h1)', color: '#fff', marginBottom: '0.25rem', letterSpacing: '-0.01em' }}>
               {company.name}
             </h1>
             <p style={{ fontSize: 'var(--fs-sm)', color: '#787878' }}>
-              Greenwashing Forensics · Claims vs Evidence · {company.geography}
+              {company.geography} · EU Green Claims Directive · CSRD · SFDR · EUDR
             </p>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexShrink: 0 }}>
@@ -144,7 +153,7 @@ export default function Screen7Greenwash({ companyId, companyOverride, screen1Re
       {meta && <div style={{ marginBottom: '1rem' }}><ReasoningDrawer meta={meta} /></div>}
 
       {error && (
-        <div style={{ background: '#FF444410', border: '1px solid #FF444440', borderRadius: '0.25rem', padding: '1rem', color: '#FF4444', fontSize: 'var(--fs-sm)', marginBottom: '1.5rem' }}>{error}</div>
+        <div style={{ background: '#FF444410', border: '1px solid #FF444440', borderRadius: '0.5rem', padding: '1rem', color: '#FF4444', fontSize: 'var(--fs-sm)', marginBottom: '1.5rem' }}>{error}</div>
       )}
 
       {data && riskCfg && (
@@ -185,7 +194,7 @@ export default function Screen7Greenwash({ companyId, companyOverride, screen1Re
           {/* Overall assessment */}
           <Card className="fade-up fade-up-1">
             <Label>Forensic Assessment</Label>
-            <div style={{ fontSize: 'var(--fs-sm)', color: '#c8c8c4', lineHeight: 1.7 }}>{data.overallAssessment}</div>
+            <div style={{ fontSize: 'var(--fs-sm)', color: '#c8c8c4', lineHeight: 1.7 }} dangerouslySetInnerHTML={{ __html: richText(data.overallAssessment) }} />
           </Card>
 
           {/* Row 2: Flagged claims */}
@@ -199,17 +208,17 @@ export default function Screen7Greenwash({ companyId, companyOverride, screen1Re
                     <div key={i} style={{ padding: '0.875rem 1rem', background: `${sev.color}08`, border: `1px solid ${sev.color}33`, borderRadius: '0.2rem', borderLeft: `3px solid ${sev.color}` }}>
                       <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', marginBottom: '0.5rem' }}>
                         <span style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: sev.color, background: `${sev.color}20`, border: `1px solid ${sev.color}40`, borderRadius: '2px', padding: '0.1rem 0.4rem', letterSpacing: '0.08em', flexShrink: 0, marginTop: '0.15rem' }}>{sev.label}</span>
-                        <span style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: '#444', background: '#111', border: '1px solid #1E1E1E', borderRadius: '2px', padding: '0.1rem 0.4rem', letterSpacing: '0.06em', flexShrink: 0, marginTop: '0.15rem', textTransform: 'uppercase' }}>{claim.claimType}</span>
+                        <span style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: '#444', background: '#0d0d0d', border: '1px solid #1a1a2e', borderRadius: '2px', padding: '0.1rem 0.4rem', letterSpacing: '0.06em', flexShrink: 0, marginTop: '0.15rem', textTransform: 'uppercase' }}>{claim.claimType}</span>
                         <div style={{ fontSize: 'var(--fs-label)', fontWeight: 600, color: '#fff', flex: 1, lineHeight: 1.4 }}>{claim.claim}</div>
                       </div>
                       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', paddingLeft: '0.25rem' }}>
                         <div>
                           <div style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: '#333', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.25rem' }}>Evidence Gap</div>
-                          <div style={{ fontSize: 'var(--fs-micro)', color: '#787878', lineHeight: 1.5 }}>{claim.evidenceGap}</div>
+                          <div style={{ fontSize: 'var(--fs-micro)', color: '#a0a0b8', lineHeight: 1.5 }} dangerouslySetInnerHTML={{ __html: richText(claim.evidenceGap) }} />
                         </div>
                         <div>
                           <div style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: '#333', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.25rem' }}>Mitigation</div>
-                          <div style={{ fontSize: 'var(--fs-micro)', color: '#00C896', lineHeight: 1.5 }}>{claim.mitigation}</div>
+                          <div style={{ fontSize: 'var(--fs-micro)', color: '#00C896', lineHeight: 1.5 }} dangerouslySetInnerHTML={{ __html: richText(claim.mitigation) }} />
                         </div>
                       </div>
                     </div>
@@ -227,7 +236,7 @@ export default function Screen7Greenwash({ companyId, companyOverride, screen1Re
                 {(data.redFlags ?? []).map((flag, i) => (
                   <div key={i} style={{ display: 'flex', gap: '0.625rem', alignItems: 'flex-start', padding: '0.5rem 0.625rem', background: '#FF444408', border: '1px solid #FF444420', borderRadius: '0.2rem' }}>
                     <span style={{ color: '#FF4444', flexShrink: 0, fontSize: 'var(--fs-label)', marginTop: '0.05rem' }}>▲</span>
-                    <span style={{ fontSize: 'var(--fs-micro)', color: '#c8c8c4', lineHeight: 1.5 }}>{flag}</span>
+                    <span style={{ fontSize: 'var(--fs-micro)', color: '#c8c8c4', lineHeight: 1.5 }} dangerouslySetInnerHTML={{ __html: richText(flag) }} />
                   </div>
                 ))}
               </div>
@@ -239,7 +248,7 @@ export default function Screen7Greenwash({ companyId, companyOverride, screen1Re
                 {(data.positiveIndicators ?? []).map((ind, i) => (
                   <div key={i} style={{ display: 'flex', gap: '0.625rem', alignItems: 'flex-start', padding: '0.5rem 0.625rem', background: '#00C89608', border: '1px solid #00C89620', borderRadius: '0.2rem' }}>
                     <span style={{ color: '#00C896', flexShrink: 0, fontSize: 'var(--fs-label)', marginTop: '0.05rem' }}>✓</span>
-                    <span style={{ fontSize: 'var(--fs-micro)', color: '#c8c8c4', lineHeight: 1.5 }}>{ind}</span>
+                    <span style={{ fontSize: 'var(--fs-micro)', color: '#c8c8c4', lineHeight: 1.5 }} dangerouslySetInnerHTML={{ __html: richText(ind) }} />
                   </div>
                 ))}
               </div>
@@ -252,9 +261,9 @@ export default function Screen7Greenwash({ companyId, companyOverride, screen1Re
               <Label>Recommended Disclosures</Label>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.375rem' }}>
                 {(data.recommendedDisclosures ?? []).map((d, i) => (
-                  <div key={i} style={{ display: 'flex', gap: '0.625rem', alignItems: 'flex-start', padding: '0.4rem 0.625rem', background: '#AC00EF08', borderLeft: '2px solid #AC00EF40', borderRadius: '0 2px 2px 0' }}>
-                    <span style={{ color: '#AC00EF', fontWeight: 700, fontSize: 'var(--fs-micro)', flexShrink: 0, marginTop: '0.1rem' }}>D{i + 1}</span>
-                    <span style={{ fontSize: 'var(--fs-micro)', color: '#787878', lineHeight: 1.4 }}>{d}</span>
+                  <div key={i} style={{ display: 'flex', gap: '0.625rem', alignItems: 'flex-start', padding: '0.4rem 0.625rem', background: '#f59e0b08', borderLeft: '2px solid #f59e0b40', borderRadius: '0 2px 2px 0' }}>
+                    <span style={{ color: '#f59e0b', fontWeight: 700, fontSize: 'var(--fs-micro)', flexShrink: 0, marginTop: '0.1rem' }}>D{i + 1}</span>
+                    <span style={{ fontSize: 'var(--fs-micro)', color: '#a0a0b8', lineHeight: 1.4 }} dangerouslySetInnerHTML={{ __html: richText(d) }} />
                   </div>
                 ))}
               </div>
@@ -262,7 +271,7 @@ export default function Screen7Greenwash({ companyId, companyOverride, screen1Re
 
             <Card style={{ background: '#0A0A0A', border: '1px solid #FF444433' }}>
               <Label color="#FF4444">Regulatory Exposure</Label>
-              <div style={{ fontSize: 'var(--fs-label)', color: '#c8c8c4', lineHeight: 1.7 }}>{data.regulatoryExposure}</div>
+              <div style={{ fontSize: 'var(--fs-label)', color: '#c8c8c4', lineHeight: 1.7 }} dangerouslySetInnerHTML={{ __html: richText(data.regulatoryExposure) }} />
             </Card>
           </div>
 
@@ -270,7 +279,7 @@ export default function Screen7Greenwash({ companyId, companyOverride, screen1Re
       )}
 
       {agentStatus === 'idle' && !data && (
-        <div style={{ border: '1px dashed #2E2E2E', borderRadius: '0.25rem', padding: '4rem 2rem', textAlign: 'center' }}>
+        <div style={{ border: '1px dashed #f59e0b28', borderRadius: '0.5rem', padding: '4rem 2rem', textAlign: 'center', background: 'linear-gradient(135deg, #0e0800 0%, #080808 100%)' }}>
           <div style={{ fontFamily: "'Georgia', serif", fontSize: 'var(--fs-h2)', fontWeight: 300, color: '#fff', marginBottom: '0.75rem', letterSpacing: '-0.01em' }}>
             Greenwashing Forensics
           </div>
@@ -285,7 +294,7 @@ export default function Screen7Greenwash({ companyId, companyOverride, screen1Re
               { label: 'Remediation Plan',    desc: 'Specific disclosure actions' },
             ].map(({ label, desc }) => (
               <div key={label} style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, color: '#AC00EF', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.25rem' }}>{label}</div>
+                <div style={{ fontSize: 'var(--fs-micro)', fontWeight: 700, color: '#f59e0b', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.25rem' }}>{label}</div>
                 <div style={{ fontSize: 'var(--fs-micro)', color: '#333' }}>{desc}</div>
               </div>
             ))}

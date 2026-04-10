@@ -45,7 +45,7 @@ export default async function handler(req, res) {
   const baseMeta = {
     model: 'claude-sonnet-4-6',
     tool: mapToolSchema.name,
-    timestamp: new Date().toISOString(),
+    generatedAt: new Date().toISOString(),
     systemPrompt,
     userPrompt,
     dataPoint,
@@ -55,7 +55,8 @@ export default async function handler(req, res) {
   const cached = getCachedResponse(company.id, 'map');
   if (cached) {
     await simulateThinking();
-    return res.json({ ...cached, _source: 'cached', _meta: { ...baseMeta, cached: true } });
+    const cachedGeneratedAt = cached._meta?.generatedAt ?? baseMeta.generatedAt;
+    return res.json({ ...cached, _source: 'cached', _meta: { ...baseMeta, generatedAt: cachedGeneratedAt, cached: true } });
   }
 
   // ── Live fallback ──────────────────────────────────────────────────────────
