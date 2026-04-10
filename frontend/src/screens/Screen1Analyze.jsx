@@ -110,6 +110,8 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
 
   function toggleSection(key) { setOpenSections(s => ({ ...s, [key]: !s[key] })); }
   function openAll()           { setOpenSections(Object.fromEntries(SECTIONS.map(k => [k, true]))); }
+  function closeAll()          { setOpenSections(Object.fromEntries(SECTIONS.map(k => [k, false]))); }
+  const allOpen = SECTIONS.every(k => openSections[k]);
 
   const company = companyOverride ?? COMPANY_MAP[companyId];
 
@@ -188,8 +190,8 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexShrink: 0 }}>
             {data && (
-              <button onClick={openAll} style={{ background: 'none', border: 'none', color: '#AC00EF', fontSize: 'var(--fs-sm)', fontWeight: 500, cursor: 'pointer', letterSpacing: '0.04em', textTransform: 'uppercase', padding: 0 }}>
-                + Open all
+              <button onClick={allOpen ? closeAll : openAll} style={{ background: 'none', border: 'none', color: '#AC00EF', fontSize: 'var(--fs-sm)', fontWeight: 500, cursor: 'pointer', letterSpacing: '0.04em', textTransform: 'uppercase', padding: 0 }}>
+                {allOpen ? '− Close all' : '+ Open all'}
               </button>
             )}
             <button className="btn-acc" onClick={run} disabled={agentStatus === 'running'}>
@@ -458,7 +460,7 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
                 { status: 'missing',   label: 'Missing',   items: kpis.filter(k => k.dataStatus === 'missing') }
               ].filter(g => g.items.length > 0);
               return (
-                <Card>
+                <Card style={{ border: `1px solid ${isOpen ? 'rgba(172,0,239,0.35)' : 'rgba(255,255,255,0.08)'}`, transition: 'border-color 300ms' }}>
                   <button onClick={() => toggleSection('kpis')} style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'none', border: 'none', cursor: 'pointer', padding: 0, marginBottom: '1rem' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                       <SectionLabel style={{ marginBottom: 0 }}>Material KPIs — SASB Filtered</SectionLabel>
@@ -531,7 +533,7 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
               ].filter(g => g.items.length > 0);
               const highCount = counts.high;
               return (
-                <Card>
+                <Card style={{ border: `1px solid ${isOpen ? 'rgba(172,0,239,0.35)' : 'rgba(255,255,255,0.08)'}`, transition: 'border-color 300ms' }}>
                   <button onClick={() => toggleSection('risks')} style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'none', border: 'none', cursor: 'pointer', padding: 0, marginBottom: '1rem' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                       <SectionLabel style={{ marginBottom: 0 }}>Risk Flags</SectionLabel>
@@ -621,7 +623,7 @@ export default function Screen1Analyze({ companyId, companyOverride, onResult, r
                 return s.includes('M') ? v * 1000000 : s.includes('K') ? v * 1000 : v;
               }), 1);
               return (
-                <Card>
+                <Card style={{ border: `1px solid ${isOpen ? 'rgba(172,0,239,0.35)' : 'rgba(255,255,255,0.08)'}`, transition: 'border-color 300ms' }}>
                   <button onClick={() => toggleSection('opportunities')} style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'none', border: 'none', cursor: 'pointer', padding: 0, marginBottom: '1rem' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                       <SectionLabel style={{ marginBottom: 0 }}>Value Opportunities</SectionLabel>
